@@ -21,4 +21,8 @@ public class PerformanceCategory extends BaseEntity{
         this.name = name;
         return this;
     }
+
+    public Edition getEdition() {
+        return edition;
+    }
 }

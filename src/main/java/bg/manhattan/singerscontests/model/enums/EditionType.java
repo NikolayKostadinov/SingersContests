@@ -1,5 +1,5 @@
 package bg.manhattan.singerscontests.model.enums;
 
-public enum ContestType {
+public enum EditionType {
     ATTENDING, ONLINE
 }

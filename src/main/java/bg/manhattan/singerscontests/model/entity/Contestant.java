@@ -1,9 +1,7 @@
 package bg.manhattan.singerscontests.model.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -19,4 +17,37 @@ public class Contestant extends PersonBaseEntity {
     @OneToMany(mappedBy="contestant")
     private List<Song> songs;
 
+    @Column(name="birth_day")
+    private LocalDate birthDay;
+
+    public Edition getEdition() {
+        return edition;
+    }
+
+    public Contestant setEdition(Edition edition) {
+        this.edition = edition;
+        return this;
+    }
+
+    public AgeGroup getAgeGroup() {
+        return ageGroup;
+    }
+
+    public Contestant setAgeGroup(AgeGroup ageGroup) {
+        this.ageGroup = ageGroup;
+        return this;
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+
+    public LocalDate getBirthDay() {
+        return birthDay;
+    }
+
+    public Contestant setBirthDay(LocalDate birthDay) {
+        this.birthDay = birthDay;
+        return this;
+    }
 }

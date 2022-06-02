@@ -18,6 +18,30 @@ public abstract class PersonBaseEntity extends BaseEntity{
     @Column(name="last_name", length = NAME_MAX_LENGTH, nullable = false)
     private String lastName;
 
-    @Column()
-    private LocalDate dateOfBirth;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public PersonBaseEntity setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public PersonBaseEntity setMiddleName(String middleName) {
+        this.middleName = middleName;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public PersonBaseEntity setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
 }

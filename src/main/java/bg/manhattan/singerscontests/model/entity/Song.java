@@ -19,6 +19,15 @@ public class Song extends BaseEntity {
     @Column(length = 100, nullable = false)
     private String name;
 
+    @Column(name="composer_full_name", length = 100, nullable = false)
+    private String composerFullName;
+
+    @Column(name="arranger_full_name", length = 100)
+    private String arrangerFullName;
+
+    @Column(name="lyricist_full_name", length = 100, nullable = false)
+    private String lyricistFullName;
+
     @Column(nullable = false)
     private Duration duration;
 
