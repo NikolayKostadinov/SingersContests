@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.services.age_calculation_specification.impl;
+package bg.manhattan.singerscontests.services.age_calculation.impl;
 
 import bg.manhattan.singerscontests.model.dto.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
@@ -9,50 +9,50 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class YearOfBirthAgeHandlerTest {
-    private YearOfBirthAgeHandler handler;
+class StartOfContestAgeCalculatorTest {
+    private StartOfContestAgeCalculator calculator;
 
     @BeforeEach
     void Initialize() {
-        this.handler = new YearOfBirthAgeHandler();
+        this.calculator = new StartOfContestAgeCalculator();
     }
 
     @Test
     void test_canHandle_calculationType_is_START_OF_YEAR_return_true() {
-        assertTrue(this.handler.canHandle(
-                new AgeCalculationDto().setCalculationType(AgeCalculationType.YEAR_OF_BIRTH)));
+        assertTrue(this.calculator.canHandle(
+                new AgeCalculationDto().setCalculationType(AgeCalculationType.START_OF_CONTEST)));
     }
 
     @Test
     void test_canHandle_calculationType_is_not_START_OF_YEAR_return_false() {
-        assertFalse(this.handler.canHandle(
-                new AgeCalculationDto().setCalculationType(AgeCalculationType.START_OF_CONTEST)));
-
-        assertFalse(this.handler.canHandle(
+        assertFalse(this.calculator.canHandle(
                 new AgeCalculationDto().setCalculationType(AgeCalculationType.START_OF_YEAR)));
+
+        assertFalse(this.calculator.canHandle(
+                new AgeCalculationDto().setCalculationType(AgeCalculationType.YEAR_OF_BIRTH)));
     }
 
     @Test
     void handle_calculate_age_correctly() {
         //arrange
         AgeCalculationDto dto12 = new AgeCalculationDto()
-                .setCalculationType(AgeCalculationType.YEAR_OF_BIRTH)
+                .setCalculationType(AgeCalculationType.START_OF_CONTEST)
                 .setBirthDate(LocalDate.of(2009, 4, 25))
-                .setEditionBeginDate(LocalDate.of(2021, 3, 12));
+                .setEditionBeginDate(LocalDate.of(2022, 3, 12));
 
         AgeCalculationDto dto13 = new AgeCalculationDto()
-                .setCalculationType(AgeCalculationType.YEAR_OF_BIRTH)
+                .setCalculationType(AgeCalculationType.START_OF_CONTEST)
                 .setBirthDate(LocalDate.of(2009, 4, 25))
                 .setEditionBeginDate(LocalDate.of(2022, 4, 25));
 
         AgeCalculationDto dto14 = new AgeCalculationDto()
-                .setCalculationType(AgeCalculationType.YEAR_OF_BIRTH)
+                .setCalculationType(AgeCalculationType.START_OF_CONTEST)
                 .setBirthDate(LocalDate.of(2009, 4, 25))
                 .setEditionBeginDate(LocalDate.of(2023, 5, 25));
         //act
         //assert
-        assertEquals(12, this.handler.handle(dto12));
-        assertEquals(13, this.handler.handle(dto13));
-        assertEquals(14, this.handler.handle(dto14));
+        assertEquals(12, this.calculator.calculateAge(dto12));
+        assertEquals(13, this.calculator.calculateAge(dto13));
+        assertEquals(14, this.calculator.calculateAge(dto14));
     }
 }

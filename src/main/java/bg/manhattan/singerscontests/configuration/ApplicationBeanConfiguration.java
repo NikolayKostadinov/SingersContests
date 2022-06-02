@@ -1,7 +1,5 @@
 package bg.manhattan.singerscontests.configuration;
 
-import bg.manhattan.singerscontests.services.age_calculation_specification.AgeCalculationHandler;
-import bg.manhattan.singerscontests.services.age_calculation_specification.AgeCalculationHandlerFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
