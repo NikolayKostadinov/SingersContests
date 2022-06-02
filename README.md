@@ -1,2 +1,2 @@
 # SingersContests
-Sistem for organizing of singers contests
+System for organizing of singers contests
