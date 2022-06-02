@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.common;
+package bg.manhattan.singerscontests.util;
 
 import java.time.LocalDateTime;
 

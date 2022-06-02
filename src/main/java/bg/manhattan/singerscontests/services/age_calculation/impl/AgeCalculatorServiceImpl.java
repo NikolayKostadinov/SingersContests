@@ -21,9 +21,9 @@ public class AgeCalculatorServiceImpl implements AgeCalculatorService {
     public int calculateAge(AgeCalculationDto data) {
         return this.calculators.
                 stream().
-                filter(c -> c.canHandle(data)).
-                findFirst().
-                orElseThrow(() -> new UnsupportedAgeCalculationType(data))
+                filter(c -> c.canHandle(data))
+                .findFirst()
+                .orElseThrow(() -> new UnsupportedAgeCalculationType(data))
                 .calculateAge(data);
     }
 }

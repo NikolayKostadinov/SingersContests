@@ -6,11 +6,10 @@ import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
 import bg.manhattan.singerscontests.services.age_calculation.AgeCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class AgeCalculatorServiceImplTest {

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="editions")
+@Table(name="editions", uniqueConstraints={@UniqueConstraint(columnNames={"contest_id", "number"})})
 public class Edition extends BaseEntity {
 
     @Column(name = "edition_type", nullable = false)
