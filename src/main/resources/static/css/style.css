@@ -177,6 +177,11 @@ h1, h2, h3, h4, h5, h6 {
 #header .logo a span {
     color: #4173a1;
 }
+
+#header a.logo:hover, #header a.logo span:hover {
+    color: #4173a1;
+}
+
 #header .logo img {
     max-height: 64px;
 }
@@ -393,6 +398,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*--------------------------------------------------------------
+# main Section
+--------------------------------------------------------------*/
+#main{
+    margin-top: 50px;
+}
+
+@media (max-width: 991px) {
+    #main {
+        margin-top: 20px;
+        background: rgba(255, 255, 255, 0.6);
+    }
+}
+
+/*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
 #hero {
@@ -501,7 +520,7 @@ h1, h2, h3, h4, h5, h6 {
 # Sections General
 --------------------------------------------------------------*/
 section {
-    padding: 60px 0;
+    padding: 0 0;
     overflow: hidden;
 }
 

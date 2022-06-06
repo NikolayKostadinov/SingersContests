@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -13,8 +13,12 @@
     <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Vendor CSS Files -->
+    <link href="/vendor/aos/aos.css" rel="stylesheet">
     <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
     <link href="/css/style.css" rel="stylesheet">
@@ -26,7 +30,8 @@
 <section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
         <div class="contact-info d-flex align-items-center">
-            <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@example.com</a></i>
+            <i class="bi bi-envelope d-flex align-items-center"><a
+                    href="mailto:contact@example.com">contact@example.com</a></i>
             <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
         </div>
         <div class="social-links d-none d-md-flex align-items-center">
@@ -41,106 +46,174 @@
 <header id="header" class="d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
 
-<!--        <h1 class="logo"><a href="index.html">Singers Contests</a></h1>-->
-        <!-- Uncomment below if you prefer to use an image logo -->
-         <a href="index.html" class="logo"><img src="/img/android-chrome-192x192.png" alt="Logo"> <span class="logo">Singers Contests</span> </a>
+        <a th:href="@{/}" class="logo"><img src="/img/android-chrome-192x192.png" alt="Logo">
+            <span class="logo">Singers Contests</span>
+        </a>
 
         <nav id="navbar" class="navbar">
             <ul>
-                <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-                <li><a class="nav-link scrollto" href="#about">About</a></li>
-                <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
-                <li><a class="nav-link scrollto" href="#team">Team</a></li>
-                <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                        <li><a href="#">Drop Down 1</a></li>
-                        <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                            <ul>
-                                <li><a href="#">Deep Drop Down 1</a></li>
-                                <li><a href="#">Deep Drop Down 2</a></li>
-                                <li><a href="#">Deep Drop Down 3</a></li>
-                                <li><a href="#">Deep Drop Down 4</a></li>
-                                <li><a href="#">Deep Drop Down 5</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Drop Down 2</a></li>
-                        <li><a href="#">Drop Down 3</a></li>
-                        <li><a href="#">Drop Down 4</a></li>
-                    </ul>
-                </li>
-                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                <!--                <li><a class="nav-link scrollto active" href="#hero">Home</a></li>-->
+                <!--                <li><a class="nav-link scrollto" href="#about">About</a></li>-->
+                <!--                <li><a class="nav-link scrollto" href="#services">Services</a></li>-->
+                <li><a class="nav-link scrollto " href="#portfolio">Register</a></li>
+                <li><a class="nav-link scrollto" href="#team">Login</a></li>
+                <!--                <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>-->
+                <!--                    <ul>-->
+                <!--                        <li><a href="#">Drop Down 1</a></li>-->
+                <!--                        <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>-->
+                <!--                            <ul>-->
+                <!--                                <li><a href="#">Deep Drop Down 1</a></li>-->
+                <!--                                <li><a href="#">Deep Drop Down 2</a></li>-->
+                <!--                                <li><a href="#">Deep Drop Down 3</a></li>-->
+                <!--                                <li><a href="#">Deep Drop Down 4</a></li>-->
+                <!--                                <li><a href="#">Deep Drop Down 5</a></li>-->
+                <!--                            </ul>-->
+                <!--                        </li>-->
+                <!--                        <li><a href="#">Drop Down 2</a></li>-->
+                <!--                        <li><a href="#">Drop Down 3</a></li>-->
+                <!--                        <li><a href="#">Drop Down 4</a></li>-->
+                <!--                    </ul>-->
+                <!--                </li>-->
+                <!--                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>-->
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
-
     </div>
 </header><!-- End Header -->
 <main id="main" class="container">
-    <form class="row g-3 needs-validation" novalidate>
-        <div class="col-md-4">
-            <label for="validationCustom01" class="form-label">First name</label>
-            <input type="text" class="form-control" id="validationCustom01" value="Mark" required>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="col-md-4">
-            <label for="validationCustom02" class="form-label">Last name</label>
-            <input type="text" class="form-control" id="validationCustom02" value="Otto" required>
-            <div class="valid-feedback">
-                Looks good!
-            </div>
-        </div>
-        <div class="col-md-4">
-            <label for="validationCustomUsername" class="form-label">Username</label>
-            <div class="input-group has-validation">
-                <span class="input-group-text" id="inputGroupPrepend">@</span>
-                <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
-                <div class="invalid-feedback">
-                    Please choose a username.
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-shield-alt-2"></i></div>
+                        <h4><a href="">Create Contest</a></h4>
+                        <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <label for="validationCustom03" class="form-label">City</label>
-            <input type="text" class="form-control" id="validationCustom03" required>
-            <div class="invalid-feedback">
-                Please provide a valid city.
-            </div>
-        </div>
-        <div class="col-md-3">
-            <label for="validationCustom04" class="form-label">State</label>
-            <select class="form-select" id="validationCustom04" required>
-                <option selected disabled value="">Choose...</option>
-                <option>...</option>
-            </select>
-            <div class="invalid-feedback">
-                Please select a valid state.
-            </div>
-        </div>
-        <div class="col-md-3">
-            <label for="validationCustom05" class="form-label">Zip</label>
-            <input type="text" class="form-control" id="validationCustom05" required>
-            <div class="invalid-feedback">
-                Please provide a valid zip.
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                <label class="form-check-label" for="invalidCheck">
-                    Agree to terms and conditions
-                </label>
-                <div class="invalid-feedback">
-                    You must agree before submitting.
+
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-book-bookmark"></i></div>
+                        <h4><a href="">Create Edition</a></h4>
+                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
+                    </div>
                 </div>
+
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-user-voice"></i></div>
+                        <h4><a href="">Register Contestant</a></h4>
+                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-calendar"></i></div>
+                        <h4><a href="">Contest calendar</a></h4>
+                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-user-minus"></i></div>
+                        <h4><a href="">Ranking</a></h4>
+                        <p>Quis consequatur saepe eligendi voluptatem consequatur dolor consequuntur</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-right-indent"></i></div>
+                        <h4><a href="">Scenario Order</a></h4>
+                        <p>Modi nostrum vel laborum. Porro fugit error sit minus sapiente sit aspernatur</p>
+                    </div>
+                </div>
+
             </div>
+
         </div>
-        <div class="col-12">
-            <button class="btn btn-primary" type="submit">Submit form</button>
-        </div>
-    </form>
+    </section><!-- End Services Section -->
+<!--    <form class="row g-3 needs-validation" novalidate>-->
+<!--        <div class="col-md-4">-->
+<!--            <label for="validationCustom01" class="form-label">First name</label>-->
+<!--            <input type="text" class="form-control" id="validationCustom01" value="Mark" required>-->
+<!--            <div class="valid-feedback">-->
+<!--                Looks good!-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-4">-->
+<!--            <label for="validationCustom02" class="form-label">Last name</label>-->
+<!--            <input type="text" class="form-control" id="validationCustom02" value="Otto" required>-->
+<!--            <div class="valid-feedback">-->
+<!--                Looks good!-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-4">-->
+<!--            <label for="validationCustomUsername" class="form-label">Username</label>-->
+<!--            <div class="input-group has-validation">-->
+<!--                <span class="input-group-text" id="inputGroupPrepend">@</span>-->
+<!--                <input type="text" class="form-control" id="validationCustomUsername"-->
+<!--                       aria-describedby="inputGroupPrepend" required>-->
+<!--                <div class="invalid-feedback">-->
+<!--                    Please choose a username.-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-6">-->
+<!--            <label for="validationCustom03" class="form-label">City</label>-->
+<!--            <input type="text" class="form-control" id="validationCustom03" required>-->
+<!--            <div class="invalid-feedback">-->
+<!--                Please provide a valid city.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-3">-->
+<!--            <label for="validationCustom04" class="form-label">State</label>-->
+<!--            <select class="form-select" id="validationCustom04" required>-->
+<!--                <option selected disabled value="">Choose...</option>-->
+<!--                <option>...</option>-->
+<!--            </select>-->
+<!--            <div class="invalid-feedback">-->
+<!--                Please select a valid state.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-3">-->
+<!--            <label for="validationCustom05" class="form-label">Zip</label>-->
+<!--            <input type="text" class="form-control" id="validationCustom05" required>-->
+<!--            <div class="invalid-feedback">-->
+<!--                Please provide a valid zip.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-12">-->
+<!--            <div class="form-check">-->
+<!--                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>-->
+<!--                <label class="form-check-label" for="invalidCheck">-->
+<!--                    Agree to terms and conditions-->
+<!--                </label>-->
+<!--                <div class="invalid-feedback">-->
+<!--                    You must agree before submitting.-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-12">-->
+<!--            <button class="btn btn-primary" type="submit">Submit form</button>-->
+<!--        </div>-->
+<!--    </form>-->
 </main>
+
+<!-- Vendor JS Files -->
+<script src="/vendor/purecounter/purecounter.js"></script>
+<script src="/vendor/aos/aos.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/vendor/waypoints/noframework.waypoints.js"></script>
+
+<script src="/js/main.js"></script>
 </body>
 </html>
