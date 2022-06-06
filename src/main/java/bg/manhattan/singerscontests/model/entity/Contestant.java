@@ -20,6 +20,12 @@ public class Contestant extends PersonBaseEntity {
     @Column(name="birth_day")
     private LocalDate birthDay;
 
+    /**
+     * The person who registered this contestant
+     */
+    @ManyToOne
+    private User registrar;
+
     public Edition getEdition() {
         return edition;
     }

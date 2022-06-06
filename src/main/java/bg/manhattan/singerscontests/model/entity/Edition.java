@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="editions", uniqueConstraints={@UniqueConstraint(columnNames={"contest_id", "number"})})
@@ -49,6 +50,9 @@ public class Edition extends BaseEntity {
 
     @OneToMany(mappedBy = "edition")
     private List<Contestant> contestants;
+
+    @ManyToMany(mappedBy = "editions", fetch = FetchType.EAGER)
+    private Set<JuryMember> juryMembers;
 
     public Edition() {
         this.contestants = new ArrayList<>();
@@ -148,4 +152,27 @@ public class Edition extends BaseEntity {
         return contestants;
     }
 
+    public Edition setPerformanceCategories(List<PerformanceCategory> performanceCategories) {
+        this.performanceCategories = performanceCategories;
+        return this;
+    }
+
+    public Edition setAgeGroups(List<AgeGroup> ageGroups) {
+        this.ageGroups = ageGroups;
+        return this;
+    }
+
+    public Edition setContestants(List<Contestant> contestants) {
+        this.contestants = contestants;
+        return this;
+    }
+
+    public Set<JuryMember> getJuryMembers() {
+        return juryMembers;
+    }
+
+    public Edition setJuryMembers(Set<JuryMember> juryMembers) {
+        this.juryMembers = juryMembers;
+        return this;
+    }
 }

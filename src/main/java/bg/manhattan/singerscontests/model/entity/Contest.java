@@ -31,4 +31,5 @@ public class Contest extends BaseEntity{
     public List<Edition> getEditions() {
         return editions;
     }
+
 }

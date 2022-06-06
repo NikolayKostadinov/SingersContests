@@ -48,4 +48,9 @@ public class AgeGroup extends BaseEntity{
     public Edition getEdition() {
         return edition;
     }
+
+    public AgeGroup setEdition(Edition edition) {
+        this.edition = edition;
+        return this;
+    }
 }
