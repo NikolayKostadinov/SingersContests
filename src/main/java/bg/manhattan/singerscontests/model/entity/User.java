@@ -1,14 +1,18 @@
 package bg.manhattan.singerscontests.model.entity;
 
+import bg.manhattan.singerscontests.model.ModelConstants;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import static bg.manhattan.singerscontests.model.ModelConstants.USER_NAME_MAX_LENGTH;
 
 @Entity
 @Table(name="users")
 public class User extends PersonBaseEntity{
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = USER_NAME_MAX_LENGTH)
     private String username;
 
     @Column(nullable = false, unique = true)

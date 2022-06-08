@@ -1,9 +1,10 @@
-package bg.manhattan.singerscontests.services;
+package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.model.dto.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.repositories.EditionRepository;
+import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.age_calculation.AgeCalculatorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
