@@ -8,6 +8,10 @@ spring:
     hibernate:
       ddl-auto: create-drop
     open-in-view: false
+    defer-datasource-initialization: true
+  sql:
+     init:
+      mode: always
   mvc:
     hiddenmethod:
       filter:

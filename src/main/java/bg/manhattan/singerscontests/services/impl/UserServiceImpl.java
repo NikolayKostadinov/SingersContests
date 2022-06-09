@@ -1,5 +1,6 @@
 package bg.manhattan.singerscontests.services.impl;
 
+import bg.manhattan.singerscontests.model.IHaveNames;
 import bg.manhattan.singerscontests.model.dto.UserLoginDto;
 import bg.manhattan.singerscontests.model.dto.UserRegisterDto;
 import bg.manhattan.singerscontests.model.entity.User;
@@ -59,9 +60,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout() {
         CurrentUser currentUser = (CurrentUser) this.session.getAttribute("currentUser");
-        if ( currentUser != null){
-        LOGGER.debug("User with name [{}] logged out.", this.session.getAttribute("currentUser"));
-        this.currentUser.clear();
+        if (currentUser != null) {
+            LOGGER.debug("User with name [{}] logged out.", currentUser.getName());
+            this.session.removeAttribute("currentUser");
         }
     }
 
@@ -74,17 +75,21 @@ public class UserServiceImpl implements UserService {
 //        }
         User user = this.modelMapper.map(registerDto, User.class);
         this.userRepository.save(user);
-        LOGGER.debug("Registered user [{}].", registerDto.getFirstName() + " " + registerDto.getLastName());
+        LOGGER.debug("Registered user [{}].", getFullName(registerDto));
     }
 
     private void login(User user) {
-        CurrentUser currentUser = new CurrentUser().setName(List.of(user.getFirstName(), user.getMiddleName(), user.getLastName())
-                        .stream()
-                        .filter(n -> n != null && !n.isEmpty())
-                        .collect(Collectors.joining(" ")))
+        CurrentUser currentUser = getFullName(user)
                 .setLoggedIn(true);
         this.session.setAttribute("currentUser", currentUser);
         LOGGER.debug("User with name [{}] logged in.", currentUser.getName());
+    }
+
+    private CurrentUser getFullName(IHaveNames user) {
+        return new CurrentUser().setName(List.of(user.getFirstName(), user.getMiddleName(), user.getLastName())
+                .stream()
+                .filter(n -> n != null && !n.isEmpty())
+                .collect(Collectors.joining(" ")));
     }
 
 

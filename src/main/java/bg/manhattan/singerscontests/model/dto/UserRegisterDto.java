@@ -1,6 +1,7 @@
 package bg.manhattan.singerscontests.model.dto;
 
 
+import bg.manhattan.singerscontests.model.IHaveNames;
 import bg.manhattan.singerscontests.model.validators.PasswordComplexity;
 
 import javax.persistence.Column;
@@ -9,9 +10,7 @@ import javax.validation.constraints.Size;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
-public class UserRegisterDto {
-
-
+public class UserRegisterDto implements IHaveNames {
 
     @NotBlank
     @Size(max = NAME_MAX_LENGTH)
@@ -31,13 +30,10 @@ public class UserRegisterDto {
     @Column(nullable = false, unique = true)
     private String email; // username of the user.
 
-    @PasswordComplexity
+//    @PasswordComplexity
     private String password; // password of the user.
 
-
     private String confirmPassword;
-
-    private boolean isActive;
 
     private String imageUrl; // an url of user's picture.
 
@@ -95,21 +91,21 @@ public class UserRegisterDto {
         return this;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public UserRegisterDto setActive(boolean active) {
-        isActive = active;
-        return this;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
 
     public UserRegisterDto setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        return this;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public UserRegisterDto setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
         return this;
     }
 }

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title th:text="${title}">Singers Contents</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/img/favicon.ico" rel="icon">
+    <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Vendor CSS Files -->
+    <link href="/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container" data-aos="zoom-in">
+    <h1 class="display-6 text-center">Create a profile in Singers Contests System</h1>
+    <form th:action="@{/users/register}" th:method="post" th:object="${userModel}"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate" autoComplete="off">
+        <label for="firstName" class="form-label">Name</label>
+
+        <div class="row">
+            <div class="col-md-4 mb-sm-4">
+                <input id="firstName" th:field="*{firstName}" th:errorclass="is-invalid"
+                       type="text" class="form-control"
+                       th:max="${NAME_MAX_LENGTH}"
+                       placeholder="First"
+                       required>
+                <div class="invalid-feedback errors alert alert-danger">
+                    First name is required. Must be not longer than <span
+                        th:text="${NAME_MAX_LENGTH}">NAME_MAX_LENGTH</span> characters
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-sm-4">
+                <!--                <label for="middleName" class="form-label">Middle Name</label>-->
+                <input id="middleName" th:field="*{middleName}" th:errorclass="is-invalid"
+                       type="text" class="form-control"
+                       placeholder="Middle">
+                <p class="invalid-feedback errors alert alert-danger">
+                    Middle name must be shorter than <span th:text="${NAME_MAX_LENGTH}">NAME_MAX_LENGTH</span> characters
+                </p>
+            </div>
+
+            <div class="col-md-4 mb-sm-4">
+                <!--                <label for="lastName" class="form-label">Last Name</label>-->
+                <input id="lastName" th:field="*{lastName}" th:errorclass="is-invalid"
+                       type="text" class="form-control"
+                       placeholder="Last"
+                       required>
+                <p class="invalid-feedback errors alert alert-danger">
+                    Last name is required. Must be shorter than <span
+                        th:text="${NAME_MAX_LENGTH}">NAME_MAX_LENGTH</span> characters
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-row">
+                    <label for="username" class="form-label">User name</label>
+                    <input id="username" th:field="*{username}" th:errorclass="is-invalid"
+                           type="text" class="form-control" autoComplete="none">
+                    <p class="invalid-feedback errors alert alert-danger">
+                        Please provide a valid city.
+                    </p>
+                </div>
+
+                <div class="form-row">
+                    <label for="email" class="form-label">Email</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        <input id="email" th:field="*{email}" th:errorclass="is-invalid" type="text"
+                               class="form-control"
+                               aria-describedby="inputGroupPrepend" required>
+                        <p class="invalid-feedback errors alert alert-danger">
+                            Please choose a username.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label for="image-url" class="form-label">Image URL</label>
+                    <input id="image-url" th:field="*{imageUrl}" th:errorclass="is-invalid"
+                           type="text" class="form-control" required>
+                    <p class="invalid-feedback errors alert alert-danger">
+                        Please provide a valid city.
+                    </p>
+                </div>
+
+
+                <div class="row form-row">
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Password</label>
+                        <input id="password" th:field="*{password}" th:errorclass="is-invalid"
+                               type="password" class="form-control" required>
+                        <p class="invalid-feedback errors alert alert-danger">
+                            Please provide a valid city.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="confirm-password" class="form-label">Confirm password</label>
+                        <input id="confirm-password" th:field="*{confirmPassword}" th:errorclass="is-invalid"
+                               type="password" class="form-control" required>
+                        <p class="invalid-feedback errors alert alert-danger">
+                            Please provide a valid city.
+                        </p>
+                    </div>
+                </div>
+                <p class="mt-2 ms-2">Use 8 or more characters with a mix of letters, numbers & symbols</p>
+            </div>
+            <div class="col-md-3 d-sm-none d-md-block">
+                <img class="mt-5" src="/img/singer.png" width="100%">
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-end">
+            <input type="submit" class="btn btn-primary" value="Register">
+        </div>
+    </form>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

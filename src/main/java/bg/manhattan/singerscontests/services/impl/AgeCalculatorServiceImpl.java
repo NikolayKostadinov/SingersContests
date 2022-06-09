@@ -1,8 +1,8 @@
-package bg.manhattan.singerscontests.services.age_calculation.impl;
+package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.UnsupportedAgeCalculationType;
 import bg.manhattan.singerscontests.model.dto.AgeCalculationDto;
-import bg.manhattan.singerscontests.services.age_calculation.AgeCalculator;
+import bg.manhattan.singerscontests.services.AgeCalculator;
 import bg.manhattan.singerscontests.services.age_calculation.AgeCalculatorService;
 import org.springframework.stereotype.Service;
 
