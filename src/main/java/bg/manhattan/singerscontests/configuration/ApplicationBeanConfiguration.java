@@ -1,8 +1,7 @@
 package bg.manhattan.singerscontests.configuration;
 
-import bg.manhattan.singerscontests.model.dto.UserRegisterDto;
+import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
 import bg.manhattan.singerscontests.model.entity.User;
-import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -31,9 +30,9 @@ public class ApplicationBeanConfiguration {
                 passwordEncoder.encode(ctx.getSource());
 
         // encode password on the fly
-        mapper.createTypeMap(UserRegisterDto.class, User.class)
+        mapper.createTypeMap(UserRegisterBindingModel.class, User.class)
                 .addMappings(mpr -> mpr.using(passwordHash)
-                        .map(UserRegisterDto::getPassword, User::setPassword));
+                        .map(UserRegisterBindingModel::getPassword, User::setPassword));
 
         return mapper;
     }

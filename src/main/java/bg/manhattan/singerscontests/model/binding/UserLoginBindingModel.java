@@ -1,6 +1,6 @@
-package bg.manhattan.singerscontests.model.dto;
+package bg.manhattan.singerscontests.model.binding;
 
-public class UserLoginDto {
+public class UserLoginBindingModel {
     private String username;
     private String password;
 
@@ -8,7 +8,7 @@ public class UserLoginDto {
         return username;
     }
 
-    public UserLoginDto setUsername(String username) {
+    public UserLoginBindingModel setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -17,7 +17,7 @@ public class UserLoginDto {
         return password;
     }
 
-    public UserLoginDto setPassword(String password) {
+    public UserLoginBindingModel setPassword(String password) {
         this.password = password;
         return this;
     }

@@ -1,6 +1,6 @@
 package bg.manhattan.singerscontests.services;
 
-import bg.manhattan.singerscontests.model.dto.AgeCalculationDto;
+import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 
 public interface AgeCalculator {
 

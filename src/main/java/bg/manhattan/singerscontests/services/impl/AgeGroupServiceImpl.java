@@ -1,6 +1,6 @@
 package bg.manhattan.singerscontests.services.impl;
 
-import bg.manhattan.singerscontests.model.dto.AgeCalculationDto;
+import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.repositories.EditionRepository;

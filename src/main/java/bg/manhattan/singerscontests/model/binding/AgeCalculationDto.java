@@ -1,7 +1,7 @@
-package bg.manhattan.singerscontests.model.dto;
+package bg.manhattan.singerscontests.model.binding;
 
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
-import io.micrometer.core.lang.NonNull;
+import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
 

@@ -1,6 +1,6 @@
 package bg.manhattan.singerscontests.exceptions;
 
-import bg.manhattan.singerscontests.model.dto.AgeCalculationDto;
+import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 
 public class UnsupportedAgeCalculationType extends IllegalStateException {
     public UnsupportedAgeCalculationType(String ageCalculationTypeName) {
