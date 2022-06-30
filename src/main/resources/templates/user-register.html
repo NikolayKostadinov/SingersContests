@@ -1,29 +1,8 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title th:text="${title}">Singers Contents</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+<head th:replace="~{/fragments/header :: head}"></head>
 
-    <!-- Favicons -->
-    <link href="/images/favicon.ico" rel="icon">
-    <link href="/images/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Vendor CSS Files -->
-    <link href="/vendor/aos/aos.css" rel="stylesheet">
-    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-    <link href="/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-    <!-- Template Main CSS File -->
-    <link href="/css/style.css" rel="stylesheet">
-
-</head>
 <body>
 
 <div th:replace="~{/fragments/header :: topbar}">Contacts</div>
@@ -38,47 +17,43 @@
         <label for="firstName" class="form-label">Name</label>
 
         <div class="row">
-            <div class="col-md-4 mb-sm-4">
+            <div class="col-md-4">
                 <input id="firstName" th:field="*{firstName}" th:errorclass="is-invalid"
                        type="text" class="form-control"
                        placeholder="First"
                        required>
-                <div class="invalid-feedback errors alert alert-danger"
-                     th:errors="*{firstName}">
+                <div class="invalid-feedback" th:errors="*{firstName}">
                     First name error message.
                 </div>
             </div>
 
-            <div class="col-md-4 mb-sm-4">
+            <div class="col-md-4">
                 <input id="middleName" th:field="*{middleName}" th:errorclass="is-invalid"
                        type="text" class="form-control"
                        placeholder="Middle">
-                <p class="invalid-feedback errors alert alert-danger"
-                   th:errors="*{middleName}">
+                <p class="invalid-feedback" th:errors="*{middleName}">
                     Middle name error message.
                 </p>
             </div>
 
-            <div class="col-md-4 mb-sm-4">
+            <div class="col-md-4">
                 <input id="lastName" th:field="*{lastName}" th:errorclass="is-invalid"
                        type="text" class="form-control"
                        placeholder="Last"
                        required>
-                <p class="invalid-feedback errors alert alert-danger"
-                   th:errors="*{lastName}">
+                <p class="invalid-feedback" th:errors="*{lastName}">
                     Last name error message.
                 </p>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-0">
             <div class="col-md-9">
                 <div class="form-row">
                     <label for="username" class="form-label">User name</label>
                     <input id="username" th:field="*{username}" th:errorclass="is-invalid"
-                           type="text" class="form-control" autoComplete="none">
-                    <p class="invalid-feedback errors alert alert-danger"
-                       th:errors="*{username}">
+                           type="text" class="form-control" autoComplete="none" required>
+                    <p class="invalid-feedback" th:errors="*{username}">
                         UserName error message.
                     </p>
                 </div>
@@ -90,31 +65,18 @@
                         <input id="email" th:field="*{email}" th:errorclass="is-invalid" type="text"
                                class="form-control"
                                aria-describedby="inputGroupPrepend" required>
-                        <p class="invalid-feedback errors alert alert-danger"
-                           th:errors="*{email}">
+                        <p class="invalid-feedback" th:errors="*{email}">
                             Email error message.
                         </p>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <label for="image-url" class="form-label">Image URL</label>
-                    <input id="image-url" th:field="*{imageUrl}" th:errorclass="is-invalid"
-                           type="text" class="form-control" required>
-                    <p class="invalid-feedback errors alert alert-danger"
-                       th:errors="*{imageUrl}">
-                        ImageUrl error message.
-                    </p>
-                </div>
-
-
                 <div class="row form-row">
                     <div class="col-md-6">
                         <label for="password" class="form-label">Password</label>
                         <input id="password" th:field="*{password}" th:errorclass="is-invalid"
-                               type="password" class="form-control" >
-                        <p class="invalid-feedback errors alert alert-danger"
-                           th:errors="*{password}">
+                               type="password" class="form-control" required>
+                        <p class="invalid-feedback" th:errors="*{password}">
                             Password error message.
                         </p>
                     </div>
@@ -122,8 +84,7 @@
                         <label for="confirm-password" class="form-label">Confirm password</label>
                         <input id="confirm-password" th:field="*{confirmPassword}" th:errorclass="is-invalid"
                                type="password" class="form-control" required>
-                        <p class="invalid-feedback errors alert alert-danger"
-                           th:errors="*{confirmPassword}">
+                        <p class="invalid-feedback" th:errors="*{confirmPassword}">
                             Confirm password error message.
                         </p>
                     </div>
@@ -131,7 +92,7 @@
                 <p class="mt-2 ms-2">Use 8 or more characters with a mix of letters, numbers & symbols</p>
             </div>
             <div class="col-md-3 d-none d-md-block">
-                <img class="m-2" src="/images/vintage-mick.png" width="80%">
+                <img class="mt-2 ms-4" src="/images/vintage-mick.png" width="62%">
             </div>
         </div>
         <div class="d-flex justify-content-end align-items-end">

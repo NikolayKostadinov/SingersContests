@@ -1,4 +1,15 @@
 INSERT INTO `singers_contests`.`users`
 (`id`, `first_name`, `last_name`, `middle_name`, `email`, `is_active`, `password`, `username`)
-VALUES (1, 'Nikolay', 'Kostadinov', 'Dimitrov', 'test@test.com', 1,
-        'f3e009679664128946415acd1c1401b2bab5c732cc65c9fa86e2b0c455d928e19d2c44dd65152bfe', 'manhattan');
+VALUES (1, 'Nikolay', 'Kostadinov', 'Dimitrov', 'kostadinov.nikolay.d@gmail.com', 1,
+        'bf92978758a05b5cc483737e416df897f3a657a4571ea343e863f49395f7fa87ba4d35cd734044ca', 'niki');
+insert into contests (id, name)
+values (Silver Yantra)
+    Flower tuning fork
+Sarandev
+River notes
+Danube stars
+Fifteen tulips
+The road to the stars
+Artship Festival Pomorie
+Art Stars
+       );

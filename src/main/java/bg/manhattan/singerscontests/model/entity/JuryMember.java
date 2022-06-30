@@ -14,6 +14,9 @@ public class JuryMember extends BaseEntity{
     @Lob
     private String details;
 
+    @Column(name="image_url", nullable = false)
+    private String imageUrl;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Edition> editions;
 
@@ -36,6 +39,15 @@ public class JuryMember extends BaseEntity{
 
     public JuryMember setDetails(String details) {
         this.details = details;
+        return this;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public JuryMember setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
         return this;
     }
 

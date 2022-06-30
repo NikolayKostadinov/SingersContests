@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{/fragments/header :: head}"></head>
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container" data-aos="zoom-in">
+    <h1 class="display-6 text-center">User login</h1>
+    <form th:action="@{/users/login}" th:method="post" th:object="${loginModel}"
+          class="main-form w-50 mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate"
+          autoComplete="off">
+        <div th:if="${loginError}" class="text-danger text-center">
+            <h2>Invalid credentials</h2>
+        </div>
+        <div class="row mb-0">
+            <div class="col-md-3 d-none d-md-block">
+                <img class="mt-2 ms-4" src="/images/vintage-mick.png" width="62%">
+            </div>
+            <div class="col-md-9 mt-3">
+                <div class="row">
+                    <div class="form-row">
+                        <label for="username" class="form-label">Username</label>
+                        <input id="username" th:field="*{username}" th:errorclass="is-invalid"
+                               type="text" class="form-control" autoComplete="none" required>
+                        <p class="invalid-feedback" th:errors="*{username}">
+                            UserName error message.
+                        </p>
+                    </div>
+                    <div class="form-row">
+                        <label for="password" class="form-label">Password</label>
+                        <input id="password" th:field="*{password}" th:errorclass="is-invalid"
+                               type="password" class="form-control" required>
+                        <p class="invalid-feedback" th:errors="*{password}">
+                            Password error message.
+                        </p>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-end">
+                        <input type="submit" class="btn btn-primary" value="Register">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

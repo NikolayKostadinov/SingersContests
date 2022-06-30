@@ -3,9 +3,9 @@ package bg.manhattan.singerscontests.model.binding;
 
 import bg.manhattan.singerscontests.model.IHaveNames;
 import bg.manhattan.singerscontests.model.validators.FieldMatch;
+import bg.manhattan.singerscontests.model.validators.PasswordComplexity;
 import bg.manhattan.singerscontests.model.validators.UniqueUserName;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,34 +13,36 @@ import javax.validation.constraints.Size;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
-@FieldMatch(first = "password", second = "confirmPassword", message = "Password and Confirm password must be the same!")
+@FieldMatch(first = "password", second = "confirmPassword", message = "Passwords not match!")
 public class UserRegisterBindingModel implements IHaveNames {
 
     @NotBlank(message = "First name is required")
-    @Size(max = NAME_MAX_LENGTH, message = "First name must be shorter than {max} characters!")
+    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
     private String firstName;
 
-    @Size(max = NAME_MAX_LENGTH, message = "Middle name must be shorter than {max} characters!")
+    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
     private String middleName;
 
     @NotBlank(message = "Last name is required")
-    @Size(max = NAME_MAX_LENGTH, message = "Last name must be shorter than{max} characters!")
+    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
     private String lastName;
 
     @NotNull(message = "Username is required")
     @Size(min=USER_NAME_MIN_LENGTH,  max = USER_NAME_MAX_LENGTH,
-            message = "Username length must be between {min} and {max} characters!")
+            message = "User name length must be between {min} and {max} characters!")
     @UniqueUserName
     private String username;
 
-    @Email(regexp = "^(\\w+@\\w+)(.\\w+){2,}$", message = "Enter valid email address")
+    @Email(regexp = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$", message = "Enter valid email address")
     private String email; // username of the user.
 
+    @NotNull
+    @PasswordComplexity
     private String password; // password of the user.
 
+    @NotNull
+    @PasswordComplexity
     private String confirmPassword;
-
-    private String imageUrl; // an url of user's picture.
 
     public String getFirstName() {
         return firstName;
@@ -93,15 +95,6 @@ public class UserRegisterBindingModel implements IHaveNames {
 
     public UserRegisterBindingModel setPassword(String password) {
         this.password = password;
-        return this;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public UserRegisterBindingModel setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
         return this;
     }
 

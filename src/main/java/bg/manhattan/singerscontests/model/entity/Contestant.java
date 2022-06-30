@@ -8,6 +8,9 @@ import java.util.List;
 @Table(name="contestants")
 public class Contestant extends PersonBaseEntity {
 
+    @Column(name="image_url", nullable = false)
+    private String imageUrl;
+
     @ManyToOne(optional = false)
     private Edition edition;
 
@@ -25,6 +28,15 @@ public class Contestant extends PersonBaseEntity {
      */
     @ManyToOne
     private User registrar;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public Contestant setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
 
     public Edition getEdition() {
         return edition;
@@ -48,12 +60,26 @@ public class Contestant extends PersonBaseEntity {
         return songs;
     }
 
+    public Contestant setSongs(List<Song> songs) {
+        this.songs = songs;
+        return this;
+    }
+
     public LocalDate getBirthDay() {
         return birthDay;
     }
 
     public Contestant setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
+        return this;
+    }
+
+    public User getRegistrar() {
+        return registrar;
+    }
+
+    public Contestant setRegistrar(User registrar) {
+        this.registrar = registrar;
         return this;
     }
 }

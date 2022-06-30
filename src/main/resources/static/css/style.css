@@ -1822,10 +1822,10 @@ section {
 
 }
 
-.main-form .row, .form-row{
+.main-form .row, .form-row {
     margin-bottom: 20px;
 }
 
-.main-form .row:last-of-type{
+.main-form .row:last-of-type {
     margin-bottom: 0px;
 }

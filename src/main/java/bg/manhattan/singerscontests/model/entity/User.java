@@ -22,8 +22,6 @@ public class User extends PersonBaseEntity{
 
     private boolean isActive;
 
-    private String imageUrl; // an url of user's picture.
-
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles;
 
@@ -64,15 +62,6 @@ public class User extends PersonBaseEntity{
 
     public User setActive(boolean active) {
         isActive = active;
-        return this;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public User setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
         return this;
     }
 
