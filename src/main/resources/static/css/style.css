@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Top Bar
 --------------------------------------------------------------*/
-#topbar {
+#top-bar {
     background: #4173a1;
     height: 40px;
     font-size: 14px;
@@ -128,35 +128,34 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0;
 }
 
-#topbar .contact-info i {
+#top-bar .contact-info i {
     font-style: normal;
     color: #fff;
 }
 
-#topbar .contact-info i a, #topbar .contact-info i span {
+#top-bar .contact-info i a, #top-bar .contact-info i span {
     padding-left: 5px;
     color: #fff;
 }
 
-#topbar .contact-info i a {
+#top-bar .contact-info i a {
     line-height: 0;
-    transition: 0.3s;
     transition: 0.3s;
 }
 
-#topbar .contact-info i a:hover {
+#top-bar .contact-info i a:hover {
     color: #fff;
     text-decoration: underline;
 }
 
-#topbar .social-links a {
+#top-bar .social-links a {
     color: rgba(255, 255, 255, 0.7);
     line-height: 0;
     transition: 0.3s;
     margin-left: 20px;
 }
 
-#topbar .social-links a:hover {
+#top-bar .social-links a:hover {
     color: white;
 }
 
@@ -168,7 +167,7 @@ h1, h2, h3, h4, h5, h6 {
     transition: all 0.5s;
     z-index: 997;
     height: 86px;
-    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
 
 #header.fixed-top {
@@ -205,6 +204,22 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 70px;
 }
 
+@media(max-width: 400px) {
+    #header .logo {
+        font-size: 26px;
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .logo img {
+       max-width: 46px;
+       max-height: 46px;
+    }
+}
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
@@ -254,13 +269,12 @@ h1, h2, h3, h4, h5, h6 {
 .navbar > ul > li > a:before {
     content: "";
     position: absolute;
-    width: 100%;
     height: 2px;
     bottom: -6px;
     left: 0;
     background-color: #4173a1;
     visibility: hidden;
-    width: 0px;
+    width: 0;
     transition: all 0.3s ease-in-out 0s;
 }
 
@@ -284,7 +298,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
     visibility: hidden;
     background: #fff;
-    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+    box-shadow: 0 0 30px rgba(127, 137, 161, 0.25);
     transition: 0.3s;
 }
 
@@ -409,7 +423,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #4173a1;
 }
 
-.navbar-mobile .getstarted, .navbar-mobile .getstarted:focus {
+.navbar-mobile .get-started, .navbar-mobile .get-started:focus {
     margin: 15px;
 }
 
@@ -422,7 +436,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
     visibility: visible;
     background: #fff;
-    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+    box-shadow: 0 0 30px rgba(127, 137, 161, 0.25);
 }
 
 .navbar-mobile .dropdown ul li {
@@ -716,7 +730,7 @@ section {
 .featured-services .icon-box:hover::before {
     background: #4173a1;
     top: 0;
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .featured-services .icon {
@@ -779,7 +793,7 @@ section {
 
 .about .content ul i {
     background: #fff;
-    box-shadow: 0px 6px 15px rgba(16, 110, 234, 0.12);
+    box-shadow: 0 6px 15px rgba(16, 110, 234, 0.12);
     font-size: 24px;
     padding: 20px;
     margin-right: 15px;
@@ -921,7 +935,6 @@ section {
 }
 
 .services .icon-box .icon {
-    margin: 0 auto;
     width: 64px;
     height: 64px;
     background: #f1f6fe;
@@ -930,7 +943,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
     transition: ease-in-out 0.3s;
 }
 
@@ -959,7 +972,7 @@ section {
 
 .services .icon-box:hover {
     border-color: #fff;
-    box-shadow: 0px 0 25px 0 rgba(16, 110, 234, 0.1);
+    box-shadow: 0 0 25px 0 rgba(16, 110, 234, 0.1);
 }
 
 .services .icon-box:hover h4 a, .services .icon-box:hover .icon i {
@@ -979,8 +992,7 @@ section {
 --------------------------------------------------------------*/
 .testimonials {
     padding: 80px 0;
-    background: url("../images/testimonials-bg.jpg") no-repeat;
-    background-position: center center;
+    background: url("../images/testimonials-bg.jpg") no-repeat center center;
     background-size: cover;
     position: relative;
 }
@@ -1077,16 +1089,15 @@ section {
 /*--------------------------------------------------------------
 # Portfolio
 --------------------------------------------------------------*/
-.portfolio #portfolio-flters {
-    padding: 0;
+.portfolio #portfolio-filters {
+    padding: 2px 15px;
     margin: 0 auto 15px auto;
     list-style: none;
     text-align: center;
     border-radius: 50px;
-    padding: 2px 15px;
 }
 
-.portfolio #portfolio-flters li {
+.portfolio #portfolio-filters li {
     cursor: pointer;
     display: inline-block;
     padding: 10px 15px 8px 15px;
@@ -1099,11 +1110,11 @@ section {
     transition: all 0.3s ease-in-out;
 }
 
-.portfolio #portfolio-flters li:hover, .portfolio #portfolio-flters li.filter-active {
+.portfolio #portfolio-filters li:hover, .portfolio #portfolio-filters li.filter-active {
     color: #4173a1;
 }
 
-.portfolio #portfolio-flters li:last-child {
+.portfolio #portfolio-filters li:last-child {
     margin-right: 0;
 }
 
@@ -1125,7 +1136,6 @@ section {
 
 .portfolio .portfolio-item .portfolio-info h4 {
     font-size: 18px;
-    color: #fff;
     font-weight: 600;
     color: #222222;
 }
@@ -1209,7 +1219,7 @@ section {
 
 .portfolio-details .portfolio-info {
     padding: 30px;
-    box-shadow: 0px 0 30px rgba(34, 34, 34, 0.08);
+    box-shadow: 0 0 30px rgba(34, 34, 34, 0.08);
 }
 
 .portfolio-details .portfolio-info h3 {
@@ -1256,7 +1266,7 @@ section {
     overflow: hidden;
     border-radius: 4px;
     background: #fff;
-    box-shadow: 0px 2px 15px rgba(16, 110, 234, 0.15);
+    box-shadow: 0 2px 15px rgba(16, 110, 234, 0.15);
 }
 
 .team .member .member-img {
@@ -1275,8 +1285,6 @@ section {
 }
 
 .team .member .social a {
-    transition: color 0.3s;
-    color: #222222;
     margin: 0 3px;
     padding-top: 7px;
     border-radius: 4px;
@@ -1333,14 +1341,13 @@ section {
     padding: 20px;
     background: #fff;
     text-align: center;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.12);
     border-radius: 5px;
     position: relative;
     overflow: hidden;
 }
 
 .pricing .box h3 {
-    font-weight: 400;
     margin: -20px -20px 20px -20px;
     padding: 20px 15px;
     font-size: 16px;
@@ -1406,9 +1413,7 @@ section {
     padding: 8px 35px 10px 35px;
     border-radius: 4px;
     color: #fff;
-    transition: none;
     font-size: 14px;
-    font-weight: 400;
     font-family: "Roboto", sans-serif;
     font-weight: 600;
     transition: 0.3s;
@@ -1636,7 +1641,6 @@ section {
 # Footer
 --------------------------------------------------------------*/
 #footer {
-    background: #fff;
     padding: 0 0 30px 0;
     color: #444444;
     font-size: 14px;
@@ -1664,7 +1668,7 @@ section {
     padding: 6px 10px;
     position: relative;
     border-radius: 4px;
-    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
     text-align: left;
 }
 
@@ -1687,7 +1691,7 @@ section {
     color: #fff;
     transition: 0.3s;
     border-radius: 0 4px 4px 0;
-    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
 }
 
 #footer .footer-newsletter form input[type=submit]:hover {
@@ -1827,7 +1831,7 @@ section {
 }
 
 .main-form .row:last-of-type {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 
