@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ContestService {
     List<ContestServiceModel> getAllContests();
+
+    void delete(Long id);
 }

@@ -27,4 +27,9 @@ public class ContestServiceImpl implements ContestService {
                 .map(contest -> this.mapper.map(contest, ContestServiceModel.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void delete(Long id) {
+        this.repository.deleteById(id);
+    }
 }

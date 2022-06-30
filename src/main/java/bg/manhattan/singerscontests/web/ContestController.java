@@ -5,9 +5,7 @@ import bg.manhattan.singerscontests.services.ContestService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +25,12 @@ public class ContestController extends BaseController {
     public String contests(Model model){
         setFormTitle("Singers Contests - Contests", model);
         return "contests";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable Long id){
+        this.contestService.delete(id);
+        return "redirect:/contests";
     }
 
     @ModelAttribute("contestList")

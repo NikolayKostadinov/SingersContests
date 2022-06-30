@@ -1829,3 +1829,8 @@ section {
 .main-form .row:last-of-type {
     margin-bottom: 0px;
 }
+
+
+.max-width-40{
+    max-width: 40px;
+}
