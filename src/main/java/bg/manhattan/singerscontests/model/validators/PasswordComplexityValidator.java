@@ -1,11 +1,14 @@
 package bg.manhattan.singerscontests.model.validators;
 
+
+import org.apache.tomcat.util.digester.Rule;
 import org.passay.*;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class PasswordComplexityValidator implements ConstraintValidator<PasswordComplexity, String> {
 
@@ -18,14 +21,18 @@ public class PasswordComplexityValidator implements ConstraintValidator<Password
     @Override
     public boolean isValid(String password, ConstraintValidatorContext context) {
         PasswordValidator validator = new PasswordValidator(Arrays.asList(
-                new LengthRule(8, 30),
-                new UppercaseCharacterRule(1),
-                new DigitCharacterRule(1),
-                new SpecialCharacterRule(1),
-                new NumericalSequenceRule(3, false),
-                new AlphabeticalSequenceRule(3, false),
-                new QwertySequenceRule(3, false),
-                new WhitespaceRule()));
+                //Rule 1: Password length should be in between 8 and 16 characters
+                new LengthRule(8, 16),
+                //Rule 2: No whitespace allowed
+                new WhitespaceRule(),
+                //Rule 3.a: At least one Upper-case character
+                new CharacterRule(EnglishCharacterData.UpperCase, 1),
+                //Rule 3.b: At least one Lower-case character
+                new CharacterRule(EnglishCharacterData.LowerCase, 1),
+                //Rule 3.c: At least one digit
+                new CharacterRule(EnglishCharacterData.Digit, 1),
+                //Rule 3.d: At least one special character
+                new CharacterRule(EnglishCharacterData.Special, 1)));
 
         RuleResult result = validator.validate(new PasswordData(password));
         if (result.isValid()) {

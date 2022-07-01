@@ -13,7 +13,7 @@
     <form th:action="@{/users/login}" th:method="post" th:object="${loginModel}"
           class="main-form w-50 mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate"
           autoComplete="off">
-        <div th:if="${loginError}" class="text-danger text-center">
+        <div th:if="${bad_credentials}" class="text-danger text-center">
             <h2>Invalid credentials</h2>
         </div>
         <div class="row mb-0">

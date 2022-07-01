@@ -1835,6 +1835,6 @@ section {
 }
 
 
-.max-width-40{
-    max-width: 40px;
+.min-width-64{
+    min-width: 64px;
 }

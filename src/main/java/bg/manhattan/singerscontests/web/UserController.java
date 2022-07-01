@@ -3,6 +3,7 @@ package bg.manhattan.singerscontests.web;
 import bg.manhattan.singerscontests.model.binding.UserLoginBindingModel;
 import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
 import bg.manhattan.singerscontests.services.UserService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,25 +16,12 @@ import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
 @Controller
 @RequestMapping("/users")
-public class UserController extends BaseController{
+public class UserController extends BaseController {
     private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    @GetMapping("/login")
-    public String login(@RequestParam(name = "error", defaultValue = "false") boolean error, Model model) {
-        setFormTitle("Singers Contests - Login", model);
-        model.addAttribute("loginError", error);
-        return "user-login";
-    }
-
-    @PostMapping("/login-error")
-    public String loginError() {
-        return "redirect:login?error=true";
-    }
-
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -55,13 +43,8 @@ public class UserController extends BaseController{
         return "redirect:/";
     }
 
-    @ModelAttribute("loginModel")
-    public UserLoginBindingModel initLoginModel(){
-        return new UserLoginBindingModel();
-    }
-
     @ModelAttribute("userModel")
-    public UserRegisterBindingModel initUserModel(){
+    public UserRegisterBindingModel initUserModel() {
         return new UserRegisterBindingModel();
     }
 }

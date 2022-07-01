@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.configuration;
+package bg.manhattan.singerscontests.config;
 
 import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
 import bg.manhattan.singerscontests.model.entity.User;
@@ -12,10 +12,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class ApplicationBeanConfiguration {
+public class ModelMapperConfiguration {
     private final PasswordEncoder passwordEncoder;
 
-    public ApplicationBeanConfiguration(PasswordEncoder passwordEncoder) {
+    public ModelMapperConfiguration(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 

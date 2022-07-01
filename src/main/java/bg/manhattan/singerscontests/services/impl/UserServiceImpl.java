@@ -3,6 +3,7 @@ package bg.manhattan.singerscontests.services.impl;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
 import bg.manhattan.singerscontests.model.entity.User;
+import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.repositories.UserRepository;
 import bg.manhattan.singerscontests.services.UserService;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +42,14 @@ public class UserServiceImpl implements UserService {
     public Optional<UserServiceModel> getUserByUsername(String userName) {
         Optional<User> user = this.userRepository.findByUsername(userName);
         return toUserServiceModel(user);
+    }
+
+    @Override
+    public List<UserServiceModel> getUsersByRole(UserRoleEnum contestManager) {
+        return this.userRepository.findByRole(contestManager)
+                .stream()
+                .map(user -> mapper.map(user, UserServiceModel.class))
+                .toList();
     }
 
     @Override
