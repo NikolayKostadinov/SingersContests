@@ -6,12 +6,9 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     open-in-view: false
     defer-datasource-initialization: true
-  sql:
-     init:
-      mode: always
   mvc:
     hiddenmethod:
       filter:
@@ -19,3 +16,11 @@ spring:
   devtools:
     restart:
       enabled: true
+logging:
+  level:
+    org.hibernate.SQLQuery: TRACE
+    org.hibernate.type.descriptor: TRACE
+app:
+  default:
+    admin:
+      password: P@ssw0rd

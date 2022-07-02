@@ -14,10 +14,10 @@ public class Contest extends BaseEntity{
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "contests", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Manager> managers;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<User> managers;
 
-    @OneToMany(mappedBy = "contest", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contest", fetch = FetchType.EAGER)
     private Set<Edition> editions;
 
     public Contest() {
@@ -40,6 +40,20 @@ public class Contest extends BaseEntity{
 
     public Contest setEditions(Set<Edition> editions) {
         this.editions = editions;
+        return this;
+    }
+
+    public Set<User> getManagers() {
+        return managers;
+    }
+
+    public Contest setManagers(Set<User> managers) {
+        this.managers = managers;
+        return this;
+    }
+
+    public Contest addManagers(List<User> managers) {
+        this.managers.addAll(managers);
         return this;
     }
 }

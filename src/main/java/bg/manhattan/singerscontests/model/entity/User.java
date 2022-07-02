@@ -4,6 +4,7 @@ import bg.manhattan.singerscontests.model.ModelConstants;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.USER_NAME_MAX_LENGTH;
@@ -18,12 +19,19 @@ public class User extends PersonBaseEntity{
     @Column(nullable = false, unique = true)
     private String email; // username of the user.
 
+    @Column(nullable = false)
     private String password; // password of the user.
 
-    private boolean isActive;
+
+    @Column(name="phone_number", nullable = false)
+    private String phoneNumber; // password of the user.
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles;
+
+    @ManyToMany(mappedBy = "managers",fetch = FetchType.EAGER)
+    private List<Contest> contests;
 
     public User() {
         this.roles = new HashSet<>();
@@ -56,12 +64,12 @@ public class User extends PersonBaseEntity{
         return this;
     }
 
-    public boolean isActive() {
-        return isActive;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public User setActive(boolean active) {
-        isActive = active;
+    public User setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         return this;
     }
 

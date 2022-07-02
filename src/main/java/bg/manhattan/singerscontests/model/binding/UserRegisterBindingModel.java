@@ -36,6 +36,9 @@ public class UserRegisterBindingModel implements IHaveNames {
     @Email(regexp = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$", message = "Enter valid email address")
     private String email; // username of the user.
 
+    @NotBlank(message = "Phone number is required!")
+    private String phoneNumber;
+
     @NotNull
     @PasswordComplexity
     private String password; // password of the user.

@@ -21,14 +21,12 @@ public class UserServiceModel {
 
     private String password;
 
+    private String phoneNumber;
     private final Set<String> roles;
 
     public UserServiceModel() {
         this.roles = new HashSet<>();
     }
-
-    private boolean isActive;
-
 
     public String getFirstName() {
         return firstName;
@@ -84,12 +82,17 @@ public class UserServiceModel {
         return this;
     }
 
-    public boolean isActive() {
-        return isActive;
+    public UserServiceModel setFullName(String fullName) {
+        this.fullName = fullName;
+        return this;
     }
 
-    public UserServiceModel setActive(boolean active) {
-        isActive = active;
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public UserServiceModel setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         return this;
     }
 
@@ -109,4 +112,6 @@ public class UserServiceModel {
     public void addRole(String role){
         this.roles.add(role);
     }
+
+
 }

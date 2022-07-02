@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/header :: head}"></head>
+
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container" data-aos="zoom-in">
+    <main role="main" class="pb-3">
+
+        <h2>Manage your account</h2>
+
+        <div>
+            <h4>Change your account settings</h4>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <th:block th:insert="~{/fragments/account-management :: site-bar}"></th:block>
+                </div>
+                <div class="col-md-9">
+
+                    <h4>Profile</h4>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form id="profile-form"
+                                  th:method="post"
+                                  th:action="@{/account/email}"
+                            th:object="${emailModel}">
+                                <div class="form-row">
+                                    <label for="Email">Email</label>
+                                    <div class="input-group">
+                                        <input type="hidden" th:field="*{email}">
+                                        <input class="form-control"
+                                               disabled
+                                               type="text"
+                                               id="Email"
+                                               name="Email"
+                                               th:value="*{email}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text text-success font-weight-bold">✓</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="new-email">New email</label>
+                                    <input class="form-control valid" autocomplete="email" type="email" data-val="true"
+                                           id="new-email"
+                                           th:field="*{newEmail}"
+                                           th:errorclass="is-invalid">
+                                    <p class="invalid-feedback" th:errors="*{newEmail}">
+                                        UserName error message.
+                                    </p>
+                                </div>
+                                <button id="change-email-button" type="submit" class="btn btn-primary">Change email
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

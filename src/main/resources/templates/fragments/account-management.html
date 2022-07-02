@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Account management</title>
+</head>
+<body>
+<ul th:fragment="site-bar" class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link"
+           id="profile"
+           th:classappend="${(profile == null) ? '':'active'}"
+           th:href="@{/account/profile}">Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           id="email"
+           th:classappend="${(email == null) ? '':'active'}"
+           th:href="@{/account/email}">Email</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           id="change-password"
+           th:classappend="${(changePassword == null) ? '':'active'}"
+           th:href="@{/account/password}">Password</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           id="personal-data"
+           th:classappend="${(personalData == null) ? '':'active'}"
+           th:href="@{/account/delete_personal_data}">Personal data</a>
+    </li>
+</ul>
+</body>
+</html>

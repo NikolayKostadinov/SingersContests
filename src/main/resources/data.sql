@@ -1,7 +1,7 @@
 INSERT INTO `singers_contests`.`users`
-(`id`, `first_name`, `last_name`, `middle_name`, `email`, `is_active`, `password`, `username`)
-VALUES (1, 'Nikolay', 'Kostadinov', 'Dimitrov', 'kostadinov.nikolay.d@gmail.com', 1,
-        'bf92978758a05b5cc483737e416df897f3a657a4571ea343e863f49395f7fa87ba4d35cd734044ca', 'niki');
+(`id`, `first_name`, `last_name`, `middle_name`, `email`, `password`, `username`, `phone_number`)
+VALUES (1, 'Nikolay', 'Kostadinov', 'Dimitrov', 'kostadinov.nikolay.d@gmail.com',
+        'bf92978758a05b5cc483737e416df897f3a657a4571ea343e863f49395f7fa87ba4d35cd734044ca', 'niki', '+359 886 630 111');
 insert into `singers_contests`.`contests` (id, name)
 values (1, 'Silver Yantra'),
        (2, 'Flower tuning fork'),
