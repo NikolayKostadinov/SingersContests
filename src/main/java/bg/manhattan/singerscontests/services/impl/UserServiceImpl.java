@@ -67,6 +67,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByRoleAndId(UserRoleEnum role, Long managerId) throws UserNotFoundException {
+
+        List<User> usersByRoleAndId = this.userRepository.findByRoleAndId(role, managerId);
+        if (usersByRoleAndId.isEmpty()) throw new UserNotFoundException(managerId.toString());
+        return usersByRoleAndId.get(0);
+    }
+
+    @Override
     public void deleteUser(String username, String password) throws UserNotFoundException, PasswordNotMatchesException {
         User user = getUser(username);
         if (!passwordMatches(password, user.getPassword())){

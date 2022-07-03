@@ -8,7 +8,6 @@ import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Principal;
 import java.util.List;
@@ -34,4 +33,6 @@ public interface UserService {
     List<UserServiceModel> getUsersByRole(UserRoleEnum contestManager);
 
     void changeUserEmail(String name, String newEmail) throws UserNotFoundException;
+
+    User getUserByRoleAndId(UserRoleEnum contestManager, Long managerId) throws UserNotFoundException;
 }

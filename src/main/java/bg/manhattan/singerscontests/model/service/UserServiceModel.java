@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 public class UserServiceModel {
 
+    private Long id;
     private String firstName;
 
     private String middleName;
@@ -26,6 +27,15 @@ public class UserServiceModel {
 
     public UserServiceModel() {
         this.roles = new HashSet<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public UserServiceModel setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getFirstName() {

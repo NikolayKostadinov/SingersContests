@@ -11,10 +11,11 @@
 
 <main id="main" class="container" data-aos="zoom-in">
     <h1 class="display-6 text-center">Create a Contests</h1>
-    <form th:action="@{/contests/create}"
+    <form th:action="@{/contests/edit}"
           th:method="post"
-          th:object="${contestModel}"
+          th:object="${contestEditModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate">
+        <input type="hidden" th:field="*{id}">
         <div class="form-row">
             <label for="name" class="form-label">Contest name</label>
             <input id="name"
@@ -56,7 +57,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-end align-items-end">
-            <input type="submit" class="btn btn-primary" value="Register">
+            <input type="submit" class="btn btn-primary" value="Update">
         </div>
     </form>
 </main>
