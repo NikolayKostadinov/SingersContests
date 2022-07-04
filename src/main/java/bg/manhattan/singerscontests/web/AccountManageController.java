@@ -10,8 +10,6 @@ import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -27,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/account")
@@ -46,7 +43,7 @@ public class AccountManageController extends BaseController {
     public String profile(Model model) {
         setFormTitle("Singers Contests - Manage account", model);
         model.addAttribute("profile", true);
-        return "user-manage-profile";
+        return "account-manage/profile-change";
     }
 
     @PostMapping("/profile")
@@ -70,14 +67,14 @@ public class AccountManageController extends BaseController {
         }
 
         logout(request, response);
-        return "redirect:/users/login";
+        return "redirect:/authentication/login";
     }
 
     @GetMapping("/email")
     public String email(Model model) {
         setFormTitle("Singers Contests - Manage account", model);
         model.addAttribute("email", true);
-        return "user-manage-email";
+        return "account-manage/email-change";
     }
 
     @PostMapping("/email")
@@ -105,7 +102,7 @@ public class AccountManageController extends BaseController {
     public String password(Model model) {
         setFormTitle("Singers Contests - Manage account", model);
         model.addAttribute("changePassword", true);
-        return "user-manage-password";
+        return "account-manage/password-change";
     }
 
     @PostMapping("/password")
@@ -143,7 +140,7 @@ public class AccountManageController extends BaseController {
     public String deletePersonalData(Model model) {
         setFormTitle("Singers Contests - Manage account", model);
         model.addAttribute("personalData", true);
-        return "user-manage-personal-data";
+        return "account-manage/account-delete";
     }
 
     @PostMapping("/delete_personal_data")

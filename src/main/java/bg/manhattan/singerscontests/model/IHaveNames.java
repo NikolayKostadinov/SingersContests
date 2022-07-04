@@ -1,9 +1,9 @@
 package bg.manhattan.singerscontests.model;
 
 public interface IHaveNames {
-    public String getFirstName();
+    String getFirstName();
 
-    public String getMiddleName();
+    String getMiddleName();
 
-    public String getLastName();
+    String getLastName();
 }

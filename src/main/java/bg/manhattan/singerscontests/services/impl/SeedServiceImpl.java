@@ -26,7 +26,7 @@ public class SeedServiceImpl implements SeedService {
     private final ContestRepository contestRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService appUserDetailsService;
-    private String adminPass;
+    private final String adminPass;
 
     public SeedServiceImpl(UserRepository userRepository,
                            UserRoleRepository userRoleRepository,

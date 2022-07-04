@@ -1,21 +1,22 @@
 package bg.manhattan.singerscontests.model.binding;
 
-import bg.manhattan.singerscontests.model.view.ManagerViewModel;
+import bg.manhattan.singerscontests.model.validators.AtLeastOneNotDeleted;
 
-import javax.persistence.Column;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContestCreateBindingModel {
+public class ContestCreateBindingModel{
     @Size(min=5, max = 75, message = "Name must be between {min} and {max} characters long!")
     private String name;
 
-    @NotNull
+    @NotNull(message = "There must be at least one manager!")
     @NotEmpty(message = "There must be at least one manager!")
-    private List<@NotNull Long> managers;
+    @AtLeastOneNotDeleted(message="There must be at least one manager!")
+    private List<@NotNull(message = "Please select valid manager!") @Valid ManagerBindingModel> managers;
 
     public ContestCreateBindingModel() {
         this.managers = new ArrayList<>();
@@ -30,11 +31,11 @@ public class ContestCreateBindingModel {
         return this;
     }
 
-    public List<Long> getManagers() {
+    public List<ManagerBindingModel> getManagers() {
         return managers;
     }
 
-    public ContestCreateBindingModel setManagers(List<Long> managers) {
+    public ContestCreateBindingModel setManagers(List<ManagerBindingModel> managers) {
         this.managers = managers;
         return this;
     }

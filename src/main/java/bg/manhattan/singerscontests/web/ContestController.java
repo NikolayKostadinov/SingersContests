@@ -4,9 +4,11 @@ import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.ContestCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.ContestEditBindingModel;
+import bg.manhattan.singerscontests.model.binding.ManagerBindingModel;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestCreateServiceModel;
+import bg.manhattan.singerscontests.model.service.ContestEditServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestServiceModel;
 import bg.manhattan.singerscontests.model.view.ContestViewModel;
 import bg.manhattan.singerscontests.model.view.ManagerViewModel;
@@ -20,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -32,26 +35,27 @@ public class ContestController extends BaseController {
     private final UserService userService;
     private final ModelMapper mapper;
 
-    public ContestController(ContestService contestService,
-                             UserService userService,
-                             ModelMapper mapper) {
+    public ContestController(ContestService contestService, UserService userService, ModelMapper mapper) {
         this.contestService = contestService;
         this.userService = userService;
         this.mapper = mapper;
+    }
+
+    @GetMapping
+    public String contests(Model model) {
+        setFormTitle("Singers Contests - Contests", model);
+        return "contests/contests";
     }
 
     @GetMapping("/create")
     public String create(Model model) {
         setFormTitle("Singers Contests - Edit Contest", model);
         addManagersListToModel(model);
-        return "contest-create";
+        return "contests/contest-create";
     }
 
     @PostMapping("/create")
-    public String create(@Valid ContestCreateBindingModel contestModel,
-                           BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes,
-                           Principal principal) throws UserNotFoundException {
+    public String create(@Valid ContestCreateBindingModel contestModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) throws UserNotFoundException {
         if (bindingResult.hasErrors()) {
             ensureOneManager(contestModel.getManagers(), principal);
             redirectAttributes.addFlashAttribute("contestModel", contestModel);
@@ -69,58 +73,47 @@ public class ContestController extends BaseController {
         setFormTitle("Singers Contests - Create Contest", model);
         setContest(model, id);
         addManagersListToModel(model);
-        return "contest-edit";
+        return "contests/contest-edit";
     }
 
     private void setContest(Model model, Long id) throws NotFoundException {
         if (!model.containsAttribute("contestEditModel")) {
             ContestServiceModel contest = this.contestService.getContestById(id);
-            ContestEditBindingModel contestModel = this.mapper.map(contest, ContestEditBindingModel.class);
+            ContestCreateBindingModel contestModel = this.mapper.map(contest, ContestEditBindingModel.class);
             model.addAttribute("contestEditModel", contestModel);
         }
     }
 
     @PostMapping("/edit")
-    public String register(@Valid ContestEditBindingModel contestEditModel,
-                           BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes,
-                           Principal principal) throws UserNotFoundException {
+    public String edit(@Valid ContestEditBindingModel contestEditModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) throws UserNotFoundException, NotFoundException {
         if (bindingResult.hasErrors()) {
             ensureOneManager(contestEditModel.getManagers(), principal);
             redirectAttributes.addFlashAttribute("contestEditModel", contestEditModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.contestEditModel", contestEditModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.contestEditModel", bindingResult);
 
             return "redirect:/contests/edit/" + contestEditModel.getId();
         }
 
-        //this.contestService.update(this.mapper.map(contestEditModel, ContestCreateServiceModel.class));
+        ContestEditServiceModel contestModel = this.mapper.map(contestEditModel, ContestEditServiceModel.class);
+
+        this.contestService.update(contestModel);
         return "redirect:/contests";
+    }
+
+    private void ensureOneManager(List<ManagerBindingModel> managers, Principal principal) throws UserNotFoundException {
+        if (managers.size() == 0 || managers.stream().allMatch(ManagerBindingModel::isDeleted)) {
+            User currentUser = this.userService.getCurrentUser(principal);
+            managers.clear();
+            managers.add(new ManagerBindingModel().setId(currentUser.getId()));
+        }
     }
 
     private void addManagersListToModel(Model model) {
         if (!model.containsAttribute("contestManagers")) {
-            List<UserSelectViewModel> contestManagers =
-                    this.userService.getUsersByRole(UserRoleEnum.CONTEST_MANAGER)
-                            .stream()
-                            .map(user -> this.mapper.map(user, UserSelectViewModel.class))
-                            .toList();
+            List<UserSelectViewModel> contestManagers = this.userService.getUsersByRole(UserRoleEnum.CONTEST_MANAGER).stream().map(user -> this.mapper.map(user, UserSelectViewModel.class)).toList();
 
             model.addAttribute("contestManagers", contestManagers);
         }
-    }
-
-    private void ensureOneManager(List<Long> managers, Principal principal) throws UserNotFoundException {
-        if (managers.size() == 0) {
-            User currentUser = this.userService.getCurrentUser(principal);
-            managers.add(currentUser.getId());
-        }
-    }
-
-
-    @GetMapping
-    public String contests(Model model) {
-        setFormTitle("Singers Contests - Contests", model);
-        return "contests";
     }
 
     @DeleteMapping("/delete/{id}")
@@ -131,8 +124,9 @@ public class ContestController extends BaseController {
     }
 
     @ModelAttribute("contestList")
-    public List<ContestViewModel> initContests() {
-        return this.contestService.getAllContests()
+    public List<ContestViewModel> initContests(HttpServletRequest request, Principal principal) throws UserNotFoundException {
+        return this.contestService
+                .getAllContestsByContestManager(principal, request.isUserInRole(UserRoleEnum.ADMIN.name()))
                 .stream()
                 .map(contest -> this.mapper.map(contest, ContestViewModel.class))
                 .collect(Collectors.toList());
@@ -142,15 +136,12 @@ public class ContestController extends BaseController {
     public ContestCreateBindingModel initContestCreate(Principal principal) throws UserNotFoundException {
         User currentUser = this.userService.getCurrentUser(principal);
         ContestCreateBindingModel model = new ContestCreateBindingModel();
-        model.getManagers().add(currentUser.getId());
+        model.getManagers().add(new ManagerBindingModel().setId(currentUser.getId()));
         return model;
     }
 
     @ModelAttribute("contestManagers")
     public List<ManagerViewModel> initManagers() {
-        return this.userService.getUsersByRole(UserRoleEnum.CONTEST_MANAGER)
-                .stream()
-                .map(user -> this.mapper.map(user, ManagerViewModel.class))
-                .toList();
+        return this.userService.getUsersByRole(UserRoleEnum.CONTEST_MANAGER).stream().map(user -> this.mapper.map(user, ManagerViewModel.class)).toList();
     }
 }

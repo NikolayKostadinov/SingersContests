@@ -15,6 +15,9 @@
           th:method="post"
           th:object="${contestModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate">
+        <p  th:if="${#fields.hasErrors('global')}"
+            th:each="err : ${#fields.errors()}"
+            th:text="${err}" class="text-danger">Error message</p>
         <div class="form-row">
             <label for="name" class="form-label">Contest name</label>
             <input id="name"
@@ -35,16 +38,20 @@
                 <div class="row">
                     <div class="col-10">
                         <select class="form-control"
-                                th:field="*{managers[__${itemStat.index}__]}"
+                                th:field="*{managers[__${itemStat.index}__].id}"
                                 th:errorclass="is-invalid">
                             <option value="">--Select Manager--</option>
                             <option th:each="m : ${contestManagers}"
                                     th:value="${m.id}"
                                     th:text="${m.fullName}"
-                                    th:selected="${m.id} == *{managers[__${itemStat.index}__]}"
+                                    th:selected="${m.id} == *{managers[__${itemStat.index}__].id}"
                             >Managers full name
                             </option>
                         </select>
+                        <p class="invalid-feedback" th:errors="*{managers[__${itemStat.index}__].id}">
+                            Name error message.
+                        </p>
+                        <input type="hidden" th:field="*{managers[__${itemStat.index}__].deleted}">
                     </div>
                     <div class="col-2">
                         <button name="btn-add" class="btn btn-sm btn-primary" th:data-id="${itemStat.index}"><i
@@ -64,6 +71,6 @@
 <th:block th:insert="~{/fragments/scripts :: baseScripts}">
 </th:block>
 
-<script src="/js/create-contest.js"></script>
+<script src="/js/contest-modify.js"></script>
 </body>
 </html>

@@ -25,14 +25,14 @@ public class ApplicationSecurityConfiguration {
                 // additional CSS library
                 .antMatchers("/vendor/**").permitAll()
                 // allows anonymous access to home, login and registration
-                .antMatchers("/", "/users/register", "/users/login", "/users/login-error").permitAll()
+                .antMatchers("/", "/authentication/register", "/authentication/login", "/authentication/login-error").permitAll()
                 // forbid all other for anonymous users;
                 .anyRequest().authenticated()
             .and()
                 // configuration of form login
                 .formLogin()
                 // the custom login form
-                .loginPage("/users/login")
+                .loginPage("/authentication/login")
                 // the name of the username form field
                 .usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
                 // the name of the password form field
@@ -40,11 +40,11 @@ public class ApplicationSecurityConfiguration {
                 // where to go in case that the login is successful
                 .defaultSuccessUrl("/")
                 // where to go in case that the login failed
-                .failureForwardUrl("/users/login-error")
+                .failureForwardUrl("/authentication/login-error")
             .and()
                 .logout()
                 // the logout page
-                    .logoutUrl("/users/logout")
+                    .logoutUrl("/authentication/logout")
                     .logoutSuccessUrl("/")
                     .invalidateHttpSession(true)
                     .deleteCookies("JSESSIONID")

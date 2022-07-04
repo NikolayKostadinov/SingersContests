@@ -97,7 +97,8 @@ public class UserServiceImpl implements UserService {
 
 
     private boolean passwordMatches(String password, String encodedPassword) {
-        return this.passwordEncoder.matches(password, encodedPassword);
+        return this.passwordEncoder
+                .matches(password, encodedPassword);
     }
 
     @Override
@@ -108,9 +109,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getUser(String username) throws UserNotFoundException {
-        User userEntity = this.userRepository.findByUsername(username)
+        return this.userRepository
+                .findByUsername(username)
                 .orElseThrow(()-> new UserNotFoundException(username));
-        return userEntity;
     }
 
     @Override

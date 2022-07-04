@@ -30,16 +30,18 @@
     function removeButtonClick(event) {
         event.preventDefault();
         let managerIndex = Number(event.currentTarget.dataset.id);
-        let selectedManagerElement = document.querySelector('[data-manager = "' + managerIndex + '"]');
-        selectedManagerElement.parentElement.remove(selectedManagerElement);
+        document.getElementById('managers' + managerIndex + '.deleted').value = true;
+        document.querySelector('[data-manager = "' + managerIndex + '"]').hidden = true;
     }
 
     function createElement(index, options) {
         let html = "<div class=\"form-row\" name=\"manager-row\" data-manager=\"" + index + "\">\n" +
             "                <div class=\"row\">\n" +
             "                    <div class=\"col-10\">\n" +
-            "                        <select class=\"form-control\" id=\"managers" + index + "\" name=\"managers[" + index + "]\">\n" +
+            "                        <select class=\"form-control\" id=\"managers0.id\" name=\"managers[" + index + "].id\">\n" +
             "                        </select>\n" +
+            "                        <p class=\"invalid-feedback\">Select valid manager!</p>\n" +
+            "                        <input type=\"hidden\" id=\"managers" + index + ".deleted\" name=\"managers[" + index + "].deleted\" value=\"false\">\n" +
             "                    </div>\n" +
             "                    <div class=\"col-2\">\n" +
             "                        <button name=\"btn-add\" class=\"btn btn-sm btn-primary\" data-id=\"" + index + "\"><i class=\"bi bi-plus-square\"></i></button>\n" +
