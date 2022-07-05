@@ -133,7 +133,7 @@ public class AccountManageController extends BaseController {
         }
 
         request.logout();
-        return "redirect:/users/login";
+        return "redirect:/authentication/login";
     }
 
 
