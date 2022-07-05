@@ -34,7 +34,10 @@
                     href="mailto:contact@example.com">contact@example.com</a></i>
             <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
         </div>
-        <div class="text-white fw-bolder" sec:authorize="isAuthenticated()"><a th:href="@{/account/profile}" class="text-white fw-bolder">Welcome, <th:block sec:authentication="principal.fullName"></th:block>!</a></div>
+        <div class="text-white fw-bolder" sec:authorize="isAuthenticated()">
+            <a th:href="@{/account/profile}" class="text-white fw-bolder">
+                Welcome, <th:block sec:authentication="principal.fullName"></th:block>!</a>
+        </div>
         <div class="social-links d-none d-md-flex align-items-center">
             <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>

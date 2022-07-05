@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.model.security;
+package bg.manhattan.singerscontests.model.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

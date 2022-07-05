@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+>
 <head th:replace="~{/fragments/header :: head}"></head>
 <body>
 
@@ -8,44 +8,51 @@
 
 <header th:replace="~{/fragments/header :: header}">Main Navigation</header>
 
-<main id="main" class="container" data-aos="zoom-in" th:object="${editionsModel}">
+<main id="main" class="container" data-aos="zoom-in">
     <div class="row">
         <div class="offset-md-3 col-md-6 col-8">
-            <h1 class="display-6 text-center " th:text="*{name}">Contests list</h1>
+            <h1 class="display-6 text-center " th:text="${editionsModel.name}">Contests list</h1>
         </div>
         <div class="col-3 text-end pe-md-4">
-            <a th:href="@{/editions/create/{contestId}(contestId=*{id})}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i>
+            <a th:href="@{/editions/create/{contestId}(contestId=${editionsModel.id})}"
+               class="btn btn-sm btn-success"><i class="bi bi-file-earmark-plus"></i>
                 <span class="d-none d-md-inline">Create edition</span></a>
         </div>
     </div>
 
-<!--    <div class="table-responsive-sm">-->
-<!--        <table class="table table-hover">-->
-<!--            <tbody>-->
-<!--            <tr th:each="edition : ${editions}" th:object="${edition}">-->
-<!--                <th class="min-width-64" scope="row">-->
-<!--                    <img class="d-none d-md-block ms-2" th:src="@{/images/favicon-64x64.png}"/>-->
-<!--                    <img class="d-none d-sm-block d-md-none ms-2" th:src="@{/images/favicon-32x32.png}"/>-->
-<!--                    <img class="d-sm-none" th:src="@{/images/favicon-16x16.png}"/>-->
-<!--                </th>-->
-<!--                <td class="h2 align-middle d-none d-md-table-cell" th:text="*{contestName}">Competition</td>-->
-<!--                <td class="align-middle d-sm-table-cell d-md-none" th:text="*{contestName}">Competition</td>-->
-<!--                <td class="h2 align-middle d-none d-md-table-cell" th:text="|*{number} Edition|">Edition</td>-->
-<!--                <td class="align-middle d-sm-table-cell d-md-none" th:text="|*{number} Edition|">Edition</td>-->
-<!--                <td class="h2 align-middle d-none d-md-table-cell" th:text="*{editionType}">EditionType</td>-->
-<!--                <td class="align-middle d-sm-table-cell d-md-none" th:text="*{editionType}">EditionType</td>-->
-<!--                <td class="align-middle text-end pe-md-3">-->
-<!--                    <a th:href="@{/contests/edit/{id}(id=*{id})}" class="btn btn-sm btn-primary">-->
-<!--                        <i class="bi bi-pencil-square"></i> <span class="d-none d-sm-inline">Edit</span></a>-->
-<!--                    <form class="d-inline" th:method="delete" th:action="@{/contests/delete/{id}(id=*{id})}">-->
-<!--                        <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-x-square"></i> <span-->
-<!--                                class="d-none d-sm-inline">Delete</span></button>-->
-<!--                    </form>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--        </table>-->
-<!--    </div>-->
+    <div class="table-responsive-sm">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Begin Date</th>
+                    <th>End Date</th>
+                    <th>Edition</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr th:each="edition : ${editionsModel.editions}" th:object="${edition}">
+                <td th:text="*{#temporals.format(beginDate, 'dd/MM/yyyy')}">beginDate</td>
+                <td th:text="*{#temporals.format(endDate, 'dd/MM/yyyy')}">beginDate</td>
+                <td th:text="|*{number} edition|">1</td>
+                <td>
+                    <span th:text="*{editionType}"
+                          class="badge rounded-pill"
+                          th:classappend="${edition.editionType.toString() == 'ONLINE' ? 'bg-danger' : 'bg-success'}">online</span>
+                </td>
+
+                <td class="align-middle text-end pe-md-3">
+                    <a th:href="@{/editions/edit/{id}(id=*{id})}" class="btn btn-sm btn-primary">
+                        <i class="bi bi-pencil-square"></i> <span class="d-none d-sm-inline">Edit</span></a>
+                    <form class="d-inline" th:method="delete" th:action="@{/contests/delete/{id}(id=*{id})}">
+                        <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-x-square"></i> <span
+                                class="d-none d-sm-inline">Delete</span></button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
 </main>
 

@@ -1,10 +1,12 @@
 package bg.manhattan.singerscontests.model.view;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 public class ContestEditionsViewModel {
     private Long id;
     private String name;
+
     private Collection<EditionListViewModel> editions;
 
     public Long getId() {

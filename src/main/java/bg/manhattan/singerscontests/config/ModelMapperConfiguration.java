@@ -10,6 +10,7 @@ import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.service.ContestCreateServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestEditServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestServiceModel;
+import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.view.ContestEditionsViewModel;
 import bg.manhattan.singerscontests.model.view.EditionListViewModel;
 import org.modelmapper.Converter;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -94,12 +96,13 @@ public class ModelMapperConfiguration {
                 null :
                 ctx.getSource()
                         .stream()
-                        .map(e -> new EditionListViewModel())
+                        .sorted(Comparator.comparing(Edition::getBeginDate).reversed())
+                        .map(e -> mapper.map(e, EditionListViewModel.class))
                         .toList();
 
-        mapper.createTypeMap(Contest.class, ContestEditionsViewModel.class)
+        mapper.createTypeMap(ContestServiceModelWithEditions.class, ContestEditionsViewModel.class)
                 .addMappings(mpr -> mpr.using(toEditionList)
-                        .map(Contest::getEditions, ContestEditionsViewModel::setEditions));
+                        .map(ContestServiceModelWithEditions::getEditions, ContestEditionsViewModel::setEditions));
         return mapper;
     }
 

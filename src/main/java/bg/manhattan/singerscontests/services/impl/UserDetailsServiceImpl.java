@@ -1,7 +1,6 @@
 package bg.manhattan.singerscontests.services.impl;
 
-import bg.manhattan.singerscontests.model.entity.User;
-import bg.manhattan.singerscontests.model.security.AppUserDetails;
+import bg.manhattan.singerscontests.model.user.AppUserDetails;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.services.UserService;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,12 +8,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserService userService;
 

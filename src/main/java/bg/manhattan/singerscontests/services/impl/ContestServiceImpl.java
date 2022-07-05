@@ -17,7 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,7 +114,7 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public ContestServiceModelWithEditions getContestByIdWithEditions(Long id) throws NotFoundException {
         Contest contest = this.repository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Contest", id));;
+                .orElseThrow(() -> new NotFoundException("Contest", id));
         return this.mapper.map(contest, ContestServiceModelWithEditions.class);
     }
 }
