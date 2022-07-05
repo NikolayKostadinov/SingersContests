@@ -21,6 +21,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -51,7 +52,7 @@ public class AccountManageController extends BaseController {
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes,
                           Principal principal,
-                          HttpServletRequest request, HttpServletResponse response) {
+                          HttpServletRequest request) throws ServletException {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("profileDetails", profileDetails);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.profileDetails", bindingResult);
@@ -66,7 +67,7 @@ public class AccountManageController extends BaseController {
             throw new UsernameNotFoundException(e.getMessage());
         }
 
-        logout(request, response);
+        request.logout();
         return "redirect:/authentication/login";
     }
 
@@ -110,7 +111,7 @@ public class AccountManageController extends BaseController {
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes,
                            Principal principal,
-                           HttpServletRequest request, HttpServletResponse response) {
+                           HttpServletRequest request) throws ServletException {
         if (bindingResult.hasErrors()) {
             return getPasswordErrorResponse(passwordModel, bindingResult, redirectAttributes);
         }
@@ -131,7 +132,7 @@ public class AccountManageController extends BaseController {
             }
         }
 
-        logout(request, response);
+        request.logout();
         return "redirect:/users/login";
     }
 
@@ -148,7 +149,7 @@ public class AccountManageController extends BaseController {
                                      BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes,
                                      Principal principal,
-                                     HttpServletRequest request, HttpServletResponse response) {
+                                     HttpServletRequest request) throws ServletException {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("deleteUserModel", deleteUserModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.deleteUserModel", bindingResult);
@@ -167,17 +168,8 @@ public class AccountManageController extends BaseController {
             return "redirect:delete_personal_data";
         }
 
-        logout(request, response);
-        return "redirect:/users/login";
-    }
-
-
-    public static void logout(HttpServletRequest request, HttpServletResponse response) {
-        CookieClearingLogoutHandler cookieClearingLogoutHandler =
-                new CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY);
-        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
-        cookieClearingLogoutHandler.logout(request, response, null);
-        securityContextLogoutHandler.logout(request, response, null);
+        request.logout();
+        return "redirect:/authentication/login";
     }
 
     private String getPasswordErrorResponse(PasswordChangeBindingModel passwordModel,

@@ -34,6 +34,8 @@ public class ApplicationSecurityConfiguration {
                 .antMatchers("/vendor/**").permitAll()
                 // allows anonymous access to home, login and registration
                 .antMatchers("/", "/authentication/register", "/authentication/login", "/authentication/login-error").permitAll()
+                //todo: Configure antMatchers for roles
+                
                 // forbid all other for anonymous users;
                 .anyRequest().authenticated()
             .and()
