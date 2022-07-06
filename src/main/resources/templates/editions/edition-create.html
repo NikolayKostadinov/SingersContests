@@ -136,8 +136,20 @@
             </div>
         </div>
 
-<!--        <div id="categories">-->
-<!--            <label class="form-label">Performance categories</label>-->
+        <div id="categories">
+            <label class="form-label">Performance categories</label>
+            <!--                <div class="form-row col">-->
+            <!--                    <input id="category-name"-->
+            <!--                           th:field="*{performanceCategories[__${itemStat.index}__].name}"-->
+            <!--                           th:errorclass="is-invalid"-->
+            <!--                           type="text" class="form-control"-->
+            <!--                           placeholder="Category Name"-->
+            <!--                           required>-->
+            <!--                    <div class="invalid-feedback"-->
+            <!--                         th:errors="*{performanceCategories[__${itemStat.index}__].name}">-->
+            <!--                        Error message.-->
+            <!--                    </div>-->
+            <!--                </div>-->
 <!--            <p class="text-danger" th:if="${#fields.errors('performanceCategories')}"-->
 <!--               th:errors="*{performanceCategories}"></p>-->
 <!--            <div class="row d-flex align-items-center" th:each="category, itemStat :*{performanceCategories}">-->
@@ -170,7 +182,7 @@
 <!--                            class="bi bi-x-square"></i></button>-->
 <!--                </div>-->
 <!--            </div>-->
-<!--        </div>-->
+        </div>
         <div id="jury-members">
             <label class="form-label">Jury Members</label>
             <p class="text-danger" th:if="${#fields.errors('juryMembers')}" th:errors="*{juryMembers}"></p>
@@ -190,14 +202,6 @@
                         <p class="invalid-feedback" th:errors="*{juryMembers}">
                             Name error message.
                         </p>
-<!--                        <input type="hidden" th:field="*{juryMembers[__${itemStat.index}__].deleted}">-->
-                    </div>
-<!--                    <div class="col-1">-->
-<!--                        <button name="btn-add" class="btn btn-multiply btn-primary" th:data-id="${itemStat.index}"><i-->
-<!--                                class="bi bi-plus-square"></i></button>-->
-<!--                        <button name="btn-remove" class="btn btn-multiply btn-danger" th:data-id="${itemStat.index}"><i-->
-<!--                                class="bi bi-x-square"></i></button>-->
-<!--                    </div>-->
                 </div>
             </div>
         </div>
