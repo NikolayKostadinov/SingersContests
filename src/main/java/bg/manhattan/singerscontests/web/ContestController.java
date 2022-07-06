@@ -55,7 +55,10 @@ public class ContestController extends BaseController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid ContestCreateBindingModel contestModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) throws UserNotFoundException {
+    public String create(@Valid ContestCreateBindingModel contestModel,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes,
+                         Principal principal) throws UserNotFoundException {
         if (bindingResult.hasErrors()) {
             ensureOneManager(contestModel.getManagers(), principal);
             redirectAttributes.addFlashAttribute("contestModel", contestModel);
@@ -110,7 +113,12 @@ public class ContestController extends BaseController {
 
     private void addManagersListToModel(Model model) {
         if (!model.containsAttribute("contestManagers")) {
-            List<UserSelectViewModel> contestManagers = this.userService.getUsersByRole(UserRoleEnum.CONTEST_MANAGER).stream().map(user -> this.mapper.map(user, UserSelectViewModel.class)).toList();
+            List<UserSelectViewModel> contestManagers =
+                    this.userService
+                            .getUsersByRole(UserRoleEnum.CONTEST_MANAGER)
+                            .stream()
+                            .map(user -> this.mapper.map(user, UserSelectViewModel.class))
+                            .toList();
 
             model.addAttribute("contestManagers", contestManagers);
         }
@@ -138,10 +146,5 @@ public class ContestController extends BaseController {
         ContestCreateBindingModel model = new ContestCreateBindingModel();
         model.getManagers().add(new ManagerBindingModel().setId(currentUser.getId()));
         return model;
-    }
-
-    @ModelAttribute("contestManagers")
-    public List<ManagerViewModel> initManagers() {
-        return this.userService.getUsersByRole(UserRoleEnum.CONTEST_MANAGER).stream().map(user -> this.mapper.map(user, ManagerViewModel.class)).toList();
     }
 }

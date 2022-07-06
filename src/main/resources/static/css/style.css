@@ -204,7 +204,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 70px;
 }
 
-@media(max-width: 400px) {
+@media (max-width: 400px) {
     #header .logo {
         font-size: 26px;
         margin: 0;
@@ -216,10 +216,11 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .logo img {
-       max-width: 46px;
-       max-height: 46px;
+        max-width: 46px;
+        max-height: 46px;
     }
 }
+
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
@@ -1834,7 +1835,15 @@ section {
     margin-bottom: 0;
 }
 
+.btn-multiply {
+    padding: 0;
+    line-height: 1;
+}
 
-.min-width-64{
+.min-width-64 {
     min-width: 64px;
+}
+
+.fs-7 {
+    font-size: 0.95rem;
 }

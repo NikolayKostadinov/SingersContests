@@ -11,7 +11,7 @@
 
 <main id="main" class="container" data-aos="zoom-in">
     <h1 class="display-6 text-center">Create a profile in Singers Contests System</h1>
-    <form th:action="@{/users/register}" th:method="post" th:object="${userModel}"
+    <form th:action="@{/authentication/register}" th:method="post" th:object="${userModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate"
           autoComplete="off">
         <label for="firstName" class="form-label">Name</label>
@@ -56,18 +56,33 @@
                         UserName error message.
                     </p>
                 </div>
-
-                <div class="form-row">
-                    <label for="email" class="form-label">Email</label>
-                    <div class="input-group has-validation">
-                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input id="email" th:field="*{email}" th:errorclass="is-invalid" type="text"
-                               class="form-control"
-                               aria-describedby="inputGroupPrepend" required>
-                        <p class="invalid-feedback" th:errors="*{email}">
-                            Email error message.
-                        </p>
+                <div class="row">
+                    <div class="form-row col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            <input id="email" th:field="*{email}" th:errorclass="is-invalid" type="text"
+                                   class="form-control"
+                                   aria-describedby="inputGroupPrepend" required>
+                            <p class="invalid-feedback" th:errors="*{email}">
+                                Email error message.
+                            </p>
+                        </div>
                     </div>
+
+                    <div class="form-row col-md-6">
+                        <label for="phone" class="form-label">Phone number</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="bi bi-phone"></i></span>
+                            <input id="phone" th:field="*{phoneNumber}" th:errorclass="is-invalid" type="text"
+                                   class="form-control"
+                                   aria-describedby="inputGroupPrepend" required>
+                            <p class="invalid-feedback" th:errors="*{phoneNumber}">
+                                Error message.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="row form-row">

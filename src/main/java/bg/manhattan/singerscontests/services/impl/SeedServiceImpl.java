@@ -1,6 +1,7 @@
 package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.model.entity.Contest;
+import bg.manhattan.singerscontests.model.entity.JuryMember;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.entity.UserRole;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
@@ -57,6 +58,7 @@ public class SeedServiceImpl implements SeedService {
 
             seedAdmin(List.of(adminRole, contestManagerRole, juryMemberRole));
             seedContestManagers(List.of(contestManagerRole));
+            seedJuryMembers(List.of(juryMemberRole));
             //todo: create JoryMembers and Users
             // initJuryMembers(List.of(juryMemberRole));
         }
@@ -136,6 +138,31 @@ public class SeedServiceImpl implements SeedService {
 
         userRepository.saveAll(users);
     }
+
+
+    private void seedJuryMembers(List<UserRole> roles) {
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            User user = new User()
+                    .setUsername("jury" + i)
+                    .setRoles(new HashSet<>(roles))
+                    .setEmail("jury" + i + "@example.com")
+                    .setPassword(passwordEncoder.encode(adminPass))
+                    .setPhoneNumber("123123123")
+                    .setJuryMember(new JuryMember()
+                            .setDetails("Details for jury member " + i)
+                            .setImageUrl("https://theatre.peakview.bg/theatre/photos/BIG1371021236haigashot-agasqn.jpg"));
+            user.setFirstName("Jury");
+            user.setMiddleName("Jury");
+            user.setLastName("Jury " + i);
+            users.add(user);
+        }
+
+        userRepository.saveAll(users);
+
+
+    }
+
 
 //    private void initJuryMembers(List<UserRoleEntity> roles) {
 //        UserEntity user = new UserEntity().

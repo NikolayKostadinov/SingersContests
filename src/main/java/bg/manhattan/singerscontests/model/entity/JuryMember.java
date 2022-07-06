@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity
 @Table(name="jury_members")
 public class JuryMember extends BaseEntity{
-    @OneToOne
+    @OneToOne(mappedBy = "juryMember", optional = false, fetch = FetchType.EAGER)
     private User user;
 
     @Column(nullable = false)

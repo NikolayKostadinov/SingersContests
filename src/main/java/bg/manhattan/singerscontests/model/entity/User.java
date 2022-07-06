@@ -26,12 +26,14 @@ public class User extends PersonBaseEntity{
     @Column(name="phone_number", nullable = false)
     private String phoneNumber; // password of the user.
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles;
 
     @ManyToMany(mappedBy = "managers",fetch = FetchType.EAGER)
     private List<Contest> contests;
+
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    private JuryMember juryMember;
 
     public User() {
         this.roles = new HashSet<>();
@@ -79,6 +81,24 @@ public class User extends PersonBaseEntity{
 
     public User setRoles(Set<UserRole> roles) {
         this.roles = roles;
+        return this;
+    }
+
+    public List<Contest> getContests() {
+        return contests;
+    }
+
+    public User setContests(List<Contest> contests) {
+        this.contests = contests;
+        return this;
+    }
+
+    public JuryMember getJuryMember() {
+        return juryMember;
+    }
+
+    public User setJuryMember(JuryMember juryMember) {
+        this.juryMember = juryMember;
         return this;
     }
 }

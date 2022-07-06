@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name="age_groups")
 public class AgeGroup extends BaseEntity{
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 51, nullable = false)
     private String name;
 
     @Column(name="min_age", nullable = false)

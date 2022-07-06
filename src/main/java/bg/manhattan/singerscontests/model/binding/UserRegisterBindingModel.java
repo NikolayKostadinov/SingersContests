@@ -109,4 +109,13 @@ public class UserRegisterBindingModel implements IHaveNames {
         this.confirmPassword = confirmPassword;
         return this;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public UserRegisterBindingModel setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        return this;
+    }
 }
