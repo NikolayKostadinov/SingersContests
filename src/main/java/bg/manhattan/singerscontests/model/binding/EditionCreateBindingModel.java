@@ -55,8 +55,8 @@ public class EditionCreateBindingModel {
 
     @NotNull(message = "There must be at least one jury member!")
     @NotEmpty(message = "There must be at least one jury member!")
-    @AtLeastOneNotDeleted(message="There must be at least one jury member!")
-    private Set<@NotNull(message = "Please select valid jury member!") @Valid JuryMemberBindingModel> juryMembers;
+//    @AtLeastOneNotDeleted(message="There must be at least one jury member!")
+    private Set<@NotNull(message = "Please select valid jury member!") @Valid Long> juryMembers;
 
     public EditionCreateBindingModel() {
         this.performanceCategories = new HashSet<>();
@@ -163,11 +163,11 @@ public class EditionCreateBindingModel {
         return this;
     }
 
-    public Set<JuryMemberBindingModel> getJuryMembers() {
+    public Set<Long> getJuryMembers() {
         return juryMembers;
     }
 
-    public EditionCreateBindingModel setJuryMembers(Set<JuryMemberBindingModel> juryMembers) {
+    public EditionCreateBindingModel setJuryMembers(Set<Long> juryMembers) {
         this.juryMembers = juryMembers;
         return this;
     }

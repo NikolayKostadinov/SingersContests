@@ -109,7 +109,7 @@ public class EditionController extends BaseController {
                             .setContestId(contestId)
                             .setAgeGroups(Set.of(new AgeGroupBindingModel()))
                             .setPerformanceCategories(Set.of(new PerformanceCategoryBindingModel()))
-                            .setJuryMembers(Set.of(new JuryMemberBindingModel())));
+                            );
         }
     }
 

@@ -32,6 +32,7 @@ public class ApplicationSecurityConfiguration {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // additional CSS library
                 .antMatchers("/vendor/**").permitAll()
+                .antMatchers("/multiselect/**").permitAll()
                 // allows anonymous access to home, login and registration
                 .antMatchers("/", "/authentication/register", "/authentication/login", "/authentication/login-error").permitAll()
                 //todo: Configure antMatchers for roles
