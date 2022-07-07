@@ -10,14 +10,14 @@
 <header th:replace="~{/fragments/header :: header}">Main Navigation</header>
 
 <main id="main" class="container" data-aos="zoom-in">
-    <h1 class="display-6 text-center">Create a Contests</h1>
+    <h1 class="display-6 text-center" th:text="|Create Contest ${editionModel.contestId} Edition |"></h1>
     <form th:action="@{/editions/{contestId}/create(contestId=${editionModel.contestId})}"
           th:method="post"
           th:object="${editionModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate">
-        <p th:if="${#fields.hasErrors('global')}"
-           th:each="err : ${#fields.errors()}"
-           th:text="${err}" class="text-danger">Error message</p>
+<!--        <p th:if="${#fields.hasGlobalErrors()}"-->
+<!--           th:each="err : ${#fields.globalErrors()}"-->
+<!--           th:text="${err}" class="text-danger">Error message</p>-->
         <div class="row">
             <div class="form-row col-md-2">
                 <label for="number" class="form-label">Edition number</label>
@@ -36,7 +36,7 @@
                 <select id="edition-type"
                         th:field="*{editionType}"
                         th:errorclass="is-invalid"
-                        type="number" class="form-control"
+                        type="number" class="form-select"
                         required>
                     <option value="">-- Choose edition type --</option>
                     <option th:each="typeOpt : ${T(bg.manhattan.singerscontests.model.enums.EditionType).values()}"
@@ -53,7 +53,7 @@
                 <select id="age-calculation-type"
                         th:field="*{ageCalculationType}"
                         th:errorclass="is-invalid"
-                        type="number" class="form-control"
+                        type="number" class="form-select"
                         required>
                     <option value="">-- Choose age calculation type --</option>
                     <option th:each="ageTypeOpt : ${T(bg.manhattan.singerscontests.model.enums.AgeCalculationType).values()}"
@@ -136,77 +136,141 @@
             </div>
         </div>
 
+        <!-- ======= Performance categories ======= -->
         <div id="categories">
-            <label class="form-label">Performance categories</label>
-            <!--                <div class="form-row col">-->
-            <!--                    <input id="category-name"-->
-            <!--                           th:field="*{performanceCategories[__${itemStat.index}__].name}"-->
-            <!--                           th:errorclass="is-invalid"-->
-            <!--                           type="text" class="form-control"-->
-            <!--                           placeholder="Category Name"-->
-            <!--                           required>-->
-            <!--                    <div class="invalid-feedback"-->
-            <!--                         th:errors="*{performanceCategories[__${itemStat.index}__].name}">-->
-            <!--                        Error message.-->
-            <!--                    </div>-->
-            <!--                </div>-->
-<!--            <p class="text-danger" th:if="${#fields.errors('performanceCategories')}"-->
-<!--               th:errors="*{performanceCategories}"></p>-->
-<!--            <div class="row d-flex align-items-center" th:each="category, itemStat :*{performanceCategories}">-->
-<!--                <div class="form-row col">-->
-<!--                    <input id="category-name"-->
-<!--                           th:field="*{performanceCategories[__${itemStat.index}__].name}"-->
-<!--                           th:errorclass="is-invalid"-->
-<!--                           type="text" class="form-control"-->
-<!--                           placeholder="Category Name"-->
-<!--                           required>-->
-<!--                    <div class="invalid-feedback"-->
-<!--                         th:errors="*{performanceCategories[__${itemStat.index}__].name}">-->
-<!--                        Error message.-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="form-row col">-->
-
-<!--                    <div class="form-check">-->
-<!--                        <input class="form-check-input" type="checkbox" value=""-->
-<!--                               th:field="*{performanceCategories[__${itemStat.index}__].required}"-->
-<!--                               th:errorclass="is-invalid"/>-->
-<!--                        <label class="form-check-label">Required</label>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <input type="hidden" th:field="*{performanceCategories[__${itemStat.index}__].deleted}">-->
-<!--                <div class="col align-self-start">-->
-<!--                    <button name="btn-add" class="btn btn-multiply btn-primary" th:data-id="${itemStat.index}"><i-->
-<!--                            class="bi bi-plus-square"></i></button>-->
-<!--                    <button name="btn-remove" class="btn btn-multiply btn-danger" th:data-id="${itemStat.index}"><i-->
-<!--                            class="bi bi-x-square"></i></button>-->
-<!--                </div>-->
-<!--            </div>-->
-        </div>
-        <div id="jury-members">
-            <label class="form-label">Jury Members</label>
-            <p class="text-danger" th:if="${#fields.errors('juryMembers')}" th:errors="*{juryMembers}"></p>
-<!--            <div class="form-row" th:each="member, itemStat :*{juryMembers}" name="manager-row"-->
-<!--                 th:data-manager="${itemStat.index}">-->
-                <div class="row">
-                    <div class="col-11">
-                        <select class="selectpicker form-control"
-                                th:field="*{juryMembers}"
-                                th:errorclass="is-invalid" multiple>
-                            <option th:each="m : ${juryMembersList}"
-                                    th:value="${m.id}"
-                                    th:text="${m.fullName}"
-                            >Managers full name
-                            </option>
-                        </select>
-                        <p class="invalid-feedback" th:errors="*{juryMembers}">
-                            Name error message.
-                        </p>
+            <div class="row">
+                <div class="col-11">
+                    <label class="form-label ">Performance categories</label>
+                </div>
+                <div class="col-1">
+                    <button id="add-category" class="btn btn-sm btn-success" name="btn-add">Add</button>
+                </div>
+                <hr>
+            </div>
+            <div class="row align-middle" th:name="category-row"
+                 th:each="category, itemStat : *{performanceCategories}"
+                 th:data-index="${itemStat.index}">
+                <div class="col-9">
+                    <div class="form-row">
+                        <input id="category-name"
+                               th:field="*{performanceCategories[__${itemStat.index}__].name}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control"
+                               placeholder="Category Name"
+                        >
+                        <div class="invalid-feedback"
+                             th:errors="*{performanceCategories[__${itemStat.index}__].name}">
+                            Error message.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               th:field="*{performanceCategories[__${itemStat.index}__].required}"
+                               th:errorclass="is-invalid"
+                               type="checkbox" >
+                        <label class="form-check-label">
+                            Required
+                        </label>
+                    </div>
+                </div>
+                <input type="hidden" th:field="*{performanceCategories[__${itemStat.index}__].deleted}">
+                <div class="col-1">
+                    <a href="#" th:id="|categories${itemStat.index}|"
+                       type="button" class="btn-close" name="remove-category"
+                       th:data-id="${itemStat.index}"></a>
                 </div>
             </div>
+        </div> <!-- ======= Performance categories ======= -->
+
+
+        <!-- ======= Age Groups ======= -->
+        <div id="age-groups">
+            <div class="row">
+                <div class="col-11">
+                    <label class="form-label ">Age Groups</label>
+                </div>
+                <div class="col-1">
+                    <button id="add-age-group" class="btn btn-sm btn-success" name="btn-add">Add</button>
+                </div>
+                <hr>
+            </div>
+            <div class="row align-middle" th:name="age-row"
+                 th:each="ageGroup, itemStat : *{ageGroups}"
+                 th:data-index="${itemStat.index}">
+                <div class="col-7">
+                    <div class="form-row">
+                        <input th:field="*{ageGroups[__${itemStat.index}__].name}"
+                               th:errorclass="is-invalid"
+                               type="text" class="form-control"
+                               placeholder="Age Group Name"
+                        >
+                        <div class="invalid-feedback"
+                             th:errors="*{performanceCategories[__${itemStat.index}__].name}">
+                            Error message.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-row">
+                        <input th:field="*{ageGroups[__${itemStat.index}__].minAge}"
+                               th:errorclass="is-invalid"
+                               type="number" class="form-control"
+                               placeholder="Min Age"
+                        >
+                        <div class="invalid-feedback"
+                             th:errors="*{ageGroups[__${itemStat.index}__].minAge}">
+                            Error message.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-row">
+                        <input th:field="*{ageGroups[__${itemStat.index}__].maxAge}"
+                               th:errorclass="is-invalid"
+                               type="number" class="form-control"
+                               placeholder="Max Age"
+                        >
+                        <div class="invalid-feedback"
+                             th:errors="*{ageGroups[__${itemStat.index}__].maxAge}">
+                            Error message.
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" th:field="*{ageGroups[__${itemStat.index}__].deleted}">
+                <div class="col-1">
+                    <a href="#" th:id="|categories${itemStat.index}|"
+                       type="button" class="btn-close" name="remove-group"
+                       th:data-id="${itemStat.index}"></a>
+                </div>
+            </div>
+        </div> <!-- ======= Age Groups ======= -->
+
+
+        <div class="form-row">
+            <label for='jury-members' class="form-label">Jury Members</label>
+            <hr class="mt-0">
+            <select id="jury-members"
+                    class="form-row"
+                    th:field="*{juryMembers}"
+                    th:errorclass="is-invalid"
+                    multiple="multiple"
+                    data-purpose='multiselect'
+                    data-placeholder="-- Please select juri members --">
+                <option th:each="m : ${juryMembersList}"
+                        th:value="${{m.id}}"
+                        th:text="${m.fullName}"
+                >Managers full name
+                </option>
+            </select>
+            <p class="invalid-feedback" th:errors="*{juryMembers}">
+                Name error message.
+            </p>
         </div>
         <div class="d-flex justify-content-end align-items-end">
-            <input type="submit" class="btn btn-primary" value="Register">
+            <button type="submit" class="btn btn-primary">Create</button>
         </div>
     </form>
 </main>
@@ -214,6 +278,6 @@
 <th:block th:insert="~{/fragments/scripts :: baseScripts}">
 </th:block>
 
-<script src="/js/contest-modify.js"></script>
+<script src="/js/edition-modify.js"></script>
 </body>
 </html>

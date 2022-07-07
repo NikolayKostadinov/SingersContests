@@ -1,12 +1,11 @@
 package bg.manhattan.singerscontests.model.binding;
 
-import bg.manhattan.singerscontests.model.validators.FieldMatch;
+import bg.manhattan.singerscontests.model.validators.GreaterThanOrEqual;
 import bg.manhattan.singerscontests.model.validators.PasswordComplexity;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-@FieldMatch(first = "newPassword", second = "confirmPassword", message = "Passwords not match!")
+@GreaterThanOrEqual(first = "newPassword", second = "confirmPassword", message = "Passwords not match!")
 public class PasswordChangeBindingModel {
     @NotBlank(message = "Curren password is required!")
     private String currentPassword;

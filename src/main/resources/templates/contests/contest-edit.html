@@ -29,37 +29,25 @@
             </div>
         </div>
 
-        <div id="managers">
-            <label class="form-label">Managers</label>
-            <p class="text-danger" th:if="${#fields.errors('managers')}" th:errors="*{managers}"></p>
-            <div class="form-row" th:each="manager, itemStat :*{managers}" name="manager-row" th:data-manager="${itemStat.index}">
-                <div class="row">
-                    <div class="col-10">
-                        <select class="form-control"
-                                th:field="*{managers[__${itemStat.index}__].id}"
-                                th:errorclass="is-invalid">
-                            <option value="">--Select Manager--</option>
-                            <option th:each="m : ${contestManagers}"
-                                    th:value="${m.id}"
-                                    th:text="${m.fullName}"
-                                    th:selected="${m.id} == *{managers[__${itemStat.index}__].id}"
-                            >Managers full name
-                            </option>
-                        </select>
-                        <p class="invalid-feedback" th:errors="*{managers[__${itemStat.index}__].id}">
-                            Name error message.
-                        </p>
-                        <input type="hidden" th:field="*{managers[__${itemStat.index}__].deleted}">
-                    </div>
-                    <div class="col-2">
-                        <button name="btn-add" class="btn btn-sm btn-primary" th:data-id="${itemStat.index}"><i
-                                class="bi bi-plus-square"></i></button>
-                        <button name="btn-remove" class="btn btn-sm btn-danger" th:data-id="${itemStat.index}"><i
-                                class="bi bi-x-square"></i></button>
-                    </div>
-                </div>
-            </div>
+        <div class="form-row">
+            <label for="managers" class="form-label">Managers</label>
+            <select id="managers" class="form-select"
+                    th:field="*{managers}"
+                    th:errorclass="is-invalid"
+                    multiple="multiple"
+                    data-purpose='multiselect'
+                    data-placeholder="-- Please select at least one manager --">
+                <option th:each="m : ${contestManagers}"
+                        th:value="${{m.id}}"
+                        th:text="${m.fullName}"
+                        multiple="multiple" data-purpose="multiselect">Managers full name
+                </option>
+            </select>
+            <p class="invalid-feedback" th:errors="*{managers}">
+                Name error message.
+            </p>
         </div>
+
         <div class="d-flex justify-content-end align-items-end">
             <input type="submit" class="btn btn-primary" value="Update">
         </div>
@@ -69,6 +57,6 @@
 <th:block th:insert="~{/fragments/scripts :: baseScripts}">
 </th:block>
 
-<script src="/js/contest-modify.js"></script>
+<script src="/js/edition-modify.js"></script>
 </body>
 </html>

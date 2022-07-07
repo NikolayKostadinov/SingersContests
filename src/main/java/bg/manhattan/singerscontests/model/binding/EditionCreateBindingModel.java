@@ -2,7 +2,7 @@ package bg.manhattan.singerscontests.model.binding;
 
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
 import bg.manhattan.singerscontests.model.enums.EditionType;
-import bg.manhattan.singerscontests.model.validators.AtLeastOneNotDeleted;
+import bg.manhattan.singerscontests.model.validators.GreaterThanOrEqual;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
@@ -11,9 +11,13 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+@GreaterThanOrEqual(first = "beginDate", second = "endDate", message = "End date must be after begin date!")
+@GreaterThanOrEqual(first = "beginOfSubscriptionDate", second = "endOfSubscriptionDate", message = "End date must be after begin date!")
 public class EditionCreateBindingModel {
 
     @Column(nullable = false)
@@ -43,24 +47,21 @@ public class EditionCreateBindingModel {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String regulations;
-
-
     private Long contestId;
 
     @NotEmpty(message = "There must be at least one age category!")
-    private Set<@Valid PerformanceCategoryBindingModel> performanceCategories;
+    private List<@Valid PerformanceCategoryBindingModel> performanceCategories;
 
     @NotEmpty(message = "There must be at least one age group!")
-    private Set<@Valid AgeGroupBindingModel> ageGroups;
+    private List<@Valid AgeGroupBindingModel> ageGroups;
 
     @NotNull(message = "There must be at least one jury member!")
     @NotEmpty(message = "There must be at least one jury member!")
-//    @AtLeastOneNotDeleted(message="There must be at least one jury member!")
     private Set<@NotNull(message = "Please select valid jury member!") @Valid Long> juryMembers;
 
     public EditionCreateBindingModel() {
-        this.performanceCategories = new HashSet<>();
-        this.ageGroups = new HashSet<>();
+        this.performanceCategories = new ArrayList<>();
+        this.ageGroups = new ArrayList<>();
         this.juryMembers = new HashSet<>();
     }
 
@@ -145,20 +146,20 @@ public class EditionCreateBindingModel {
         return this;
     }
 
-    public Set<PerformanceCategoryBindingModel> getPerformanceCategories() {
+    public List<PerformanceCategoryBindingModel> getPerformanceCategories() {
         return performanceCategories;
     }
 
-    public EditionCreateBindingModel setPerformanceCategories(Set<PerformanceCategoryBindingModel> performanceCategories) {
+    public EditionCreateBindingModel setPerformanceCategories(List<PerformanceCategoryBindingModel> performanceCategories) {
         this.performanceCategories = performanceCategories;
         return this;
     }
 
-    public Set<AgeGroupBindingModel> getAgeGroups() {
+    public List<AgeGroupBindingModel> getAgeGroups() {
         return ageGroups;
     }
 
-    public EditionCreateBindingModel setAgeGroups(Set<AgeGroupBindingModel> ageGroups) {
+    public EditionCreateBindingModel setAgeGroups(List<AgeGroupBindingModel> ageGroups) {
         this.ageGroups = ageGroups;
         return this;
     }

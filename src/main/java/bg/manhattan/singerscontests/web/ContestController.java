@@ -4,14 +4,12 @@ import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.ContestCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.ContestEditBindingModel;
-import bg.manhattan.singerscontests.model.binding.ManagerBindingModel;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestCreateServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestEditServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestServiceModel;
 import bg.manhattan.singerscontests.model.view.ContestViewModel;
-import bg.manhattan.singerscontests.model.view.ManagerViewModel;
 import bg.manhattan.singerscontests.model.view.UserSelectViewModel;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.UserService;
@@ -88,7 +86,10 @@ public class ContestController extends BaseController {
     }
 
     @PostMapping("/edit")
-    public String edit(@Valid ContestEditBindingModel contestEditModel, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) throws UserNotFoundException, NotFoundException {
+    public String edit(@Valid ContestEditBindingModel contestEditModel,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes,
+                       Principal principal) throws UserNotFoundException, NotFoundException {
         if (bindingResult.hasErrors()) {
             ensureOneManager(contestEditModel.getManagers(), principal);
             redirectAttributes.addFlashAttribute("contestEditModel", contestEditModel);
@@ -103,11 +104,11 @@ public class ContestController extends BaseController {
         return "redirect:/contests";
     }
 
-    private void ensureOneManager(List<ManagerBindingModel> managers, Principal principal) throws UserNotFoundException {
-        if (managers.size() == 0 || managers.stream().allMatch(ManagerBindingModel::isDeleted)) {
+    private void ensureOneManager(List<Long> managers, Principal principal) throws UserNotFoundException {
+        if (managers.size() == 0) {
             User currentUser = this.userService.getCurrentUser(principal);
             managers.clear();
-            managers.add(new ManagerBindingModel().setId(currentUser.getId()));
+            managers.add(currentUser.getId());
         }
     }
 
@@ -144,7 +145,7 @@ public class ContestController extends BaseController {
     public ContestCreateBindingModel initContestCreate(Principal principal) throws UserNotFoundException {
         User currentUser = this.userService.getCurrentUser(principal);
         ContestCreateBindingModel model = new ContestCreateBindingModel();
-        model.getManagers().add(new ManagerBindingModel().setId(currentUser.getId()));
+        model.getManagers().add(currentUser.getId());
         return model;
     }
 }

@@ -2,7 +2,7 @@ package bg.manhattan.singerscontests.model.binding;
 
 
 import bg.manhattan.singerscontests.model.IHaveNames;
-import bg.manhattan.singerscontests.model.validators.FieldMatch;
+import bg.manhattan.singerscontests.model.validators.GreaterThanOrEqual;
 import bg.manhattan.singerscontests.model.validators.PasswordComplexity;
 import bg.manhattan.singerscontests.model.validators.UniqueUserName;
 
@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
-@FieldMatch(first = "password", second = "confirmPassword", message = "Passwords not match!")
+@GreaterThanOrEqual(first = "password", second = "confirmPassword", message = "Passwords not match!")
 public class UserRegisterBindingModel implements IHaveNames {
 
     @NotBlank(message = "First name is required")

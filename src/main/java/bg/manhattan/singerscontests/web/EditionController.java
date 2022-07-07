@@ -4,7 +4,6 @@ import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.AgeGroupBindingModel;
 import bg.manhattan.singerscontests.model.binding.EditionCreateBindingModel;
-import bg.manhattan.singerscontests.model.binding.JuryMemberBindingModel;
 import bg.manhattan.singerscontests.model.binding.PerformanceCategoryBindingModel;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
@@ -26,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -80,10 +78,10 @@ public class EditionController extends BaseController {
                          RedirectAttributes redirectAttributes,
                          Principal principal) throws UserNotFoundException {
         ensureSameContestId(editionModel, contestId, bindingResult);
+        filterDeleted(editionModel);
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("editionModel", editionModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.editionModel", bindingResult);
-
             return "redirect:/editions/" + contestId + "/create";
         }
 
@@ -91,10 +89,21 @@ public class EditionController extends BaseController {
         return "redirect:/contests";
     }
 
+    private void filterDeleted(EditionCreateBindingModel editionModel) {
+        editionModel.setPerformanceCategories(
+                editionModel.getPerformanceCategories()
+                        .stream().filter(p -> !p.isDeleted())
+                        .toList());
+        editionModel.setAgeGroups(
+                editionModel.getAgeGroups()
+                        .stream().filter(a -> !a.isDeleted())
+                        .toList());
+    }
+
     private void ensureSameContestId(EditionCreateBindingModel editionModel,
                                      Long contestId,
                                      BindingResult bindingResult) {
-        if (!editionModel.getContestId().equals(contestId)){
+        if (!editionModel.getContestId().equals(contestId)) {
             bindingResult.addError(
                     new ObjectError("global",
                             "Invalid contest!"));
@@ -104,12 +113,10 @@ public class EditionController extends BaseController {
 
     private void setEditionModel(long contestId, Model model) {
         if (!model.containsAttribute("editionModel")) {
-            model.addAttribute("editionModel",
-                    new EditionCreateBindingModel()
-                            .setContestId(contestId)
-                            .setAgeGroups(Set.of(new AgeGroupBindingModel()))
-                            .setPerformanceCategories(Set.of(new PerformanceCategoryBindingModel()))
-                            );
+            EditionCreateBindingModel editionModel = new EditionCreateBindingModel();
+            editionModel.getPerformanceCategories().add(new PerformanceCategoryBindingModel());
+            editionModel.getAgeGroups().add(new AgeGroupBindingModel());
+            model.addAttribute("editionModel",editionModel);
         }
     }
 

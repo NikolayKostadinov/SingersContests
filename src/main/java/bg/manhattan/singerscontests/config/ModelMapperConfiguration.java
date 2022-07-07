@@ -2,12 +2,10 @@ package bg.manhattan.singerscontests.config;
 
 import bg.manhattan.singerscontests.model.binding.ContestCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.ContestEditBindingModel;
-import bg.manhattan.singerscontests.model.binding.ManagerBindingModel;
 import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
 import bg.manhattan.singerscontests.model.entity.Contest;
 import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.model.entity.User;
-import bg.manhattan.singerscontests.model.service.ContestCreateServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestEditServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
@@ -66,31 +64,31 @@ public class ModelMapperConfiguration {
                         .map(User::getId)
                         .toList();
 
-        Converter<List<Long>, List<ManagerBindingModel>> toManagerList = ctx -> ctx.getSource() == null ? null :
-                ctx.getSource()
-                        .stream()
-                        .map(usrId -> new ManagerBindingModel()
-                                .setId(usrId))
-                        .toList();
+//        Converter<List<Long>, List<ManagerBindingModel>> toManagerList = ctx -> ctx.getSource() == null ? null :
+//                ctx.getSource()
+//                        .stream()
+//                        .map(usrId -> new ManagerBindingModel()
+//                                .setId(usrId))
+//                        .toList();
+//
+//        mapper.createTypeMap(ContestServiceModel.class, ContestEditBindingModel.class)
+//                .addMappings(mpr -> mpr.using(toManagerList)
+//                        .map(ContestServiceModel::getManagers, ContestCreateBindingModel::setManagers));
+//
+//        Converter<List<ManagerBindingModel>, List<Long>> toManagerIdList = ctx -> (ctx.getSource() == null) ? null :
+//                ctx.getSource()
+//                        .stream()
+//                        .filter(m -> !m.isDeleted())
+//                        .map(ManagerBindingModel::getId)
+//                        .toList();
 
-        mapper.createTypeMap(ContestServiceModel.class, ContestEditBindingModel.class)
-                .addMappings(mpr -> mpr.using(toManagerList)
-                        .map(ContestServiceModel::getManagers, ContestCreateBindingModel::setManagers));
+//        mapper.createTypeMap(ContestCreateBindingModel.class, ContestCreateServiceModel.class)
+//                .addMappings(mpr -> mpr.using(toManagerIdList)
+//                        .map(ContestCreateBindingModel::getManagers, ContestCreateServiceModel::setManagers));
 
-        Converter<List<ManagerBindingModel>, List<Long>> toManagerIdList = ctx -> (ctx.getSource() == null) ? null :
-                ctx.getSource()
-                        .stream()
-                        .filter(m -> !m.isDeleted())
-                        .map(ManagerBindingModel::getId)
-                        .toList();
-
-        mapper.createTypeMap(ContestCreateBindingModel.class, ContestCreateServiceModel.class)
-                .addMappings(mpr -> mpr.using(toManagerIdList)
-                        .map(ContestCreateBindingModel::getManagers, ContestCreateServiceModel::setManagers));
-
-        mapper.createTypeMap(ContestEditBindingModel.class, ContestEditServiceModel.class)
-                .addMappings(mpr -> mpr.using(toManagerIdList)
-                        .map(ContestEditBindingModel::getManagers, ContestEditServiceModel::setManagers));
+//        mapper.createTypeMap(ContestEditBindingModel.class, ContestEditServiceModel.class)
+//                .addMappings(mpr -> mpr.using(toManagerIdList)
+//                        .map(ContestEditBindingModel::getManagers, ContestEditServiceModel::setManagers));
 
         Converter<List<Edition>, Collection<EditionListViewModel>> toEditionList = ctx -> (ctx.getSource() == null) ?
                 null :

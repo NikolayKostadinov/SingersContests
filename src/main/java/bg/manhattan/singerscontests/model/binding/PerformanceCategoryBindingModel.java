@@ -7,24 +7,13 @@ import javax.validation.constraints.NotNull;
 
 public class PerformanceCategoryBindingModel {
 
-    public Edition edition;
-
     @NotEmpty(message = "Name is required!")
-    public String name;
+    private String name;
 
     @NotNull(message = "Field is required")
-    private Boolean required;
+    private boolean required;
 
     private boolean isDeleted;
-
-    public Edition getEdition() {
-        return edition;
-    }
-
-    public PerformanceCategoryBindingModel setEdition(Edition edition) {
-        this.edition = edition;
-        return this;
-    }
 
     public String getName() {
         return name;
@@ -35,11 +24,11 @@ public class PerformanceCategoryBindingModel {
         return this;
     }
 
-    public Boolean getRequired() {
+    public boolean isRequired() {
         return required;
     }
 
-    public PerformanceCategoryBindingModel setRequired(Boolean required) {
+    public PerformanceCategoryBindingModel setRequired(boolean required) {
         this.required = required;
         return this;
     }

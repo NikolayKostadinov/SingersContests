@@ -1,6 +1,7 @@
 package bg.manhattan.singerscontests.model.binding;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
@@ -9,15 +10,15 @@ public class AgeGroupBindingModel {
     @Size(max = 50, message = "Name must be less than {max} characters!")
     private String name;
 
-    @NotEmpty(message = "Minimal age is required!")
+    @NotNull(message = "Minimal age is required!")
     @Positive(message = "Minimal age must be a positive number!")
     private Integer minAge;
 
-    @NotEmpty(message = "Maximal age is required!")
+    @NotNull(message = "Maximal age is required!")
     @Positive(message = "Maximal age must be a positive number!")
     private Integer maxAge;
 
-    private Long editionId;
+    private boolean deleted;
 
     public String getName() {
         return name;
@@ -46,12 +47,12 @@ public class AgeGroupBindingModel {
         return this;
     }
 
-    public Long getEditionId() {
-        return editionId;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public AgeGroupBindingModel setEditionId(Long editionId) {
-        this.editionId = editionId;
+    public AgeGroupBindingModel setDeleted(boolean deleted) {
+        this.deleted = deleted;
         return this;
     }
 }
