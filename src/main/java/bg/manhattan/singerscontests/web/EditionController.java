@@ -7,6 +7,7 @@ import bg.manhattan.singerscontests.model.binding.EditionCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.PerformanceCategoryBindingModel;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
+import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.model.view.ContestEditionsViewModel;
 import bg.manhattan.singerscontests.model.view.ContestViewModel;
 import bg.manhattan.singerscontests.model.view.UserSelectViewModel;
@@ -35,7 +36,10 @@ public class EditionController extends BaseController {
     private final UserService userService;
     private final ModelMapper mapper;
 
-    public EditionController(EditionService editionService, ContestService contestService, UserService userService, ModelMapper mapper) {
+    public EditionController(EditionService editionService,
+                             ContestService contestService,
+                             UserService userService,
+                             ModelMapper mapper) {
         this.editionService = editionService;
         this.contestService = contestService;
         this.userService = userService;
@@ -64,7 +68,7 @@ public class EditionController extends BaseController {
     }
 
     @GetMapping("/{contestId}/create")
-    public String createEdition(@PathVariable("contestId") Long contestId, Model model) {
+    public String createEdition(@PathVariable("contestId") Long contestId, Model model) throws NotFoundException {
         setFormTitle("Singers Contests - Create edition", model);
         setEditionModel(contestId, model);
         addJuryMembersListToModel(model);
@@ -85,7 +89,7 @@ public class EditionController extends BaseController {
             return "redirect:/editions/" + contestId + "/create";
         }
 
-        //this.contestService.create(this.mapper.map(contestModel, ContestCreateServiceModel.class));
+        this.editionService.create(this.mapper.map(editionModel, EditionServiceModel.class));
         return "redirect:/contests";
     }
 
@@ -111,9 +115,11 @@ public class EditionController extends BaseController {
     }
 
 
-    private void setEditionModel(long contestId, Model model) {
+    private void setEditionModel(long contestId, Model model) throws NotFoundException {
         if (!model.containsAttribute("editionModel")) {
-            EditionCreateBindingModel editionModel = new EditionCreateBindingModel();
+            EditionCreateBindingModel editionModel = new EditionCreateBindingModel()
+                    .setContestId(contestId)
+                    .setContestName(this.contestService.getContestById(contestId).getName());
             editionModel.getPerformanceCategories().add(new PerformanceCategoryBindingModel());
             editionModel.getAgeGroups().add(new AgeGroupBindingModel());
             model.addAttribute("editionModel",editionModel);

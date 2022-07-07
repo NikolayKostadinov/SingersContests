@@ -59,8 +59,8 @@ public class SeedServiceImpl implements SeedService {
             seedAdmin(List.of(adminRole, contestManagerRole, juryMemberRole));
             seedContestManagers(List.of(contestManagerRole));
             seedJuryMembers(List.of(juryMemberRole));
-            //todo: create JoryMembers and Users
-            // initJuryMembers(List.of(juryMemberRole));
+            //todo: create Users
+
         }
 
         if (contestRepository.count() == 0) {

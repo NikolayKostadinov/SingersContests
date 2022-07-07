@@ -49,6 +49,8 @@ public class EditionCreateBindingModel {
     private String regulations;
     private Long contestId;
 
+    private String contestName;
+
     @NotEmpty(message = "There must be at least one age category!")
     private List<@Valid PerformanceCategoryBindingModel> performanceCategories;
 
@@ -143,6 +145,15 @@ public class EditionCreateBindingModel {
 
     public EditionCreateBindingModel setContestId(Long contestId) {
         this.contestId = contestId;
+        return this;
+    }
+
+    public String getContestName() {
+        return contestName;
+    }
+
+    public EditionCreateBindingModel setContestName(String contestName) {
+        this.contestName = contestName;
         return this;
     }
 
