@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class EditionServiceModel {
 
+    private Long id;
     private Integer number;
     private EditionType editionType;
     private AgeCalculationType ageCalculationType;
@@ -27,6 +28,15 @@ public class EditionServiceModel {
         this.performanceCategories = new HashSet<>();
         this.ageGroups = new HashSet<>();
         this.juryMembers = new HashSet<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public EditionServiceModel setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public Integer getNumber() {

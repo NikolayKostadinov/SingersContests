@@ -6,6 +6,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 public class AgeGroupBindingModel {
+    private Long id;
     @NotEmpty(message = "Name is required!")
     @Size(max = 50, message = "Name must be less than {max} characters!")
     private String name;
@@ -19,6 +20,16 @@ public class AgeGroupBindingModel {
     private Integer maxAge;
 
     private boolean deleted;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public AgeGroupBindingModel setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getName() {
         return name;

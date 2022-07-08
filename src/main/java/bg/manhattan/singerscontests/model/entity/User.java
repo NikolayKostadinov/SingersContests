@@ -32,7 +32,8 @@ public class User extends PersonBaseEntity{
     @ManyToMany(mappedBy = "managers",fetch = FetchType.EAGER)
     private List<Contest> contests;
 
-    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private JuryMember juryMember;
 
     public User() {

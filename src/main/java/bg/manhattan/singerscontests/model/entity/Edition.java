@@ -5,13 +5,11 @@ import bg.manhattan.singerscontests.model.enums.EditionType;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="editions", uniqueConstraints={@UniqueConstraint(columnNames={"contest_id", "number"})})
+@Table(name = "editions", uniqueConstraints = {@UniqueConstraint(columnNames = {"contest_id", "number"})})
 public class Edition extends BaseEntity {
 
     @Column(name = "edition_type", nullable = false)
@@ -21,19 +19,19 @@ public class Edition extends BaseEntity {
     @Column(nullable = false)
     private Integer number;
 
-    @Column(name="begin_date", nullable = false)
+    @Column(name = "begin_date", nullable = false)
     private LocalDate beginDate;
 
-    @Column(name="end_date", nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-     @Column(name="begin_of_subscription", nullable = false)
+    @Column(name = "begin_of_subscription", nullable = false)
     private LocalDate beginOfSubscriptionDate;
 
-    @Column(name="end_of_subscription", nullable = false)
+    @Column(name = "end_of_subscription", nullable = false)
     private LocalDate endOfSubscriptionDate;
 
-    @Column(name="age_calculation_type")
+    @Column(name = "age_calculation_type")
     @Enumerated(EnumType.STRING)
     private AgeCalculationType ageCalculationType;
 
@@ -43,16 +41,16 @@ public class Edition extends BaseEntity {
     @ManyToOne(optional = false)
     private Contest contest;
 
-    @OneToMany(mappedBy = "edition")
+    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<PerformanceCategory> performanceCategories;
 
-    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<AgeGroup> ageGroups;
 
-    @OneToMany(mappedBy = "edition")
+    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Contestant> contestants;
 
-    @ManyToMany(mappedBy = "editions", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<JuryMember> juryMembers;
 
     public Edition() {

@@ -6,6 +6,7 @@ import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.entity.UserRole;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.repositories.ContestRepository;
+import bg.manhattan.singerscontests.repositories.JuryMemberRepository;
 import bg.manhattan.singerscontests.repositories.UserRepository;
 import bg.manhattan.singerscontests.repositories.UserRoleRepository;
 import bg.manhattan.singerscontests.services.SeedService;
@@ -19,12 +20,16 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@Transactional
 public class SeedServiceImpl implements SeedService {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final ContestRepository contestRepository;
+
+    private final JuryMemberRepository juryMemberRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService appUserDetailsService;
     private final String adminPass;
@@ -32,12 +37,13 @@ public class SeedServiceImpl implements SeedService {
     public SeedServiceImpl(UserRepository userRepository,
                            UserRoleRepository userRoleRepository,
                            ContestRepository contestRepository,
-                           PasswordEncoder passwordEncoder,
+                           JuryMemberRepository juryMemberRepository, PasswordEncoder passwordEncoder,
                            UserDetailsService appUserDetailsService,
                            @Value("${app.default.admin.password}") String adminPass) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.contestRepository = contestRepository;
+        this.juryMemberRepository = juryMemberRepository;
         this.passwordEncoder = passwordEncoder;
         this.appUserDetailsService = appUserDetailsService;
         this.adminPass = adminPass;
@@ -148,10 +154,7 @@ public class SeedServiceImpl implements SeedService {
                     .setRoles(new HashSet<>(roles))
                     .setEmail("jury" + i + "@example.com")
                     .setPassword(passwordEncoder.encode(adminPass))
-                    .setPhoneNumber("123123123")
-                    .setJuryMember(new JuryMember()
-                            .setDetails("Details for jury member " + i)
-                            .setImageUrl("https://theatre.peakview.bg/theatre/photos/BIG1371021236haigashot-agasqn.jpg"));
+                    .setPhoneNumber("123123123");
             user.setFirstName("Jury");
             user.setMiddleName("Jury");
             user.setLastName("Jury " + i);
@@ -160,6 +163,17 @@ public class SeedServiceImpl implements SeedService {
 
         userRepository.saveAll(users);
 
+        AtomicInteger ix = new AtomicInteger(0);
+
+        List<JuryMember> juryMembers = users.stream()
+                .map(user -> new JuryMember()
+                        .setUser(user)
+                        .setDetails("Details for jury member " + ix.getAndIncrement())
+                        .setImageUrl("https://theatre.peakview.bg/theatre/photos/BIG1371021236haigashot-agasqn.jpg"))
+                .toList();
+
+
+        juryMemberRepository.saveAll(juryMembers);
 
     }
 

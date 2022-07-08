@@ -11,7 +11,7 @@
 
 <main id="main" class="container" data-aos="zoom-in">
     <h1 class="display-6 text-center" th:text="|Create ${editionModel.contestName}`s Edition |"></h1>
-    <form th:action="@{/editions/{contestId}/create(contestId=${editionModel.contestId})}"
+    <form th:action="@{/editions/edit}"
           th:method="post"
           th:object="${editionModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate">
@@ -19,6 +19,8 @@
 <!--           th:each="err : ${#fields.globalErrors()}"-->
 <!--           th:text="${err}" class="text-danger">Error message</p>-->
         <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{contestId}">
+        <input type="hidden" th:field="*{contestName}">
         <div class="row">
             <div class="form-row col-md-2">
                 <label for="number" class="form-label">Edition number</label>
@@ -151,6 +153,7 @@
             <div class="row align-middle" th:name="category-row"
                  th:each="category, itemStat : *{performanceCategories}"
                  th:data-index="${itemStat.index}">
+                <input type="hidden" th:field="*{performanceCategories[__${itemStat.index}__].id}">
                 <div class="col-9">
                     <div class="form-row">
                         <input id="category-name"
@@ -200,6 +203,7 @@
             <div class="row align-middle" th:name="age-row"
                  th:each="ageGroup, itemStat : *{ageGroups}"
                  th:data-index="${itemStat.index}">
+                <input type="hidden" th:field="*{ageGroups[__${itemStat.index}__].id}">
                 <div class="col-7">
                     <div class="form-row">
                         <input th:field="*{ageGroups[__${itemStat.index}__].name}"

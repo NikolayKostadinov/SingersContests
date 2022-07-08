@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 public class PerformanceCategoryBindingModel {
 
+    private Long id;
     @NotEmpty(message = "Name is required!")
     private String name;
 
@@ -14,6 +15,15 @@ public class PerformanceCategoryBindingModel {
     private boolean required;
 
     private boolean isDeleted;
+
+    public Long getId() {
+        return id;
+    }
+
+    public PerformanceCategoryBindingModel setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getName() {
         return name;

@@ -4,6 +4,7 @@ import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.AgeGroupBindingModel;
 import bg.manhattan.singerscontests.model.binding.EditionCreateBindingModel;
+import bg.manhattan.singerscontests.model.binding.EditionEditBindingModel;
 import bg.manhattan.singerscontests.model.binding.PerformanceCategoryBindingModel;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
@@ -13,6 +14,7 @@ import bg.manhattan.singerscontests.model.view.ContestViewModel;
 import bg.manhattan.singerscontests.model.view.UserSelectViewModel;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.EditionService;
+import bg.manhattan.singerscontests.services.JuryMemberService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -35,15 +37,17 @@ public class EditionController extends BaseController {
     private final ContestService contestService;
     private final UserService userService;
     private final ModelMapper mapper;
+    private final JuryMemberService juryMemberService;
 
     public EditionController(EditionService editionService,
                              ContestService contestService,
                              UserService userService,
-                             ModelMapper mapper) {
+                             ModelMapper mapper, JuryMemberService juryMenbersService) {
         this.editionService = editionService;
         this.contestService = contestService;
         this.userService = userService;
         this.mapper = mapper;
+        this.juryMemberService = juryMenbersService;
     }
 
     @GetMapping
@@ -79,8 +83,7 @@ public class EditionController extends BaseController {
     public String create(@PathVariable("contestId") Long contestId,
                          @Valid EditionCreateBindingModel editionModel,
                          BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes,
-                         Principal principal) throws UserNotFoundException {
+                         RedirectAttributes redirectAttributes) throws UserNotFoundException, NotFoundException {
         ensureSameContestId(editionModel, contestId, bindingResult);
         filterDeleted(editionModel);
         if (bindingResult.hasErrors()) {
@@ -90,10 +93,53 @@ public class EditionController extends BaseController {
         }
 
         this.editionService.create(this.mapper.map(editionModel, EditionServiceModel.class));
-        return "redirect:/contests";
+        return "redirect:/editions/" + contestId;
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editEdition(@PathVariable("id") Long id,
+                              Model model) throws NotFoundException {
+        setFormTitle("Singers Contests - Create edition", model);
+        readEditionModel(id, model);
+        addJuryMembersListToModel(model);
+        return "editions/edition-edit";
+    }
+
+    @PostMapping("/edit")
+    public String edit(@Valid EditionEditBindingModel editionModel,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) throws UserNotFoundException, NotFoundException {
+        filterDeleted(editionModel);
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("editionModel", editionModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.editionModel", bindingResult);
+            return "redirect:/editions/edit/" + editionModel.getId();
+        }
+
+        this.editionService.create(this.mapper.map(editionModel, EditionServiceModel.class));
+        return "redirect:/editions/" + editionModel.getContestId();
+    }
+
+    private void readEditionModel(Long editionId, Model model) throws NotFoundException {
+        if (!model.containsAttribute("editionModel")) {
+            EditionServiceModel edition = this.editionService.getById(editionId);
+            EditionEditBindingModel editionModel = this.mapper.map(edition, EditionEditBindingModel.class);
+            model.addAttribute("editionModel", editionModel);
+        }
     }
 
     private void filterDeleted(EditionCreateBindingModel editionModel) {
+        editionModel.setPerformanceCategories(
+                editionModel.getPerformanceCategories()
+                        .stream().filter(p -> !p.isDeleted())
+                        .toList());
+        editionModel.setAgeGroups(
+                editionModel.getAgeGroups()
+                        .stream().filter(a -> !a.isDeleted())
+                        .toList());
+    }
+
+    private void filterDeleted(EditionEditBindingModel editionModel) {
         editionModel.setPerformanceCategories(
                 editionModel.getPerformanceCategories()
                         .stream().filter(p -> !p.isDeleted())
@@ -122,7 +168,7 @@ public class EditionController extends BaseController {
                     .setContestName(this.contestService.getContestById(contestId).getName());
             editionModel.getPerformanceCategories().add(new PerformanceCategoryBindingModel());
             editionModel.getAgeGroups().add(new AgeGroupBindingModel());
-            model.addAttribute("editionModel",editionModel);
+            model.addAttribute("editionModel", editionModel);
         }
     }
 
@@ -138,10 +184,11 @@ public class EditionController extends BaseController {
     private void addJuryMembersListToModel(Model model) {
         if (!model.containsAttribute("juryMembersList")) {
             List<UserSelectViewModel> juryMembers =
-                    this.userService
-                            .getUsersByRole(UserRoleEnum.JURY_MEMBER)
+                    this.juryMemberService
+                            .getAll()
                             .stream()
-                            .map(user -> this.mapper.map(user, UserSelectViewModel.class))
+                            .map(member -> this.mapper.map(member, UserSelectViewModel.class)
+                                    .setFullName(member.getUser().getFullName()))
                             .toList();
 
             model.addAttribute("juryMembersList", juryMembers);

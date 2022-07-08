@@ -5,10 +5,12 @@ import bg.manhattan.singerscontests.model.binding.ContestEditBindingModel;
 import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
 import bg.manhattan.singerscontests.model.entity.Contest;
 import bg.manhattan.singerscontests.model.entity.Edition;
+import bg.manhattan.singerscontests.model.entity.JuryMember;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.service.ContestEditServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
+import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.model.view.ContestEditionsViewModel;
 import bg.manhattan.singerscontests.model.view.EditionListViewModel;
 import org.modelmapper.Converter;
@@ -23,6 +25,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class ModelMapperConfiguration {
@@ -75,16 +79,16 @@ public class ModelMapperConfiguration {
 //                .addMappings(mpr -> mpr.using(toManagerList)
 //                        .map(ContestServiceModel::getManagers, ContestCreateBindingModel::setManagers));
 //
-//        Converter<List<ManagerBindingModel>, List<Long>> toManagerIdList = ctx -> (ctx.getSource() == null) ? null :
-//                ctx.getSource()
-//                        .stream()
-//                        .filter(m -> !m.isDeleted())
-//                        .map(ManagerBindingModel::getId)
-//                        .toList();
+        Converter<Set<JuryMember>, Set<Long>> toJuriMemberIdList = ctx -> (ctx.getSource() == null) ? null :
+                ctx.getSource()
+                        .stream()
+                        .map(JuryMember::getId)
+                        .collect(Collectors.toSet());
 
-//        mapper.createTypeMap(ContestCreateBindingModel.class, ContestCreateServiceModel.class)
-//                .addMappings(mpr -> mpr.using(toManagerIdList)
-//                        .map(ContestCreateBindingModel::getManagers, ContestCreateServiceModel::setManagers));
+        mapper.createTypeMap(Edition.class, EditionServiceModel.class)
+                .addMappings(mpr -> mpr.using(toJuriMemberIdList)
+                        .map(Edition::getJuryMembers, EditionServiceModel::setJuryMembers));
+
 
 //        mapper.createTypeMap(ContestEditBindingModel.class, ContestEditServiceModel.class)
 //                .addMappings(mpr -> mpr.using(toManagerIdList)

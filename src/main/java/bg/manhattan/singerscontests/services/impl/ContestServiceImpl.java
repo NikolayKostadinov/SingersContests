@@ -94,7 +94,7 @@ public class ContestServiceImpl implements ContestService {
                         .toList());
     }
 
-    private Contest getContestEntityById(Long id) throws NotFoundException {
+    public Contest getContestEntityById(Long id) throws NotFoundException {
         Contest contest = this.repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Contest", id));
         return contest;

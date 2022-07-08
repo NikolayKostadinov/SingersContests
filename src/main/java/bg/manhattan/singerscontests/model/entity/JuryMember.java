@@ -6,8 +6,14 @@ import java.util.Set;
 
 @Entity
 @Table(name="jury_members")
-public class JuryMember extends BaseEntity{
-    @OneToOne(mappedBy = "juryMember", optional = false, fetch = FetchType.EAGER)
+public class JuryMember {
+    @Id
+    @Column(name = "user_id")
+    private Long id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(nullable = false)
@@ -17,11 +23,20 @@ public class JuryMember extends BaseEntity{
     @Column(name="image_url", nullable = false)
     private String imageUrl;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "juryMembers", fetch = FetchType.EAGER)
     private Set<Edition> editions;
 
     public JuryMember() {
         this.editions = new HashSet<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public JuryMember setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public User getUser() {
