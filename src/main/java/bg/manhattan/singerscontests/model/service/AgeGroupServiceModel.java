@@ -2,6 +2,8 @@ package bg.manhattan.singerscontests.model.service;
 
 public class AgeGroupServiceModel {
     private Long id;
+
+    public Integer displayNumber;
     private String name;
     private Integer minAge;
     private Integer maxAge;
@@ -14,6 +16,15 @@ public class AgeGroupServiceModel {
 
     public AgeGroupServiceModel setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Integer getDisplayNumber() {
+        return displayNumber;
+    }
+
+    public AgeGroupServiceModel setDisplayNumber(Integer displayNumber) {
+        this.displayNumber = displayNumber;
         return this;
     }
 

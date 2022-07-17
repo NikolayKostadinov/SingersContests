@@ -10,6 +10,9 @@ public class PerformanceCategory extends BaseEntity{
     @ManyToOne(fetch = FetchType.EAGER)
     public Edition edition;
 
+    @Column(name = "display_number", nullable = false)
+    public Integer displayNumber;
+
     @Column(nullable = false)
     public String name;
 
@@ -22,6 +25,15 @@ public class PerformanceCategory extends BaseEntity{
 
     public PerformanceCategory setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public Integer getDisplayNumber() {
+        return displayNumber;
+    }
+
+    public PerformanceCategory setDisplayNumber(Integer displayNumber) {
+        this.displayNumber = displayNumber;
         return this;
     }
 

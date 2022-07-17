@@ -2,6 +2,8 @@ package bg.manhattan.singerscontests.model.service;
 
 public class PerformanceCategoryServiceModel {
     private Long id;
+
+    public Integer displayNumber;
     private String name;
     private boolean required;
 
@@ -13,6 +15,15 @@ public class PerformanceCategoryServiceModel {
 
     public PerformanceCategoryServiceModel setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public Integer getDisplayNumber() {
+        return displayNumber;
+    }
+
+    public PerformanceCategoryServiceModel setDisplayNumber(Integer displayNumber) {
+        this.displayNumber = displayNumber;
         return this;
     }
 

@@ -1,16 +1,8 @@
 package bg.manhattan.singerscontests.config;
 
-import bg.manhattan.singerscontests.model.binding.ContestCreateBindingModel;
-import bg.manhattan.singerscontests.model.binding.ContestEditBindingModel;
-import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
-import bg.manhattan.singerscontests.model.entity.Contest;
-import bg.manhattan.singerscontests.model.entity.Edition;
-import bg.manhattan.singerscontests.model.entity.JuryMember;
-import bg.manhattan.singerscontests.model.entity.User;
-import bg.manhattan.singerscontests.model.service.ContestEditServiceModel;
-import bg.manhattan.singerscontests.model.service.ContestServiceModel;
-import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
-import bg.manhattan.singerscontests.model.service.EditionServiceModel;
+import bg.manhattan.singerscontests.model.binding.*;
+import bg.manhattan.singerscontests.model.entity.*;
+import bg.manhattan.singerscontests.model.service.*;
 import bg.manhattan.singerscontests.model.view.ContestEditionsViewModel;
 import bg.manhattan.singerscontests.model.view.EditionListViewModel;
 import org.modelmapper.Converter;
@@ -26,6 +18,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -67,6 +60,99 @@ public class ModelMapperConfiguration {
                         .stream()
                         .map(User::getId)
                         .toList();
+
+
+        Converter<List<PerformanceCategoryBindingModel>, Set<PerformanceCategoryServiceModel>> toIndexedPerformanceCategory =
+                ctx -> {
+                    if (ctx.getSource() == null) {
+                        return null;
+                    }
+                    AtomicInteger pcIx = new AtomicInteger();
+
+                    return ctx.getSource()
+                            .stream()
+                            .map(pcbm -> {
+                                PerformanceCategoryServiceModel pc = mapper.map(pcbm, PerformanceCategoryServiceModel.class);
+                                pc.setDisplayNumber(pcIx.getAndIncrement());
+                                return pc;
+                            }).collect(Collectors.toSet());
+                };
+
+        Converter<Set<PerformanceCategoryServiceModel>, List<PerformanceCategoryBindingModel>> toIndexedPerformanceCategoryBindingModel =
+                ctx -> ctx.getSource() == null ? null :
+                        ctx.getSource()
+                                .stream()
+                                .sorted(Comparator.comparing(PerformanceCategoryServiceModel::getDisplayNumber))
+                                .map(pc -> mapper.map(pc, PerformanceCategoryBindingModel.class))
+                                .toList();
+
+
+        Converter<List<AgeGroupBindingModel>, Set<AgeGroupServiceModel>> toIndexedAgeGroup =
+                ctx -> {
+                    if (ctx.getSource() == null) {
+                        return null;
+                    }
+                    AtomicInteger pcIx = new AtomicInteger();
+
+                    return ctx.getSource()
+                            .stream()
+                            .map(agbm -> {
+                                AgeGroupServiceModel ag = mapper.map(agbm, AgeGroupServiceModel.class);
+                                ag.setDisplayNumber(pcIx.getAndIncrement());
+                                return ag;
+                            }).collect(Collectors.toSet());
+                };
+
+        Converter<Set<AgeGroupServiceModel>, List<AgeGroupBindingModel>> toIndexedAgeGroupBindingModel =
+                ctx -> ctx.getSource() == null ? null :
+                        ctx.getSource()
+                                .stream()
+                                .sorted(Comparator.comparing(AgeGroupServiceModel::getDisplayNumber))
+                                .map(ag -> mapper.map(ag, AgeGroupBindingModel.class))
+                                .toList();
+
+
+        mapper.addMappings(new PropertyMap<PerformanceCategoryBindingModel, PerformanceCategoryServiceModel>() {
+            @Override
+            protected void configure() {
+                skip(destination.getDisplayNumber());
+            }
+        });
+
+        mapper.addMappings(new PropertyMap<AgeGroupBindingModel, AgeGroupServiceModel>() {
+            @Override
+            protected void configure() {
+                skip(destination.getDisplayNumber());
+            }
+        });
+
+        mapper.createTypeMap(EditionCreateBindingModel.class, EditionServiceModel.class)
+                .addMappings(mpr -> mpr.using(toIndexedPerformanceCategory)
+                        .map(EditionCreateBindingModel::getPerformanceCategories, EditionServiceModel::setPerformanceCategories))
+                .addMappings(mpr -> mpr.using(toIndexedAgeGroup)
+                        .map(EditionCreateBindingModel::getAgeGroups, EditionServiceModel::setAgeGroups));
+
+        mapper.createTypeMap(EditionEditBindingModel.class, EditionServiceModel.class)
+                .addMappings(mpr -> mpr.using(toIndexedPerformanceCategory)
+                        .map(EditionEditBindingModel::getPerformanceCategories, EditionServiceModel::setPerformanceCategories))
+                .addMappings(mpr -> mpr.using(toIndexedAgeGroup)
+                        .map(EditionEditBindingModel::getAgeGroups, EditionServiceModel::setAgeGroups));
+
+        mapper.createTypeMap(EditionServiceModel.class, EditionCreateBindingModel.class)
+                .addMappings(mpr -> mpr.using(toIndexedPerformanceCategoryBindingModel)
+                        .map(EditionServiceModel::getPerformanceCategories,
+                                EditionCreateBindingModel::setPerformanceCategories))
+                .addMappings(mpr -> mpr.using(toIndexedAgeGroupBindingModel)
+                        .map(EditionServiceModel::getAgeGroups, EditionCreateBindingModel::setAgeGroups));
+
+        mapper.createTypeMap(EditionServiceModel.class, EditionEditBindingModel.class)
+                .addMappings(mpr -> mpr.using(toIndexedPerformanceCategoryBindingModel)
+                        .map(EditionServiceModel::getPerformanceCategories,
+                                EditionEditBindingModel::setPerformanceCategories))
+                .addMappings(mpr -> mpr.using(toIndexedAgeGroupBindingModel)
+                        .map(EditionServiceModel::getAgeGroups, EditionEditBindingModel::setAgeGroups));
+
+
 
 //        Converter<List<Long>, List<ManagerBindingModel>> toManagerList = ctx -> ctx.getSource() == null ? null :
 //                ctx.getSource()

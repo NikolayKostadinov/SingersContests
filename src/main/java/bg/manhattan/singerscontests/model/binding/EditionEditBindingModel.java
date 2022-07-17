@@ -21,7 +21,6 @@ import java.util.Set;
 @GreaterThanOrEqual(first = "beginDate", second = "endDate", message = "End date must be after begin date!")
 @GreaterThanOrEqual(first = "beginOfSubscriptionDate", second = "endOfSubscriptionDate", message = "End date must be after begin date!")
 @GreaterThanOrEqual(first = "beginOfSubscriptionDate", second = "beginDate", message = "The beginning of subscription must be before beginning of the contest!")
-//@UniqueInOthersEdition(numberField = "number",  contestIdField = "contestId", message = "Number must be unique")
 public class EditionEditBindingModel {
     @NotNull
     private Long id;

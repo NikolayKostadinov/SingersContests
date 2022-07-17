@@ -3,6 +3,7 @@ package bg.manhattan.singerscontests.web;
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.*;
+import bg.manhattan.singerscontests.model.entity.PerformanceCategory;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
@@ -132,17 +133,6 @@ public class EditionController extends BaseController {
     }
 
     private void filterDeleted(EditionCreateBindingModel editionModel) {
-        editionModel.setPerformanceCategories(
-                editionModel.getPerformanceCategories()
-                        .stream().filter(p -> !p.isDeleted())
-                        .toList());
-        editionModel.setAgeGroups(
-                editionModel.getAgeGroups()
-                        .stream().filter(a -> !a.isDeleted())
-                        .toList());
-    }
-
-    private void filterDeleted(EditionEditBindingModel editionModel) {
         editionModel.setPerformanceCategories(
                 editionModel.getPerformanceCategories()
                         .stream().filter(p -> !p.isDeleted())

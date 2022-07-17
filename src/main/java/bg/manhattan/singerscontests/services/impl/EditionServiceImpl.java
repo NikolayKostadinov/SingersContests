@@ -44,8 +44,8 @@ public class EditionServiceImpl implements EditionService {
         Edition edition = this.mapper.map(editionModel, Edition.class).setContest(contest);
 
         Set<JuryMember> juryMembers = getJuryMembers(editionModel, edition);
-        List<AgeGroup> ageGroups = getAgeGroups(editionModel, edition);
-        List<PerformanceCategory> categories = getCategories(editionModel, edition);
+        Set<AgeGroup> ageGroups = getAgeGroups(editionModel, edition);
+        Set<PerformanceCategory> categories = getCategories(editionModel, edition);
 
         this.editionRepository.save(edition
                 .setJuryMembers(juryMembers)
@@ -76,21 +76,21 @@ public class EditionServiceImpl implements EditionService {
                 .collect(Collectors.toSet());
     }
 
-    private List<PerformanceCategory> getCategories(EditionServiceModel editionModel, Edition edition) {
+    private Set<PerformanceCategory> getCategories(EditionServiceModel editionModel, Edition edition) {
         return editionModel.getPerformanceCategories()
                 .stream()
                 .filter(category -> !category.isDeleted())
                 .map(category -> this.mapper.map(category, PerformanceCategory.class)
                         .setEdition(edition))
-                .toList();
+                .collect(Collectors.toSet());
     }
 
-    private List<AgeGroup> getAgeGroups(EditionServiceModel editionModel, Edition edition) {
+    private Set<AgeGroup> getAgeGroups(EditionServiceModel editionModel, Edition edition) {
         return editionModel.getAgeGroups()
                 .stream()
                 .filter(ageGroup -> !ageGroup.isDeleted())
                 .map(ageGroup -> this.mapper.map(ageGroup, AgeGroup.class)
                         .setEdition(edition))
-                .toList();
+                .collect(Collectors.toSet());
     }
 }

@@ -30,7 +30,7 @@ public class User extends PersonBaseEntity{
     private Set<UserRole> roles;
 
     @ManyToMany(mappedBy = "managers",fetch = FetchType.EAGER)
-    private List<Contest> contests;
+    private Set<Contest> contests;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
@@ -85,11 +85,11 @@ public class User extends PersonBaseEntity{
         return this;
     }
 
-    public List<Contest> getContests() {
+    public Set<Contest> getContests() {
         return contests;
     }
 
-    public User setContests(List<Contest> contests) {
+    public User setContests(Set<Contest> contests) {
         this.contests = contests;
         return this;
     }

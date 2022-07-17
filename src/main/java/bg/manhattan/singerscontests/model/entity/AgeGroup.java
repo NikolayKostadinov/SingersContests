@@ -9,6 +9,9 @@ public class AgeGroup extends BaseEntity{
     @Column(length = 51, nullable = false)
     private String name;
 
+    @Column(name = "display_number", nullable = false)
+    public Integer displayNumber;
+
     @Column(name="min_age", nullable = false)
     private int minAge;
 
@@ -24,6 +27,15 @@ public class AgeGroup extends BaseEntity{
 
     public AgeGroup setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public Integer getDisplayNumber() {
+        return displayNumber;
+    }
+
+    public AgeGroup setDisplayNumber(Integer displayNumber) {
+        this.displayNumber = displayNumber;
         return this;
     }
 

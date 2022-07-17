@@ -45,13 +45,12 @@ public class Edition extends BaseEntity {
     @ManyToOne(optional = false)
     private Contest contest;
 
-    @OneToMany(mappedBy = "edition", cascade = CascadeType.ALL, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<PerformanceCategory> performanceCategories;
+    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PerformanceCategory> performanceCategories;
 
-    @OneToMany(mappedBy = "edition",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<AgeGroup> ageGroups;
+    private Set<AgeGroup> ageGroups;
 
     @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Contestant> contestants;
@@ -60,8 +59,8 @@ public class Edition extends BaseEntity {
     private Set<JuryMember> juryMembers;
 
     public Edition() {
-        this.ageGroups = new ArrayList<>();
-        this.performanceCategories = new ArrayList<>();
+        this.ageGroups = new HashSet<>();
+        this.performanceCategories = new HashSet<>();
         this.juryMembers = new HashSet<>();
         this.contestants = new HashSet<>();
     }
@@ -147,20 +146,20 @@ public class Edition extends BaseEntity {
         return this;
     }
 
-    public List<PerformanceCategory> getPerformanceCategories() {
+    public Set<PerformanceCategory> getPerformanceCategories() {
         return performanceCategories;
     }
 
-    public Edition setPerformanceCategories(List<PerformanceCategory> performanceCategories) {
+    public Edition setPerformanceCategories(Set<PerformanceCategory> performanceCategories) {
         this.performanceCategories = performanceCategories;
         return this;
     }
 
-    public List<AgeGroup> getAgeGroups() {
+    public Set<AgeGroup> getAgeGroups() {
         return ageGroups;
     }
 
-    public Edition setAgeGroups(List<AgeGroup> ageGroups) {
+    public Edition setAgeGroups(Set<AgeGroup> ageGroups) {
         this.ageGroups = ageGroups;
         return this;
     }
