@@ -4,7 +4,9 @@ import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 
 public interface EditionService {
-    void create(EditionServiceModel editionModel) throws NotFoundException;
+    void insert(EditionServiceModel editionModel) throws NotFoundException;
 
     EditionServiceModel getById(Long editionId) throws NotFoundException;
+
+    void delete(Long id);
 }

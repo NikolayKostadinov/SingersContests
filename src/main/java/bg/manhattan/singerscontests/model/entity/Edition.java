@@ -2,10 +2,14 @@ package bg.manhattan.singerscontests.model.entity;
 
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
 import bg.manhattan.singerscontests.model.enums.EditionType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,11 +45,13 @@ public class Edition extends BaseEntity {
     @ManyToOne(optional = false)
     private Contest contest;
 
-    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<PerformanceCategory> performanceCategories;
+    @OneToMany(mappedBy = "edition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<PerformanceCategory> performanceCategories;
 
-    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<AgeGroup> ageGroups;
+    @OneToMany(mappedBy = "edition",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<AgeGroup> ageGroups;
 
     @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Contestant> contestants;
@@ -54,8 +60,8 @@ public class Edition extends BaseEntity {
     private Set<JuryMember> juryMembers;
 
     public Edition() {
-        this.ageGroups = new HashSet<>();
-        this.performanceCategories = new HashSet<>();
+        this.ageGroups = new ArrayList<>();
+        this.performanceCategories = new ArrayList<>();
         this.juryMembers = new HashSet<>();
         this.contestants = new HashSet<>();
     }
@@ -141,20 +147,20 @@ public class Edition extends BaseEntity {
         return this;
     }
 
-    public Set<PerformanceCategory> getPerformanceCategories() {
+    public List<PerformanceCategory> getPerformanceCategories() {
         return performanceCategories;
     }
 
-    public Edition setPerformanceCategories(Set<PerformanceCategory> performanceCategories) {
+    public Edition setPerformanceCategories(List<PerformanceCategory> performanceCategories) {
         this.performanceCategories = performanceCategories;
         return this;
     }
 
-    public Set<AgeGroup> getAgeGroups() {
+    public List<AgeGroup> getAgeGroups() {
         return ageGroups;
     }
 
-    public Edition setAgeGroups(Set<AgeGroup> ageGroups) {
+    public Edition setAgeGroups(List<AgeGroup> ageGroups) {
         this.ageGroups = ageGroups;
         return this;
     }

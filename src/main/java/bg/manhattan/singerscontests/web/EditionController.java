@@ -2,10 +2,7 @@ package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
-import bg.manhattan.singerscontests.model.binding.AgeGroupBindingModel;
-import bg.manhattan.singerscontests.model.binding.EditionCreateBindingModel;
-import bg.manhattan.singerscontests.model.binding.EditionEditBindingModel;
-import bg.manhattan.singerscontests.model.binding.PerformanceCategoryBindingModel;
+import bg.manhattan.singerscontests.model.binding.*;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
@@ -92,7 +89,7 @@ public class EditionController extends BaseController {
             return "redirect:/editions/" + contestId + "/create";
         }
 
-        this.editionService.create(this.mapper.map(editionModel, EditionServiceModel.class));
+        this.editionService.insert(this.mapper.map(editionModel, EditionServiceModel.class));
         return "redirect:/editions/" + contestId;
     }
 
@@ -107,17 +104,23 @@ public class EditionController extends BaseController {
 
     @PostMapping("/edit")
     public String edit(@Valid EditionEditBindingModel editionModel,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes) throws UserNotFoundException, NotFoundException {
-        filterDeleted(editionModel);
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes) throws UserNotFoundException, NotFoundException {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("editionModel", editionModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.editionModel", bindingResult);
             return "redirect:/editions/edit/" + editionModel.getId();
         }
 
-        this.editionService.create(this.mapper.map(editionModel, EditionServiceModel.class));
+        this.editionService.insert(this.mapper.map(editionModel, EditionServiceModel.class));
         return "redirect:/editions/" + editionModel.getContestId();
+    }
+
+    @DeleteMapping("/delete/{contestId}/{id}")
+    public String deleteEdition(@PathVariable("contestId") Long contestId,
+                                @PathVariable("id") Long id) {
+        this.editionService.delete(id);
+        return "redirect:/editions/" + contestId;
     }
 
     private void readEditionModel(Long editionId, Model model) throws NotFoundException {

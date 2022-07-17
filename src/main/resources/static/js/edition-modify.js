@@ -40,7 +40,7 @@
 
     function createCategoryElement(index) {
         let html = "<div class=\"row align-middle\" name=\"category-row\" data-index=\"" + index + "\">\n" +
-            "   <input type=\"hidden\" id=\"performanceCategories" + index + ".id\" name=\"performanceCategories[" + index + "].id\" value=\"3\">" +
+            "   <input type=\"hidden\" id=\"performanceCategories" + index + ".id\" name=\"performanceCategories[" + index + "].id\" value=\"\">" +
             "                <div class=\"col-9\">\n" +
             "                    <div class=\"form-row\">\n" +
             "                        <input id=\"category-name\" type=\"text\" class=\"form-control\" placeholder=\"Category Name\" name=\"performanceCategories[" + index + "].name\" value=\"\">\n" +
@@ -80,15 +80,15 @@
         event.preventDefault();
         let index = Number(event.currentTarget.dataset.id);
         document.getElementsByName('ageGroups[' + index + '].name')[0].value = "Empty";
-        document.getElementsByName('ageGroups[' + index + '].minAge')[0].value = 0;
-        document.getElementsByName('ageGroups[' + index + '].maxAge')[0].value = 0;
+        document.getElementsByName('ageGroups[' + index + '].minAge')[0].value = 1;
+        document.getElementsByName('ageGroups[' + index + '].maxAge')[0].value = 1;
         document.getElementById('ageGroups' + index + '.deleted').value = true;
         document.querySelector('[name="age-row"][data-index = "' + index + '"]').hidden = true;
     }
 
     function createAgeGroupElement(index) {
         let html = "<div class=\"row align-middle\" name=\"age-row\" data-index=\"" + index + "\">\n" +
-            "<input type=\"hidden\" id=\"performanceCategories" + index + ".id\" name=\"performanceCategories[" + index + "].id\" value=\"10\">" +
+            "<input type=\"hidden\" id=\"ageGroups" + index + ".id\" name=\"ageGroups[" + index + "].id\" value=\"\">" +
             "                <div class=\"col-7\">\n" +
             "                    <div class=\"form-row\">\n" +
             "                        <input type=\"text\" class=\"form-control\" placeholder=\"Age Group Name\" id=\"ageGroups" + index + ".name\" name=\"ageGroups[" + index + "].name\" value=\"\">\n" +

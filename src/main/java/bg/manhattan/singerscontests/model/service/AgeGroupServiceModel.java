@@ -6,6 +6,8 @@ public class AgeGroupServiceModel {
     private Integer minAge;
     private Integer maxAge;
 
+    private boolean deleted;
+
     public Long getId() {
         return id;
     }
@@ -39,6 +41,15 @@ public class AgeGroupServiceModel {
 
     public AgeGroupServiceModel setMaxAge(Integer maxAge) {
         this.maxAge = maxAge;
+        return this;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public AgeGroupServiceModel setDeleted(boolean deleted) {
+        this.deleted = deleted;
         return this;
     }
 }

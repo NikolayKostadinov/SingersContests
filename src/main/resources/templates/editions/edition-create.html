@@ -151,6 +151,7 @@
             <div class="row align-middle" th:name="category-row"
                  th:each="category, itemStat : *{performanceCategories}"
                  th:data-index="${itemStat.index}">
+                    <input type="hidden" th:field="*{performanceCategories[__${itemStat.index}__].id}">
                 <div class="col-9">
                     <div class="form-row">
                         <input id="category-name"
@@ -200,6 +201,7 @@
             <div class="row align-middle" th:name="age-row"
                  th:each="ageGroup, itemStat : *{ageGroups}"
                  th:data-index="${itemStat.index}">
+                <input type="hidden" th:field="*{ageGroups[__${itemStat.index}__].id}">
                 <div class="col-7">
                     <div class="form-row">
                         <input th:field="*{ageGroups[__${itemStat.index}__].name}"

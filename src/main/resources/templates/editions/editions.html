@@ -23,12 +23,12 @@
     <div class="table-responsive-sm">
         <table class="table table-hover">
             <thead>
-                <tr>
-                    <th>Begin Date</th>
-                    <th>End Date</th>
-                    <th>Edition</th>
-                    <th>Type</th>
-                </tr>
+            <tr>
+                <th>Begin Date</th>
+                <th>End Date</th>
+                <th>Edition</th>
+                <th>Type</th>
+            </tr>
             </thead>
             <tbody>
             <tr th:each="edition : ${editionsModel.editions}" th:object="${edition}">
@@ -44,9 +44,10 @@
                 <td class="align-middle text-end pe-md-3">
                     <a th:href="@{/editions/edit/{id}(id=*{id})}" class="btn btn-sm btn-primary">
                         <i class="bi bi-pencil-square"></i> <span class="d-none d-sm-inline">Edit</span></a>
-                    <form class="d-inline" th:method="delete" th:action="@{/contests/delete/{id}(id=*{id})}">
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-x-square"></i> <span
-                                class="d-none d-sm-inline">Delete</span></button>
+                    <form class="d-inline" th:method="delete" th:action="@{/editions/delete/{contestId}/{id}(contestId=*{contestId}, id=*{id})}">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="bi bi-x-square"></i> <span class="d-none d-sm-inline">Delete</span>
+                        </button>
                     </form>
                 </td>
             </tr>
