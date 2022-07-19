@@ -33,8 +33,8 @@
     <div class="container d-flex justify-content-center justify-content-md-between">
         <div class="contact-info d-flex align-items-center">
             <i class="bi bi-envelope d-flex align-items-center"><a
-                    href="mailto:contact@example.com">contact@example.com</a></i>
-            <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
+                    th:href="|mailto:${@environment.getProperty('mail.sender')}|"><th:block th:text="${@environment.getProperty('mail.sender')}"></th:block></a></i>
+            <i class="bi bi-phone d-flex align-items-center ms-4"><span>+359 886 630 111</span></i>
         </div>
         <div class="text-white fw-bolder" sec:authorize="isAuthenticated()">
             <a th:href="@{/account/profile}" class="text-white fw-bolder">

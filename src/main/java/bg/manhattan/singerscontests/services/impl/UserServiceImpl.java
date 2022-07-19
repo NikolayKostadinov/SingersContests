@@ -8,15 +8,17 @@ import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel;
 import bg.manhattan.singerscontests.repositories.UserRepository;
+import bg.manhattan.singerscontests.services.EmailService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,20 +26,24 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper mapper;
 
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper mapper,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           EmailService emailService) {
         this.userRepository = userRepository;
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
 
     @Override
-    public void register(UserRegisterBindingModel registerDto) {
-        User user = this.mapper.map(registerDto, User.class);
+    public void register(UserServiceModel model) throws MessagingException {
+        User user = this.mapper.map(model, User.class);
         this.userRepository.save(user);
+        this.emailService.sendRegistrationEmail(model.getEmail(), model.getFullName(), new Locale("en"));
     }
 
     @Override
@@ -78,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String username, String password) throws UserNotFoundException, PasswordNotMatchesException {
         User user = getUser(username);
-        if (!passwordMatches(password, user.getPassword())){
+        if (!passwordMatches(password, user.getPassword())) {
             throw new PasswordNotMatchesException();
         }
 
@@ -88,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changeUserPassword(String username, String oldPassword, String newPassword) throws UserNotFoundException, PasswordNotMatchesException {
         User user = getUser(username);
-        if (!passwordMatches(oldPassword, user.getPassword())){
+        if (!passwordMatches(oldPassword, user.getPassword())) {
             throw new PasswordNotMatchesException();
         }
 
@@ -112,7 +118,7 @@ public class UserServiceImpl implements UserService {
     private User getUser(String username) throws UserNotFoundException {
         return this.userRepository
                 .findByUsername(username)
-                .orElseThrow(()-> new UserNotFoundException(username));
+                .orElseThrow(() -> new UserNotFoundException(username));
     }
 
     @Override

@@ -10,7 +10,7 @@ import bg.manhattan.singerscontests.repositories.JuryMemberRepository;
 import bg.manhattan.singerscontests.repositories.UserRepository;
 import bg.manhattan.singerscontests.repositories.UserRoleRepository;
 import bg.manhattan.singerscontests.services.SeedService;
-import bg.manhattan.singerscontests.utils.Utils;
+import bg.manhattan.singerscontests.util.Utils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;

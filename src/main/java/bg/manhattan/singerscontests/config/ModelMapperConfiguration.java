@@ -41,9 +41,9 @@ public class ModelMapperConfiguration {
                 passwordEncoder.encode(ctx.getSource());
 
         // encode password on the fly
-        mapper.createTypeMap(UserRegisterBindingModel.class, User.class)
+        mapper.createTypeMap(UserRegisterBindingModel.class, UserServiceModel.class)
                 .addMappings(mpr -> mpr.using(passwordHash)
-                        .map(UserRegisterBindingModel::getPassword, User::setPassword));
+                        .map(UserRegisterBindingModel::getPassword, UserServiceModel::setPassword));
 
         Converter<User, Long> toUserId = ctx -> ctx.getSource() == null ? null :
                 ctx.getSource().getId();

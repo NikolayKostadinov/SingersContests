@@ -24,3 +24,11 @@ app:
   default:
     admin:
       password: P@ssw0rd
+
+mail:
+  host: "localhost"
+  port: 1025
+  username: "office@singerscontests.bg"
+  password: ""
+  sender: "office@singerscontests.bg"
+  registration_mail_subject: "You have registered in Singers Contest System!"

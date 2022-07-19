@@ -2,7 +2,9 @@ package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.model.binding.UserLoginBindingModel;
 import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
+import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,15 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/authentication")
 public class AuthenticationController extends BaseController {
     private final UserService userService;
+    private final ModelMapper mapper;
 
-    public AuthenticationController(UserService userService) {
+    public AuthenticationController(UserService userService,
+                                    ModelMapper mapper) {
         this.userService = userService;
+        this.mapper = mapper;
     }
 
     @GetMapping("/register")
@@ -33,14 +39,15 @@ public class AuthenticationController extends BaseController {
     @PostMapping("/register")
     public String register(@Valid UserRegisterBindingModel userModel,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
+                           RedirectAttributes redirectAttributes) throws MessagingException {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userModel", userModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userModel", bindingResult);
 
             return "redirect:register";
         }
-        this.userService.register(userModel);
+        UserServiceModel model = this.mapper.map(userModel, UserServiceModel.class);
+        this.userService.register(model);
         return "redirect:/";
     }
 

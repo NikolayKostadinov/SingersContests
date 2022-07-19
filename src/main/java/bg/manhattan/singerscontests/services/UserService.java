@@ -9,6 +9,7 @@ import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel;
 
+import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import java.util.Set;
 
 public interface UserService {
 
-    void register(UserRegisterBindingModel registerDto);
+    void register(UserServiceModel registerDto) throws MessagingException;
 
     User getCurrentUser(Principal principal) throws UserNotFoundException;
 

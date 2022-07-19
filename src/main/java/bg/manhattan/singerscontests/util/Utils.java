@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.utils;
+package bg.manhattan.singerscontests.util;
 
 import java.util.Random;
 
