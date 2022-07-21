@@ -4,5 +4,6 @@ import javax.mail.MessagingException;
 import java.util.Locale;
 
 public interface EmailService{
-    void sendRegistrationEmail(String email, String fullName, Locale locale) throws MessagingException;
+
+    void sendEmail(String email, String fullName, Locale locale, String templateName) throws MessagingException;
 }

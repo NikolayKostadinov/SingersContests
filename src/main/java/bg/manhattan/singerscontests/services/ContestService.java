@@ -18,13 +18,13 @@ public interface ContestService {
 
     void delete(Long id);
 
-    void create(ContestCreateServiceModel contestModel) throws UserNotFoundException;
+    void create(ContestCreateServiceModel contestModel);
 
-    ContestServiceModel getContestById(Long id) throws NotFoundException;
+    ContestServiceModel getContestById(Long id);
 
-    void update(ContestEditServiceModel map) throws NotFoundException, UserNotFoundException;
+    void update(ContestEditServiceModel map);
 
-    ContestServiceModelWithEditions getContestByIdWithEditions(Long contestId) throws NotFoundException;
+    ContestServiceModelWithEditions getContestByIdWithEditions(Long contestId);
 
-    Contest getContestEntityById(Long contestId) throws NotFoundException;
+    Contest getContestEntityById(Long contestId);
 }

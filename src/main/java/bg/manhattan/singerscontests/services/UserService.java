@@ -3,7 +3,6 @@ package bg.manhattan.singerscontests.services;
 
 import bg.manhattan.singerscontests.exceptions.PasswordNotMatchesException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
-import bg.manhattan.singerscontests.model.binding.UserRegisterBindingModel;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
@@ -12,14 +11,13 @@ import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel
 import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 
 public interface UserService {
+    void register(UserServiceModel model, Locale locale) throws MessagingException;
 
-    void register(UserServiceModel registerDto) throws MessagingException;
-
-    User getCurrentUser(Principal principal) throws UserNotFoundException;
+    User getCurrentUser(Principal principal) ;
 
     void deleteUser(String username, String password) throws UserNotFoundException, PasswordNotMatchesException;
 
@@ -34,7 +32,7 @@ public interface UserService {
 
     List<UserServiceModel> getUsersByRole(UserRoleEnum contestManager);
 
-    void changeUserEmail(String name, String newEmail) throws UserNotFoundException;
+    void changeUserEmail(String username, String newEmail, Locale locale) throws UserNotFoundException;
 
     User getUserByRoleAndId(UserRoleEnum contestManager, Long managerId) throws UserNotFoundException;
 }

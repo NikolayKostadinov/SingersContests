@@ -10,22 +10,23 @@ import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/account")
@@ -91,7 +92,8 @@ public class AccountManageController extends BaseController {
 
         if (!emailModel.getEmail().equals(emailModel.getNewEmail())) {
             try {
-                this.userService.changeUserEmail(principal.getName(), emailModel.getNewEmail());
+                Locale locale = LocaleContextHolder.getLocale();
+                this.userService.changeUserEmail(principal.getName(), emailModel.getNewEmail(), locale);
             } catch (UserNotFoundException e) {
                 throw new UsernameNotFoundException(e.getMessage());
             }

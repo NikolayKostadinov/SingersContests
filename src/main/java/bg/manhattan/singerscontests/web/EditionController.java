@@ -1,9 +1,10 @@
 package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
-import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
-import bg.manhattan.singerscontests.model.binding.*;
-import bg.manhattan.singerscontests.model.entity.PerformanceCategory;
+import bg.manhattan.singerscontests.model.binding.AgeGroupBindingModel;
+import bg.manhattan.singerscontests.model.binding.EditionCreateBindingModel;
+import bg.manhattan.singerscontests.model.binding.EditionEditBindingModel;
+import bg.manhattan.singerscontests.model.binding.PerformanceCategoryBindingModel;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
@@ -33,19 +34,17 @@ import java.util.stream.Collectors;
 public class EditionController extends BaseController {
     private final EditionService editionService;
     private final ContestService contestService;
-    private final UserService userService;
     private final ModelMapper mapper;
     private final JuryMemberService juryMemberService;
 
     public EditionController(EditionService editionService,
                              ContestService contestService,
-                             UserService userService,
-                             ModelMapper mapper, JuryMemberService juryMenbersService) {
+                             ModelMapper mapper,
+                             JuryMemberService juryMembersService) {
         this.editionService = editionService;
         this.contestService = contestService;
-        this.userService = userService;
         this.mapper = mapper;
-        this.juryMemberService = juryMenbersService;
+        this.juryMemberService = juryMembersService;
     }
 
     @GetMapping
@@ -55,13 +54,13 @@ public class EditionController extends BaseController {
     }
 
     @GetMapping("/{contestId}")
-    public String editions(@PathVariable Long contestId, Model model) throws NotFoundException {
+    public String editions(@PathVariable Long contestId, Model model) {
         setFormTitle("Singers Contests - Editions", model);
         initEditions(model, contestId);
         return "editions/editions";
     }
 
-    private void initEditions(Model model, Long contestId) throws NotFoundException {
+    private void initEditions(Model model, Long contestId) {
         if (!model.containsAttribute("editionsModel")) {
             ContestServiceModelWithEditions contest = this.contestService.getContestByIdWithEditions(contestId);
             model.addAttribute("editionsModel",
@@ -70,7 +69,7 @@ public class EditionController extends BaseController {
     }
 
     @GetMapping("/{contestId}/create")
-    public String createEdition(@PathVariable("contestId") Long contestId, Model model) throws NotFoundException {
+    public String createEdition(@PathVariable("contestId") Long contestId, Model model) {
         setFormTitle("Singers Contests - Create edition", model);
         setEditionModel(contestId, model);
         addJuryMembersListToModel(model);
@@ -81,7 +80,7 @@ public class EditionController extends BaseController {
     public String create(@PathVariable("contestId") Long contestId,
                          @Valid EditionCreateBindingModel editionModel,
                          BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes) throws UserNotFoundException, NotFoundException {
+                         RedirectAttributes redirectAttributes) {
         ensureSameContestId(editionModel, contestId, bindingResult);
         filterDeleted(editionModel);
         if (bindingResult.hasErrors()) {
@@ -106,7 +105,7 @@ public class EditionController extends BaseController {
     @PostMapping("/edit")
     public String edit(@Valid EditionEditBindingModel editionModel,
                        BindingResult bindingResult,
-                       RedirectAttributes redirectAttributes) throws UserNotFoundException, NotFoundException {
+                       RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("editionModel", editionModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.editionModel", bindingResult);
@@ -124,7 +123,7 @@ public class EditionController extends BaseController {
         return "redirect:/editions/" + contestId;
     }
 
-    private void readEditionModel(Long editionId, Model model) throws NotFoundException {
+    private void readEditionModel(Long editionId, Model model){
         if (!model.containsAttribute("editionModel")) {
             EditionServiceModel edition = this.editionService.getById(editionId);
             EditionEditBindingModel editionModel = this.mapper.map(edition, EditionEditBindingModel.class);
@@ -154,7 +153,7 @@ public class EditionController extends BaseController {
     }
 
 
-    private void setEditionModel(long contestId, Model model) throws NotFoundException {
+    private void setEditionModel(long contestId, Model model){
         if (!model.containsAttribute("editionModel")) {
             EditionCreateBindingModel editionModel = new EditionCreateBindingModel()
                     .setContestId(contestId)
@@ -166,7 +165,7 @@ public class EditionController extends BaseController {
     }
 
     @ModelAttribute("contestList")
-    public List<ContestViewModel> initContests(HttpServletRequest request, Principal principal) throws UserNotFoundException {
+    public List<ContestViewModel> initContests(HttpServletRequest request, Principal principal) {
         return this.contestService
                 .getAllContestsByContestManager(principal, request.isUserInRole(UserRoleEnum.ADMIN.name()))
                 .stream()

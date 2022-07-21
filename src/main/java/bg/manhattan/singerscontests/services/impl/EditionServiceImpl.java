@@ -39,7 +39,7 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public void insert(EditionServiceModel editionModel) throws NotFoundException {
+    public void insert(EditionServiceModel editionModel) {
         Contest contest = contestService.getContestEntityById(editionModel.getContestId());
         Edition edition = this.mapper.map(editionModel, Edition.class).setContest(contest);
 
@@ -54,7 +54,7 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public EditionServiceModel getById(Long editionId) throws NotFoundException {
+    public EditionServiceModel getById(Long editionId) {
         Edition edition = this.editionRepository.findById(editionId)
                 .orElseThrow(() -> new NotFoundException("Edition", editionId));
         return this.mapper.map(edition, EditionServiceModel.class);

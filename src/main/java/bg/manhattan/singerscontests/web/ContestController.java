@@ -56,7 +56,7 @@ public class ContestController extends BaseController {
     public String create(@Valid ContestCreateBindingModel contestModel,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes,
-                         Principal principal) throws UserNotFoundException {
+                         Principal principal) {
         if (bindingResult.hasErrors()) {
             ensureOneManager(contestModel.getManagers(), principal);
             redirectAttributes.addFlashAttribute("contestModel", contestModel);
@@ -70,14 +70,14 @@ public class ContestController extends BaseController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable Long id) throws NotFoundException {
+    public String edit(Model model, @PathVariable Long id) {
         setFormTitle("Singers Contests - Create Contest", model);
         setContest(model, id);
         addManagersListToModel(model);
         return "contests/contest-edit";
     }
 
-    private void setContest(Model model, Long id) throws NotFoundException {
+    private void setContest(Model model, Long id) {
         if (!model.containsAttribute("contestEditModel")) {
             ContestServiceModel contest = this.contestService.getContestById(id);
             ContestCreateBindingModel contestModel = this.mapper.map(contest, ContestEditBindingModel.class);

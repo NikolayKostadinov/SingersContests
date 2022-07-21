@@ -3,7 +3,6 @@ package bg.manhattan.singerscontests.services.impl;
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.entity.Contest;
-import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestCreateServiceModel;
@@ -14,10 +13,11 @@ import bg.manhattan.singerscontests.repositories.ContestRepository;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +35,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @Cacheable("contests")
     public List<ContestServiceModel> getAllContests() {
         return this.repository.findAll()
                 .stream()
@@ -43,7 +44,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public List<ContestServiceModel> getAllContestsByContestManager(Principal principal, boolean isAdmin) throws UserNotFoundException {
+    @Cacheable("contests")
+    public List<ContestServiceModel> getAllContestsByContestManager(Principal principal, boolean isAdmin) {
         List<Contest> contests;
         if (isAdmin) {
             contests = this.repository.findAll();
@@ -58,12 +60,14 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "contests", allEntries = true)
     public void delete(Long id) {
         this.repository.deleteById(id);
     }
 
     @Override
-    public void create(ContestCreateServiceModel contestModel) throws UserNotFoundException {
+    @CacheEvict(cacheNames = "contests", allEntries = true)
+    public void create(ContestCreateServiceModel contestModel) {
         Contest contest = this.mapper.map(contestModel, Contest.class);
 
         addManagersToContest(contest, contestModel.getManagers());
@@ -71,7 +75,7 @@ public class ContestServiceImpl implements ContestService {
         this.repository.save(contest);
     }
 
-    private void addManagersToContest(Contest contest, List<Long> managers) throws UserNotFoundException {
+    private void addManagersToContest(Contest contest, List<Long> managers){
         for (Long managerId : managers) {
             if (managerId != null) {
                 contest
@@ -83,7 +87,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public ContestServiceModel getContestById(Long id) throws NotFoundException {
+    @Cacheable("contests")
+    public ContestServiceModel getContestById(Long id){
         Contest contest = getContestEntityById(id);
 
         return this.mapper.map(contest, ContestServiceModel.class)
@@ -94,14 +99,15 @@ public class ContestServiceImpl implements ContestService {
                         .toList());
     }
 
-    public Contest getContestEntityById(Long id) throws NotFoundException {
+    public Contest getContestEntityById(Long id){
         Contest contest = this.repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Contest", id));
         return contest;
     }
 
     @Override
-    public void update(ContestEditServiceModel contestModel) throws NotFoundException, UserNotFoundException {
+    @CacheEvict(cacheNames = "contests", allEntries = true)
+    public void update(ContestEditServiceModel contestModel) {
         Contest contest = getContestEntityById(contestModel.getId());
         this.mapper.map(contestModel, contest);
 
@@ -112,7 +118,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public ContestServiceModelWithEditions getContestByIdWithEditions(Long id) throws NotFoundException {
+    public ContestServiceModelWithEditions getContestByIdWithEditions(Long id) {
         Contest contest = this.repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Contest", id));
         return this.mapper.map(contest, ContestServiceModelWithEditions.class);
