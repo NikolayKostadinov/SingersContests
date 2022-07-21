@@ -19,11 +19,6 @@ spring:
   devtools:
     restart:
       enabled: true
-#logging:
-#  level:
-#    org.hibernate.sql: DEBUG
-#    org.hibernate.SQLQuery: TRACE
-#    org.hibernate.type.descriptor: TRACE
 app:
   default:
     admin:
@@ -36,3 +31,10 @@ mail:
   password: ""
   sender: "office@singerscontests.bg"
   registration_mail_subject: "You have registered in Singers Contest System!"
+
+cloudinary:
+  cloud_name: "dsylyy9iz"
+  api_key: "358932685941447"
+  api_secret: "joJrEUgJxd-F1pCI_1wj1txA8cs"
+  secure: true
+
