@@ -37,7 +37,7 @@ public class ApplicationSecurityConfiguration {
                 .antMatchers("/").permitAll()
                 .antMatchers("/authentication/register", "/authentication/login", "/authentication/login-error").anonymous()
                 //todo: Configure antMatchers for roles
-                
+
                 // forbid all other for anonymous users;
                 .anyRequest().authenticated()
             .and()

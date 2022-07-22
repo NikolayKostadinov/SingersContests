@@ -1848,3 +1848,15 @@ section {
 .fs-7 {
     font-size: 0.95rem;
 }
+
+.btn-pill {
+    border-radius: 23px;
+}
+
+.picture-holder{
+    display: block;
+    border:1px solid #ced4da;
+    height: 200px;
+    width:150px;
+    margin-bottom: 10px;
+}

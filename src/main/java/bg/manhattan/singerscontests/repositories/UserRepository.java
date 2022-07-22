@@ -21,6 +21,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE r.userRole = :role")
     List<User> findByRole(@Param("role") UserRoleEnum role);
 
+    @Query( "SELECT DISTINCT u " +
+            "FROM User u JOIN u.roles r " +
+            "WHERE r.userRole <> :role")
+    List<User> findNotInRole(@Param("role") UserRoleEnum role);
+
     @Query( "SELECT u " +
             "FROM User u JOIN u.roles r " +
             "WHERE u.id = :id AND r.userRole = :role")

@@ -90,6 +90,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserServiceModel> getPotentialJuryMembers(UserRoleEnum role) {
+        return this.userRepository.findNotInRole(role)
+                .stream()
+                .map(user -> mapper.map(user, UserServiceModel.class))
+                .toList();
+    }
+
+    @Override
     public void deleteUser(String username, String password){
         User user = getUser(username);
         if (!passwordMatches(password, user.getPassword())) {

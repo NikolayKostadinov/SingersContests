@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.model.binding.test;
+package bg.manhattan.singerscontests.model.binding;
 
 import org.springframework.web.multipart.MultipartFile;
 

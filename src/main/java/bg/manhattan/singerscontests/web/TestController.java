@@ -1,8 +1,9 @@
 package bg.manhattan.singerscontests.web;
 
-import bg.manhattan.singerscontests.model.binding.test.FileUploadBindingModel;
+import bg.manhattan.singerscontests.model.binding.FileUploadBindingModel;
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.model.entity.User;
+import bg.manhattan.singerscontests.model.enums.ResourceType;
 import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.CloudinaryService;
 import bg.manhattan.singerscontests.services.UserService;
@@ -10,13 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 
@@ -31,6 +30,13 @@ public class TestController {
         this.userService = userService;
         this.cloudinaryService = cloudinaryService;
         this.ageGroupService = ageGroupService;
+    }
+
+    @GetMapping("/err")
+    public ModelAndView errorPage(){
+        ModelAndView modelAndView = new ModelAndView("error/upload-file-error");
+        modelAndView.getModel().put("message", "File too large!");
+        return modelAndView;
     }
 
     @GetMapping("/test")
@@ -59,7 +65,7 @@ public class TestController {
             return "test/upload-picture";
         }
         User currentUser = this.userService.getCurrentUser(principal);
-        String url = cloudinaryService.uploadFile(uploadModel.getFile(), uploadModel.getTitle());
+        String url = cloudinaryService.uploadFile(uploadModel.getFile(), uploadModel.getTitle(), ResourceType.raw);
 //        cloudinaryGifService.saveGifToDB(url, model.getTitle() , currentUser);
         return url;
     }

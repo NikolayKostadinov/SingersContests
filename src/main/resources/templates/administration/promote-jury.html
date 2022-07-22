@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/header :: head}"></head>
+
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container" data-aos="zoom-in">
+    <h1 class="display-6 text-center">Promote Jury Member</h1>
+    <form th:action="@{/administration/jury}"
+          th:method="post"
+          th:object="${juriModel}"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center aos-init aos-animate">
+        <p th:if="${#fields.hasGlobalErrors()}"
+           th:each="err : ${#fields.globalErrors()}"
+           th:text="${err}" class="text-danger">Error message</p>
+        <div class="row">
+            <div class="form-row col-md-9">
+                <label for="id" class="form-label">Jury member</label>
+                <select id="id"
+                        th:field="*{id}"
+                        th:errorclass="is-invalid"
+                        type="number" class="form-select"
+                        required>
+                    <option value="">-- Choose an user --</option>
+                    <option th:each="user : ${potentialJuryMembers}"
+                            th:value="${user.id}"
+                            th:text="${user.fullName}">Option
+                    </option>
+                </select>
+                <div class="invalid-feedback" th:errors="*{id}">
+                    Error message.
+                </div>
+                <div class="row">
+                    <div class="form-row">
+                        <label th:for="*{details}" class="form-label">Details</label>
+                        <textarea id="regulations"
+                                  th:field="*{details}"
+                                  th:errorclass="is-invalid"
+                                  class="form-control"
+                                  rows="5"
+                                  required></textarea>
+                        <div class="invalid-feedback" th:errors="*{details}">
+                            Error message.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col d-flex justify-content-end pe-3">
+                <div class="text-center">
+                    <img src="#" id="picture-holder" class="picture-holder">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#chooseFileModal">
+                        Upload picture
+                    </button>
+                </div>
+            </div>
+
+            <input type="hidden" th:field="*{imageUrl}">
+
+            <div class="clearfix d-flex justify-content-end pe-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </form>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="chooseFileModal" tabindex="-1" role="dialog" aria-labelledby="chooseFileModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="file-upload" th:action="@{/api/file/upload}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chooseFileModalLabel">Choose picture to upload</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <label class="form-label" for="file"></label>
+                        <input type="file" id="file" name="file">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="upload">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+<script>
+    const form = document.getElementById('file-upload');
+
+    form.addEventListener('submit', function (event) {
+        // Prevent default HTML page refresh
+        event.preventDefault();
+
+        // Select file upload element
+        const uploadElement = document.getElementById('file');
+
+        // Extract the file (for a single file, always 0 in the list)
+        const file = uploadElement.files[0];
+
+        // Create new formData object then append file
+        const payload = new FormData();
+        const csrf = document.getElementsByName("_csrf")[0];
+        payload.append('_csrf', csrf.value);
+        payload.append('file', file);
+
+        // POST/PUT with Fetch API
+        fetch(form.action, {
+            method: "POST", // or "PUT"
+            body: payload,
+            // No content-type! With FormData obect, Fetch API sets this automatically.
+            // Doing so manually can lead to an error
+        })
+            .then(res => res.text())
+            .then(data => {
+                    const imgUrl = document.getElementById('imageUrl');
+                    const img = document.getElementById('picture-holder');
+                    img.src = data;
+                    imgUrl.value = data;
+                    const modalElement = document.getElementById('chooseFileModal');
+                    const modal = bootstrap.Modal.getInstance(modalElement);
+                    modal.hide();
+                }
+            )
+            .catch(err => alert('Cannot upload picture!'))
+    });
+</script>
+</body>
+</html>

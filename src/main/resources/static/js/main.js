@@ -283,11 +283,13 @@
     /**
      * Enable multiselects
      */
-    dashboardcode.BsMultiSelect("[data-purpose='multiselect']"); //, {placeholder: "-- Please select --"});
+    let element = document.querySelector("[data-purpose='multiselect']");
+    if (element) {
+        dashboardcode.BsMultiSelect("[data-purpose='multiselect']"); //, {placeholder: "-- Please select --"});
+    }
 
-    document.onkeydown=function(event){
-        if (event.code === 'Enter')
-        {
+    document.onkeydown = function (event) {
+        if (event.code === 'Enter') {
             event.preventDefault();
             document.querySelector('form').submit();
         }

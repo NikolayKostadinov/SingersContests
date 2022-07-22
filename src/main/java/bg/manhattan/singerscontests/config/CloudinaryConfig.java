@@ -23,6 +23,8 @@ public class CloudinaryConfig {
                 "cloud_name", env.getProperty("cloudinary.cloud_name"),
                 "api_key", env.getProperty("cloudinary.api_key"),
                 "api_secret", env.getProperty("cloudinary.api_secret"),
-                "secure", env.getProperty("cloudinary.secure")));
+                "secure", env.getProperty("cloudinary.secure"),
+                "overwrite", env.getProperty("cloudinary.override")));
+
     }
 }

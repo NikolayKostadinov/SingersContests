@@ -1,5 +1,6 @@
 package bg.manhattan.singerscontests.services.impl;
 
+import bg.manhattan.singerscontests.model.enums.ResourceType;
 import bg.manhattan.singerscontests.services.CloudinaryService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -20,13 +21,13 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     }
 
     @Override
-    public String uploadFile(MultipartFile file, String fileName) {
+    public String uploadFile(MultipartFile file, String fileName, ResourceType resourceType) {
         try {
             File uploadedFile = convertMultiPartToFile(file);
             Map params = ObjectUtils.asMap(
                     "public_id", fileName,
                     "overwrite", true,
-                    "resource_type", "raw"
+                    "resource_type", resourceType
             );
             Map uploadResult = cloudinaryConfig.uploader().upload(uploadedFile, params);
             boolean isDeleted = uploadedFile.delete();

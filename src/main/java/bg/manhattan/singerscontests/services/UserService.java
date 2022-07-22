@@ -7,6 +7,7 @@ import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel;
+import bg.manhattan.singerscontests.model.view.UserSelectViewModel;
 
 import javax.mail.MessagingException;
 import java.security.Principal;
@@ -35,4 +36,6 @@ public interface UserService {
     void changeUserEmail(String username, String newEmail, Locale locale) throws UserNotFoundException;
 
     User getUserByRoleAndId(UserRoleEnum contestManager, Long managerId) throws UserNotFoundException;
+
+    List<UserServiceModel> getPotentialJuryMembers(UserRoleEnum role);
 }
