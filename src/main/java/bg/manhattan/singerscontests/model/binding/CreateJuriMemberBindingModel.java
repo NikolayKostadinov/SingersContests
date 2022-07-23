@@ -4,13 +4,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class CreateJuriMemberBindingModel {
-    @NotNull
+    @NotNull(message = "Please choose a valid user!")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Details are required!")
     private String details;
 
-    @NotBlank
+    @NotBlank(message = "Picture is required!")
     private String imageUrl;
 
     public Long getId() {

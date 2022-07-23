@@ -1,10 +1,11 @@
 package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.model.entity.JuryMember;
-import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
+import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.service.JuryMemberServiceModel;
 import bg.manhattan.singerscontests.repositories.JuryMemberRepository;
 import bg.manhattan.singerscontests.services.JuryMemberService;
+import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class JuryMemberServiceImpl implements JuryMemberService {
     private final JuryMemberRepository repository;
     private final ModelMapper mapper;
 
-    public JuryMemberServiceImpl(JuryMemberRepository repository,
+    public JuryMemberServiceImpl(UserService userService, JuryMemberRepository repository,
                                  ModelMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;

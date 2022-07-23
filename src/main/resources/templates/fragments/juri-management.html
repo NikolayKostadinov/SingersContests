@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Jury management</title>
+</head>
+<body>
+<ul th:fragment="site-bar" class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link"
+           id="profile"
+           th:classappend="${(promote == null) ? '':'active'}"
+           th:href="@{/administration/jury}">Promote Jury Member</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           id="email"
+           th:classappend="${(edit == null) ? '':'active'}"
+           th:href="@{/administration/jury/edit}">Edit Jury Member</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           id="change-password"
+           th:classappend="${(demode == null) ? '':'active'}"
+           th:href="@{/administration/jury/demode}">Demode Jury Member</a>
+    </li>
+</ul>
+</body>
+</html>

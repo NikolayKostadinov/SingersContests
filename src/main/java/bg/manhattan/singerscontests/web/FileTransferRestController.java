@@ -9,23 +9,22 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/file")
-public class FileTransferRESTController {
+public class FileTransferRestController {
     private final CloudinaryService cloudinaryService;
 
-    public FileTransferRESTController(CloudinaryService cloudinaryService) {
+    public FileTransferRestController(CloudinaryService cloudinaryService) {
         this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<String> upload(MultipartFile file) {
         try {
-            String resultUrl = this.cloudinaryService.uploadFile(file, file.getName(), ResourceType.image);
+            String resultUrl = this.cloudinaryService.uploadFile(file, file.getOriginalFilename(), ResourceType.image);
             return ResponseEntity.ok(resultUrl);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().build();

@@ -21,4 +21,19 @@ public class UserRole extends BaseEntity{
         this.userRole = userRole;
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserRole)) return false;
+
+        UserRole userRole1 = (UserRole) o;
+
+        return getUserRole() == userRole1.getUserRole();
+    }
+
+    @Override
+    public int hashCode() {
+        return getUserRole() != null ? getUserRole().hashCode() : 0;
+    }
 }

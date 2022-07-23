@@ -45,29 +45,4 @@ public class TestController {
         model.addAttribute("ageGroup", ageGroup);
         return "test";
     }
-
-    @GetMapping("/pictures")
-    public String uploadPicture(Model model) {
-        if (!model.containsAttribute("uploadModel")) {
-            model.addAttribute("uploadModel", new FileUploadBindingModel());
-        }
-        return "test/upload-picture";
-    }
-
-    @PostMapping("/pictures")
-    public String uploadGif(@Valid FileUploadBindingModel uploadModel,
-                            Principal principal,
-                            BindingResult bindingResult,
-                            RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("uploadModel", uploadModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.uploadModel", bindingResult);
-            return "test/upload-picture";
-        }
-        User currentUser = this.userService.getCurrentUser(principal);
-        String url = cloudinaryService.uploadFile(uploadModel.getFile(), uploadModel.getTitle(), ResourceType.raw);
-//        cloudinaryGifService.saveGifToDB(url, model.getTitle() , currentUser);
-        return url;
-    }
-
 }

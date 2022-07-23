@@ -16,14 +16,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    @Query( "SELECT u " +
+    @Query( "SELECT DISTINCT u " +
             "FROM User u JOIN u.roles r " +
-            "WHERE r.userRole = :role")
+            "WHERE EXISTS (" +
+            "SELECT us " +
+            "FROM User us LEFT JOIN us.roles rl " +
+            "WHERE us.id = u.id AND rl.userRole = :role)")
     List<User> findByRole(@Param("role") UserRoleEnum role);
 
     @Query( "SELECT DISTINCT u " +
-            "FROM User u JOIN u.roles r " +
-            "WHERE r.userRole <> :role")
+            "FROM User u LEFT JOIN u.roles r " +
+            "WHERE NOT EXISTS (" +
+            "SELECT us " +
+            "FROM User us JOIN us.roles rl " +
+            "WHERE us.id = u.id AND rl.userRole = :role)")
     List<User> findNotInRole(@Param("role") UserRoleEnum role);
 
     @Query( "SELECT u " +
