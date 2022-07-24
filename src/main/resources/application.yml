@@ -14,9 +14,9 @@ spring:
       ddl-auto: update
     open-in-view: false
     defer-datasource-initialization: true
-    show-sql: true
-    properties:
-      hibernate.format_sql: true
+#    show-sql: true
+#    properties:
+#      hibernate.format_sql: true
   mvc:
     hiddenmethod:
       filter:
@@ -24,6 +24,7 @@ spring:
   devtools:
     restart:
       enabled: true
+
 # setup tomcat do not limit form post file size
 server:
   tomcat:
@@ -49,3 +50,7 @@ cloudinary:
   api_secret: "joJrEUgJxd-F1pCI_1wj1txA8cs"
   secure: true,
   override: true
+
+logging:
+  level:
+    root: info
