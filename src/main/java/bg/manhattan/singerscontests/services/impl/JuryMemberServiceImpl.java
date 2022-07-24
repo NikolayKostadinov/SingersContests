@@ -1,5 +1,6 @@
 package bg.manhattan.singerscontests.services.impl;
 
+import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.JuryMember;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.service.JuryMemberServiceModel;
@@ -35,5 +36,12 @@ public class JuryMemberServiceImpl implements JuryMemberService {
                 .stream()
                 .map(member -> this.mapper.map(member, JuryMemberServiceModel.class))
                 .toList();
+    }
+
+    @Override
+    public JuryMemberServiceModel getJuryMemberById(Long id) {
+        JuryMember juryMember = this.repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("JuryMember", id));
+        return this.mapper.map(juryMember, JuryMemberServiceModel.class);
     }
 }

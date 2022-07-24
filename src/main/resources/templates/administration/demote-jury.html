@@ -12,7 +12,7 @@
 <main id="main" class="container" data-aos="zoom-in">
     <div class="row">
         <div class="col-md-3">
-            <th:block th:insert="~{/fragments/juri-management :: site-bar}"></th:block>
+            <th:block th:insert="~{/fragments/jury-management :: site-bar}"></th:block>
         </div>
         <div class="col-md-9 mb-3" data-aos="zoom-in" data-aos-delay="100">
             <h1 class="display-6 text-center">Select Jury Members To Demode</h1>
@@ -20,13 +20,13 @@
                   th:method="post">
                     <div class="table-wrapper mt-md-4 mb-md-4 ">
                         <table class="table table-bordered table-condensed table-striped">
-                            <th:block th:if="${juriDemodeModel.members.isEmpty()}">
+                            <th:block th:if="${juryDemodeModel.members.isEmpty()}">
                                 <tr>
                                     <td colspan="2">No Users Are Members</td>
                                 </tr>
                             </th:block>
-                            <th:block th:unless="${juriDemodeModel.members.isEmpty()}">
-                                <tr th:each="user : ${juriDemodeModel.members}" th:object="${user}">
+                            <th:block th:unless="${juryDemodeModel.members.isEmpty()}">
+                                <tr th:each="user : ${juryDemodeModel.members}" th:object="${user}">
                                     <td th:text="*{fullName}"></td>
                                     <td>
                                         <input type="checkbox" name="IdsToRemove" th:value="*{id}">
@@ -47,30 +47,3 @@
 </script>
 </body>
 </html>
-
-
-<!--<div class="col-md-6" data-aos="zoom-in" data-aos-delay="100">-->
-<!--    <div class="card">-->
-<!--        <h5 class="card-header bg-primary text-white">-->
-<!--            Remove From-->
-<!--            <th:block th:text="${managerModel.userRole.name}"></th:block>-->
-<!--        </h5>-->
-<!--        <div class="table-wrapper">-->
-<!--            <table class="table table-bordered table-condensed table-striped">-->
-<!--                <th:block th:if="${managerModel.members.isEmpty()}">-->
-<!--                    <tr>-->
-<!--                        <td colspan="2">No Users Are Members</td>-->
-<!--                    </tr>-->
-<!--                </th:block>-->
-<!--                <th:block th:unless="${managerModel.members.isEmpty()}">-->
-<!--                    <tr th:each="user : ${managerModel.members}" th:object="${user}">-->
-<!--                        <td th:text="*{fullName}"></td>-->
-<!--                        <td>-->
-<!--                            <input type="checkbox" name="IdsToDelete" th:value="*{id}">-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                </th:block>-->
-<!--            </table>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->

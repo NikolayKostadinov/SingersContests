@@ -21,7 +21,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE EXISTS (" +
             "SELECT us " +
             "FROM User us LEFT JOIN us.roles rl " +
-            "WHERE us.id = u.id AND rl.userRole = :role)")
+            "WHERE us.id = u.id AND rl.userRole = :role) " +
+            "ORDER BY u.firstName, u.middleName, u.lastName")
     List<User> findByRole(@Param("role") UserRoleEnum role);
 
     @Query( "SELECT DISTINCT u " +
@@ -29,11 +30,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE NOT EXISTS (" +
             "SELECT us " +
             "FROM User us JOIN us.roles rl " +
-            "WHERE us.id = u.id AND rl.userRole = :role)")
+            "WHERE us.id = u.id AND rl.userRole = :role) " +
+            "ORDER BY u.firstName, u.middleName, u.lastName")
     List<User> findNotInRole(@Param("role") UserRoleEnum role);
 
     @Query( "SELECT u " +
             "FROM User u JOIN u.roles r " +
-            "WHERE u.id = :id AND r.userRole = :role")
+            "WHERE u.id = :id AND r.userRole = :role " +
+            "ORDER BY u.firstName, u.middleName, u.lastName")
     List<User> findByRoleAndId(@Param("role") UserRoleEnum role, @Param("id") Long id);
 }

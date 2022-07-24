@@ -10,65 +10,76 @@
 <header th:replace="~{/fragments/header :: header}">Main Navigation</header>
 
 <main id="main" class="container" data-aos="zoom-in">
-    <h1 class="display-6 text-center">Promote Jury Member</h1>
-    <form th:action="@{/administration/jury}"
-          th:method="post"
-          th:object="${juriModel}"
-          class="main-form main-form-high mx-auto col-md-9 d-flex flex-column justify-content-center aos-init aos-animate">
-        <p th:if="${#fields.hasGlobalErrors()}"
-           th:each="err : ${#fields.globalErrors()}"
-           th:text="${err}" class="text-danger">Error message</p>
-        <div class="row">
-            <div class="form-row col-md-9 mb-0">
-                <label for="id" class="form-label">Jury member</label>
-                <select id="id"
-                        th:field="*{id}"
-                        th:errorclass="is-invalid"
-                        type="number" class="form-select"
-                        required>
-                    <option value="">-- Choose an user --</option>
-                    <option th:each="user : ${potentialJuryMembers}"
-                            th:value="${user.id}"
-                            th:text="${user.fullName}">Option
-                    </option>
-                </select>
-                <div class="invalid-feedback" th:errors="*{id}">
-                    Error message.
+    <div class="row">
+        <div class="col-md-3">
+            <th:block th:insert="~{/fragments/jury-management :: site-bar}"></th:block>
+            <div id="jury-selector" class="card mt-5">
+                <div class="card-header bg-primary text-white">
+                    <h5>Select Jury Member</h5>
                 </div>
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action jury-member"
+                       th:each="jury :${juryMembers}"
+                       th:data-id="${jury.id}"
+                       th:href="@{/api/jury/{id}(id=${jury.id})}"
+                       th:text="${jury.fullName}">Jury Member #1</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-9">
+            <h1 class="display-6 text-center" id="name">Edit Jury Member Details</h1>
+            <form th:action="@{/administration/jury/edit}"
+                  th:method="post"
+                  th:object="${juryModel}"
+                  class="main-form main-form-high mx-auto d-flex flex-column justify-content-center aos-init aos-animate">
+                <p th:if="${#fields.hasGlobalErrors()}"
+                   th:each="err : ${#fields.globalErrors()}"
+                   th:text="${err}" class="text-danger">Error message</p>
                 <div class="row">
-                    <div class="form-row">
-                        <label th:for="*{details}" class="form-label">Details</label>
-                        <textarea id="regulations"
-                                  th:field="*{details}"
-                                  th:errorclass="is-invalid"
-                                  class="form-control"
-                                  rows="12"
-                                  required></textarea>
-                        <div class="invalid-feedback" th:errors="*{details}">
-                            Error message.
+                    <div class="form-row col-md-9 mb-0">
+                        <input type="hidden" th:field="*{id}">
+                        <div class="row">
+                            <div class="form-row">
+                                <label th:for="*{details}" class="form-label">Details</label>
+                                <textarea th:field="*{details}"
+                                          th:errorclass="is-invalid"
+                                          class="form-control"
+                                          rows="12"
+                                          required></textarea>
+                                <div class="invalid-feedback" th:errors="*{details}">
+                                    Error message.
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="col d-flex justify-content-end pe-3">
+                        <div class="text-center">
+                            <label class="form-label" for="picture-holder">Picture</label>
+                            <img src="#" id="picture-holder" class="picture-holder">
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#chooseFileModal">
+                                Upload picture
+                            </button>
+                            <div th:if="${#fields.hasErrors('imageUrl')}"
+                                 th:errorclass="is-valid"
+                                 th:errors="*{imageUrl}"
+                                 class="text-danger d-block">
+                                Style error message
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" th:field="*{imageUrl}">
+
+                    <div class="clearfix d-flex justify-content-end pe-3">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
                 </div>
-            </div>
-
-            <div class="col d-flex justify-content-end pe-3">
-                <div class="text-center">
-                    <label class="form-label" for="picture-holder">Picture</label>
-                    <img src="#" id="picture-holder" class="picture-holder">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#chooseFileModal">
-                        Upload picture
-                    </button>
-                </div>
-            </div>
-
-            <input type="hidden" th:field="*{imageUrl}">
-
-            <div class="clearfix d-flex justify-content-end pe-3">
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
+            </form>
         </div>
-    </form>
+    </div>
 </main>
 
 <!-- Modal -->
@@ -89,7 +100,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="upload">Upload</button>
+                    <button type="submit" class="btn btn-primary" id="upload">
+                        <span id="upload-text">Upload</span>
+                        <span id="spinner" hidden="hidden">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -122,6 +139,12 @@
         // Prevent default HTML page refresh
         event.preventDefault();
 
+        const btnUploadText = document.getElementById('upload-text');
+        btnUploadText.hidden = true;
+        const spinner = document.getElementById('spinner');
+        spinner.hidden = false;
+        spinner.parentElement.disabled = true;
+
         // Select file upload element
         const uploadElement = document.getElementById('file');
 
@@ -143,7 +166,8 @@
         })
             .then(response => {
                 if (response.status === 403) throw new Error('403 is unacceptable for me!');
-                return response.text()})
+                return response.text()
+            })
             .then(data => {
 
                     const imgUrl = document.getElementById('imageUrl');
@@ -154,16 +178,66 @@
             )
             .catch((err) => {
                 const errModalElement = document.getElementById('errorModal');
-                const errModal = new bootstrap.Modal('#errorModal', {keyboard:true})
+                const errModal = new bootstrap.Modal('#errorModal', {keyboard: true})
                 errModal.show();
                 console.log(err);
             })
-            .finally(()=>{
+            .finally(() => {
+
+                const fileInput = document.getElementById("file")
+                fileInput.value = "";
+
+                const btnUploadText = document.getElementById('upload-text');
+                btnUploadText.hidden = false;
+                const spinner = document.getElementById('spinner');
+                spinner.hidden = true;
+                spinner.parentElement.disabled = false;
+
                 const modalElement = document.getElementById('chooseFileModal');
                 const modal = bootstrap.Modal.getInstance(modalElement);
                 modal.hide();
             })
     });
+
+    /*
+    * Add event listener for each jury member button
+    * */
+
+    let juryMemberLinks = document.querySelectorAll('.jury-member');
+
+    Array.from(juryMemberLinks).forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault();
+            fetch(this.href, {
+                method: "get",
+            })
+                .then(response => {
+                    if (response.status === 403) throw new Error('403 is unacceptable for me!');
+                    return response.json()
+                })
+                .then(data => {
+                        const idElement = document.getElementById('id');
+                        const nameElement = document.getElementById('name');
+                        const detailsElement = document.getElementById('details');
+                        const pictureHolderElement = document.getElementById('picture-holder');
+                        const imageUrlElement = document.getElementById('imageUrl');
+
+                        idElement.value = data.id;
+                        nameElement.innerText = `Edit ${data.fullName}'s Details`;
+                        detailsElement.value = data.details;
+                        pictureHolderElement.src = data.imageUrl;
+                        imageUrlElement.value = data.imageUrl;
+                    }
+                )
+                .catch((err) => {
+                    const errModalElement = document.getElementById('errorModal');
+                    const errModal = new bootstrap.Modal('#errorModal', {keyboard: true})
+                    errModal.show();
+                    console.log(err);
+                })
+        });
+    });
+
 </script>
 </body>
 </html>

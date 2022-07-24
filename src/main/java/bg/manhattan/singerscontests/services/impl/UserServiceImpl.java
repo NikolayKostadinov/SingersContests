@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -112,13 +113,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createJuryMember(JuryMemberServiceModel juriModel) {
-
-        User user = this.getUsersById(juriModel.getId());
-        JuryMember juryMember = this.mapper.map(juriModel, JuryMember.class);
+    public void createJuryMember(JuryMemberServiceModel juryModel) {
+        User user = this.getUsersById(juryModel.getId());
+        JuryMember juryMember = this.mapper.map(juryModel, JuryMember.class);
         juryMember.setUser(user);
         user.setJuryMember(juryMember);
         this.addUserInRole(user);
+        this.repository.save(user);
+    }
+
+    @Override
+    public void editJuryMember(JuryMemberServiceModel juryModel) {
+        User user = this.getUsersById(juryModel.getId());
+        JuryMember juryMember = user.getJuryMember();
+        juryMember.setDetails(juryModel.getDetails());
+        juryMember.setImageUrl(juryModel.getImageUrl());
+        user.setJuryMember(juryMember);
         this.repository.save(user);
     }
 

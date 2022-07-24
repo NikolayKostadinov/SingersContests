@@ -14,4 +14,5 @@ public interface JuryMemberService {
 
     List<JuryMemberServiceModel> getAll();
 
+    JuryMemberServiceModel getJuryMemberById(Long id);
 }

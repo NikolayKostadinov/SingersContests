@@ -1868,3 +1868,11 @@ section {
     height: 520px;
     overflow-y: scroll;
 }
+
+#jury-selector{
+    height: 420px;
+}
+
+#jury-selector div.list-group{
+    overflow-y: scroll;
+}

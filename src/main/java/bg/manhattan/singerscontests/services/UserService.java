@@ -41,7 +41,9 @@ public interface UserService {
 
     User getUsersById(Long id);
 
-    void createJuryMember(JuryMemberServiceModel juriModel);
+    void createJuryMember(JuryMemberServiceModel juryModel);
+
+    void editJuryMember(JuryMemberServiceModel juryModel);
 
     void addUserInRole(Long userId, UserRoleEnum role);
 

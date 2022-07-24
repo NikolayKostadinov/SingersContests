@@ -3,10 +3,10 @@ package bg.manhattan.singerscontests.model.binding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JuriDemodeBindingModel {
+public class JuryDemodeBindingModel {
     List<Long> idsToRemove;
 
-    public JuriDemodeBindingModel() {
+    public JuryDemodeBindingModel() {
         this.idsToRemove = new ArrayList<>();
     }
 
@@ -14,7 +14,7 @@ public class JuriDemodeBindingModel {
         return idsToRemove;
     }
 
-    public JuriDemodeBindingModel setIdsToRemove(List<Long> idsToRemove) {
+    public JuryDemodeBindingModel setIdsToRemove(List<Long> idsToRemove) {
         this.idsToRemove = idsToRemove;
         return this;
     }

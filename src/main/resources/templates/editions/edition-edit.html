@@ -263,7 +263,7 @@
                     th:errorclass="is-invalid"
                     multiple="multiple"
                     data-purpose='multiselect'
-                    data-placeholder="-- Please select juri members --">
+                    data-placeholder="-- Please select jury members --">
                 <option th:each="m : ${juryMembersList}"
                         th:value="${{m.id}}"
                         th:text="${m.fullName}"

@@ -165,14 +165,14 @@ public class ModelMapperConfiguration {
 //                .addMappings(mpr -> mpr.using(toManagerList)
 //                        .map(ContestServiceModel::getManagers, ContestCreateBindingModel::setManagers));
 //
-        Converter<Set<JuryMember>, Set<Long>> toJuriMemberIdList = ctx -> (ctx.getSource() == null) ? null :
+        Converter<Set<JuryMember>, Set<Long>> toJuryMemberIdList = ctx -> (ctx.getSource() == null) ? null :
                 ctx.getSource()
                         .stream()
                         .map(JuryMember::getId)
                         .collect(Collectors.toSet());
 
         mapper.createTypeMap(Edition.class, EditionServiceModel.class)
-                .addMappings(mpr -> mpr.using(toJuriMemberIdList)
+                .addMappings(mpr -> mpr.using(toJuryMemberIdList)
                         .map(Edition::getJuryMembers, EditionServiceModel::setJuryMembers));
 
 

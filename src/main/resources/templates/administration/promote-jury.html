@@ -12,13 +12,13 @@
 <main id="main" class="container" data-aos="zoom-in">
     <div class="row">
         <div class="col-md-3">
-            <th:block th:insert="~{/fragments/juri-management :: site-bar}"></th:block>
+            <th:block th:insert="~{/fragments/jury-management :: site-bar}"></th:block>
         </div>
         <div class="col-md-9">
             <h1 class="display-6 text-center">Promote Jury Member</h1>
             <form th:action="@{/administration/jury}"
                   th:method="post"
-                  th:object="${juriModel}"
+                  th:object="${juryModel}"
                   class="main-form main-form-high mx-auto d-flex flex-column justify-content-center aos-init aos-animate">
                 <p th:if="${#fields.hasGlobalErrors()}"
                    th:each="err : ${#fields.globalErrors()}"
@@ -64,6 +64,12 @@
                                     data-bs-target="#chooseFileModal">
                                 Upload picture
                             </button>
+                            <div th:if="${#fields.hasErrors('imageUrl')}"
+                                 th:errorclass="is-valid"
+                                 th:errors="*{imageUrl}"
+                                 class="text-danger d-block">
+                                Style error message
+                            </div>
                         </div>
                     </div>
 

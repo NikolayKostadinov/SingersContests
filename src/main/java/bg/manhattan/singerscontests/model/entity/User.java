@@ -16,7 +16,7 @@ public class User extends PersonBaseEntity{
     @Column(nullable = false, unique = true, length = USER_NAME_MAX_LENGTH)
     private String username;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     private String email; // username of the user.
 
     @Column(nullable = false)

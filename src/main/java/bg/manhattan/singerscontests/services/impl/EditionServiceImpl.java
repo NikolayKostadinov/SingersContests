@@ -2,12 +2,8 @@ package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.*;
-import bg.manhattan.singerscontests.model.service.AgeGroupServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
-import bg.manhattan.singerscontests.model.service.PerformanceCategoryServiceModel;
-import bg.manhattan.singerscontests.repositories.AgeGroupRepository;
 import bg.manhattan.singerscontests.repositories.EditionRepository;
-import bg.manhattan.singerscontests.repositories.PerformanceCategoryRepository;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.JuryMemberService;
@@ -15,8 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,10 +63,7 @@ public class EditionServiceImpl implements EditionService {
         return this.juryMemberService
                 .getAllById(editionModel.getJuryMembers())
                 .stream()
-                .map(member -> {
-                    member.getEditions().add(edition);
-                    return member;
-                })
+                .peek(member -> member.getEditions().add(edition))
                 .collect(Collectors.toSet());
     }
 
