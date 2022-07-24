@@ -5,3 +5,15 @@ System for organizing of singers contests
 
 - JuryDetailsRestController
 - FileTransferRestController 
+
+## Interceptors
+- ExecutionTimeInterceptor
+- LoggingInterceptor
+
+## Events
+- PerformanceIssueEvent
+- UserChangeEmailEvent
+- UserRegisteredEvent
+
+## Schedulers
+- FinalizeEditionRegistrationScheduler
