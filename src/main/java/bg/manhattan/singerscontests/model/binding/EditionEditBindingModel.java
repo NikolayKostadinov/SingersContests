@@ -3,8 +3,6 @@ package bg.manhattan.singerscontests.model.binding;
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
 import bg.manhattan.singerscontests.model.enums.EditionType;
 import bg.manhattan.singerscontests.model.validators.GreaterThanOrEqual;
-import bg.manhattan.singerscontests.model.validators.UniqueEdition;
-import bg.manhattan.singerscontests.model.validators.UniqueInOthersEdition;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;

@@ -122,7 +122,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h5 class="text-danger text-center">Failed to upload file!</h5>
+                <h5 id="error-message" class="text-danger text-center">Operation failed!</h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -132,112 +132,7 @@
 </div>
 <th:block th:insert="~{/fragments/scripts :: baseScripts}">
 </th:block>
-<script>
-    const form = document.getElementById('file-upload');
-
-    form.addEventListener('submit', function (event) {
-        // Prevent default HTML page refresh
-        event.preventDefault();
-
-        const btnUploadText = document.getElementById('upload-text');
-        btnUploadText.hidden = true;
-        const spinner = document.getElementById('spinner');
-        spinner.hidden = false;
-        spinner.parentElement.disabled = true;
-
-        // Select file upload element
-        const uploadElement = document.getElementById('file');
-
-        // Extract the file (for a single file, always 0 in the list)
-        const file = uploadElement.files[0];
-
-        // Create new formData object then append file
-        const payload = new FormData();
-
-        // Get anti-forgery token
-        const csrf = document.getElementsByName("_csrf")[0];
-        payload.append('_csrf', csrf.value);
-        payload.append('file', file);
-
-
-        fetch(form.action, {
-            method: "POST",
-            body: payload,
-        })
-            .then(response => {
-                if (response.status === 403) throw new Error('403 is unacceptable for me!');
-                return response.text()
-            })
-            .then(data => {
-
-                    const imgUrl = document.getElementById('imageUrl');
-                    const img = document.getElementById('picture-holder');
-                    img.src = data;
-                    imgUrl.value = data;
-                }
-            )
-            .catch((err) => {
-                const errModalElement = document.getElementById('errorModal');
-                const errModal = new bootstrap.Modal('#errorModal', {keyboard: true})
-                errModal.show();
-                console.log(err);
-            })
-            .finally(() => {
-
-                const fileInput = document.getElementById("file")
-                fileInput.value = "";
-
-                const btnUploadText = document.getElementById('upload-text');
-                btnUploadText.hidden = false;
-                const spinner = document.getElementById('spinner');
-                spinner.hidden = true;
-                spinner.parentElement.disabled = false;
-
-                const modalElement = document.getElementById('chooseFileModal');
-                const modal = bootstrap.Modal.getInstance(modalElement);
-                modal.hide();
-            })
-    });
-
-    /*
-    * Add event listener for each jury member button
-    * */
-
-    let juryMemberLinks = document.querySelectorAll('.jury-member');
-
-    Array.from(juryMemberLinks).forEach(link => {
-        link.addEventListener('click', function (event) {
-            event.preventDefault();
-            fetch(this.href, {
-                method: "get",
-            })
-                .then(response => {
-                    if (response.status === 403) throw new Error('403 is unacceptable for me!');
-                    return response.json()
-                })
-                .then(data => {
-                        const idElement = document.getElementById('id');
-                        const nameElement = document.getElementById('name');
-                        const detailsElement = document.getElementById('details');
-                        const pictureHolderElement = document.getElementById('picture-holder');
-                        const imageUrlElement = document.getElementById('imageUrl');
-
-                        idElement.value = data.id;
-                        nameElement.innerText = `Edit ${data.fullName}'s Details`;
-                        detailsElement.value = data.details;
-                        pictureHolderElement.src = data.imageUrl;
-                        imageUrlElement.value = data.imageUrl;
-                    }
-                )
-                .catch((err) => {
-                    const errModalElement = document.getElementById('errorModal');
-                    const errModal = new bootstrap.Modal('#errorModal', {keyboard: true})
-                    errModal.show();
-                    console.log(err);
-                })
-        });
-    });
-
-</script>
+<script th:src="@{/js/upload-picture.js}"></script>
+<script th:src="@{/js/load-jury-member.js}"></script>
 </body>
 </html>

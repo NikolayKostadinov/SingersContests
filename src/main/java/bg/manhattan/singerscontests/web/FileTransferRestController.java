@@ -1,6 +1,7 @@
 package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.model.enums.ResourceType;
+import bg.manhattan.singerscontests.model.view.FileViewModel;
 import bg.manhattan.singerscontests.services.CloudinaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +16,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/file")
 public class FileTransferRestController {
-    private final CloudinaryService cloudinaryService;
 
-    public FileTransferRestController(CloudinaryService cloudinaryService) {
+    private final CloudinaryService cloudinaryService;
+    public FileTransferRestController(CloudinaryService cloudinaryService                                      ) {
         this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(MultipartFile file) {
+    public ResponseEntity<FileViewModel> upload(MultipartFile file) {
         try {
             String resultUrl = this.cloudinaryService.uploadFile(file, file.getOriginalFilename(), ResourceType.image);
-            return ResponseEntity.ok(resultUrl);
+            return ResponseEntity.ok(new FileViewModel(resultUrl));
         } catch (Exception ex) {
             return ResponseEntity.badRequest().build();
         }

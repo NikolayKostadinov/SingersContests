@@ -15,7 +15,6 @@ public class InterceptorConfigurator implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new LoggingInterceptor());
         registry.addInterceptor(executionTimeInterceptor);
     }
 }

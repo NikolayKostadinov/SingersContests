@@ -42,7 +42,9 @@ mail:
   username: "office@singerscontests.bg"
   password: ""
   sender: "office@singerscontests.bg"
+  admin: "office@singerscontests.bg"
   registration_mail_subject: "You have registered in Singers Contest System!"
+  performance_issue_mail_subject: "There was an performance issue!"
 
 cloudinary:
   cloud_name: "dsylyy9iz"

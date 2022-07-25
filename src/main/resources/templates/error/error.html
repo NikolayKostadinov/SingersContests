@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/header :: head}"></head>
+
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container" th:object="${error}">
+    <div class="d-flex align-items-center justify-content-center" style="height: 350px;">
+        <div class="d-block text-center" width="50%">
+            <img src="/images/oops.png" class="d-block">
+            <p class="text-danger fw-bold fs-1" th:text="*{#strings.toUpperCase(message)}"></p>
+            <p th:text="*{details}"></p>
+            <a class="btn btn-primary btn-pill" th:href="@{/}"><span class="mx-3">Go Back</span></a>
+        </div>
+    </div>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+</body>
+</html>

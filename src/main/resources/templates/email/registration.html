@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,9 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-<table>
-    <h1 style="color: #4173a1;">Welcome to Singers Contests System</h1>
-</table>
+<h1 style="color: #4173a1;">Welcome to Singers Contests System</h1>
 <p>
     Dear <th:block th:text="${fullName}">User</th:block>!
 </p>

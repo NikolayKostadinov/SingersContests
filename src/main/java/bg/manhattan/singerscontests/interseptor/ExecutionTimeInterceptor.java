@@ -54,14 +54,13 @@ public class ExecutionTimeInterceptor implements HandlerInterceptor {
             source = ((HandlerMethod) handler).getMethod().toString();
         }
 
-        if (LOGGER.isInfoEnabled()) {
+        if (LOGGER.isInfoEnabled() && handler instanceof HandlerMethod) {
             LOGGER.info("[" + source + "] executeTime : " + executionTime + "ms");
         }
 
         // todo: make event handler to mail for performance issue
-        if (endTime > maxExecutionTime) {
+        if (executionTime > maxExecutionTime) {
             this.eventPublisher.publishEvent(
-
                     new PerformanceIssueEvent(this,
                             new PerformanceIssueViewModel(source, executionTime)));
         }

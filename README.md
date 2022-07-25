@@ -8,7 +8,6 @@ System for organizing of singers contests
 
 ## Interceptors
 - ExecutionTimeInterceptor
-- LoggingInterceptor
 
 ## Events
 - PerformanceIssueEvent

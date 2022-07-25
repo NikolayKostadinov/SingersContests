@@ -10,4 +10,8 @@ public class PerformanceIssueEvent extends ApplicationEvent {
         super(source);
         this.performanceProblem = performanceProblem;
     }
+
+    public PerformanceIssueViewModel getPerformanceProblem() {
+        return performanceProblem;
+    }
 }

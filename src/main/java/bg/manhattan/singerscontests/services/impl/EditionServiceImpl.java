@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,6 +59,13 @@ public class EditionServiceImpl implements EditionService {
     @Override
     public void delete(Long id) {
         this.editionRepository.deleteById(id);
+    }
+
+    @Override
+    public List<LocalDate> getDatesForMonth(int month, int year) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.withDayOfMonth(start.getMonth().length(start.isLeapYear()));
+        return this.editionRepository.findAllByBeginDateIsBetween(start, end);
     }
 
     private Set<JuryMember> getJuryMembers(EditionServiceModel editionModel, Edition edition) {

@@ -7,16 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<body>
-<h1 style="color: #4173a1;">Welcome to Singers Contests System</h1>
-<p>
-    Dear <th:block th:text="${fullName}">User</th:block>!
-</p>
-<p>
-    Your email in the system was changed successfully!
-</p>
-
-Best regards,
-The Singers contest team.
+<body th:object = "${issue}">
+    <h1 style="color: #4173a1;">There were a performance issue!</h1>
+    <p th:text="|The *{source} was executed too slow!|"></p>
+    <p th:text="|The execution time was *{executionTime}ms!|"></p>
+    <p>Please see if there is something wrong!</p>
 </body>
 </html>

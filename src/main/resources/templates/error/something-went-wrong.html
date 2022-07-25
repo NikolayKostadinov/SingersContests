@@ -9,13 +9,12 @@
 
 <header th:replace="~{/fragments/header :: header}">Main Navigation</header>
 
-<main id="main" class="container" th:object="${errorMessage}">
+<main id="main" class="container" th:object="${error}">
     <div class="d-flex align-items-center justify-content-center" style="height: 350px;">
         <div class="d-block text-center" width="50%">
             <img src="/images/oops.png" class="d-block">
-            <p class="text-danger fw-bold fs-1" th:text="*{#strings.toUpperCase(message)}"></p>
-            <p th:text="*{details}"></p>
-            <button type="button" class="btn btn-primary btn-pill" onclick="history.back()"><span class="mx-3">Go Back</span></button>
+            <p class="text-danger fw-bold fs-1">SOMETHING WENT WRONG</p>
+            <a class="btn btn-primary btn-pill" th:href="@{/}"><span class="mx-3">Go Back</span></a>
         </div>
     </div>
 </main>
