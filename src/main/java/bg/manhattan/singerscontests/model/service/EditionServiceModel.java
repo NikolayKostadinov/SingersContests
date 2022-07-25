@@ -155,4 +155,9 @@ public class EditionServiceModel {
         this.juryMembers = juryMembers;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return this.contestName + " - " + this.number + " Edition";
+    }
 }

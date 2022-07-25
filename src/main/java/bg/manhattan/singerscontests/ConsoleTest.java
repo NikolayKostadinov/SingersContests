@@ -1,5 +1,7 @@
 package bg.manhattan.singerscontests;
 
+import bg.manhattan.singerscontests.model.pageing.Paged;
+import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.services.EditionService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,7 +19,12 @@ public class ConsoleTest implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<LocalDate> dates = this.editionService.getDatesForMonth(7,2022);
-        dates.stream().forEach(System.out::println);
+        Paged<EditionServiceModel> editions = this.editionService.getFutureEditions(1, 3);
+        editions.getPage()
+                .stream()
+                .forEach(System.out::println);
+
+        System.out.println("Page number: " + editions.getPaging().getPageNumber());
+        System.out.println("Page size: " + editions.getPaging().getPageSize());
     }
 }

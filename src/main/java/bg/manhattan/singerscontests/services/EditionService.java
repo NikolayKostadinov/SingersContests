@@ -1,6 +1,7 @@
 package bg.manhattan.singerscontests.services;
 
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
+import bg.manhattan.singerscontests.model.pageing.Paged;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,4 +14,6 @@ public interface EditionService {
     void delete(Long id);
 
     List<LocalDate> getDatesForMonth(int month, int year);
+
+    Paged<EditionServiceModel> getFutureEditions(int pageNumber, int size);
 }
