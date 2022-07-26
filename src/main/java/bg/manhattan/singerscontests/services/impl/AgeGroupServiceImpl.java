@@ -1,11 +1,12 @@
 package bg.manhattan.singerscontests.services.impl;
 
+import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.repositories.EditionRepository;
 import bg.manhattan.singerscontests.services.AgeGroupService;
-import bg.manhattan.singerscontests.services.age_calculation.AgeCalculatorService;
+import bg.manhattan.singerscontests.services.AgeCalculatorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class AgeGroupServiceImpl implements AgeGroupService {
     public AgeGroup getAgeGroup(long editionId, LocalDate birthDate) {
         Edition edition = this.editionRepository
                 .findById(editionId)
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find edition Id: " + editionId));
+                .orElseThrow(()->new NotFoundException("Edition", editionId));
         AgeCalculationDto data = this.modelMapper.map(edition, AgeCalculationDto.class);
         data.setBirthDate(birthDate);
 

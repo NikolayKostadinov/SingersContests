@@ -1,7 +1,8 @@
-package bg.manhattan.singerscontests.services.age_calculation.impl;
+package bg.manhattan.singerscontests.unit_test.services.age_calculators;
 
 import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
+import bg.manhattan.singerscontests.services.age_calculators.YearOfBirthAgeCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ class YearOfBirthAgeCalculatorTest {
     private YearOfBirthAgeCalculator handler;
 
     @BeforeEach
-    void Initialize() {
+    void setUp() {
         this.handler = new YearOfBirthAgeCalculator();
     }
 

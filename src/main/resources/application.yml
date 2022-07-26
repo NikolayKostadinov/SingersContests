@@ -38,7 +38,7 @@ app:
 
 mail:
   host: "localhost"
-  port: 1025
+  port: 65000
   username: "office@singerscontests.bg"
   password: ""
   sender: "office@singerscontests.bg"
