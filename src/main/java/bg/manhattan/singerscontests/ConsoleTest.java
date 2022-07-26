@@ -4,10 +4,12 @@ import bg.manhattan.singerscontests.model.pageing.Paged;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.services.EditionService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+//todo: delete test command line runner!!!
 
 @Component
 public class ConsoleTest implements CommandLineRunner {
@@ -19,12 +21,6 @@ public class ConsoleTest implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Paged<EditionServiceModel> editions = this.editionService.getFutureEditions(1, 3);
-        editions.getPage()
-                .stream()
-                .forEach(System.out::println);
 
-        System.out.println("Page number: " + editions.getPaging().getPageNumber());
-        System.out.println("Page size: " + editions.getPaging().getPageSize());
     }
 }

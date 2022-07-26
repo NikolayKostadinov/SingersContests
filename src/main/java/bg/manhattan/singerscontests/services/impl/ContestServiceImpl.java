@@ -1,7 +1,6 @@
 package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
-import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.entity.Contest;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
@@ -15,6 +14,9 @@ import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -45,18 +47,20 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     @Cacheable("contests")
-    public List<ContestServiceModel> getAllContestsByContestManager(Principal principal, boolean isAdmin) {
-        List<Contest> contests;
+    public Page<ContestServiceModel> getAllContestsByContestManager(Principal principal, boolean isAdmin, int pageNumber, int size) {
+        Page<Contest> contests;
+        Sort sort = Sort.by(Sort.Direction.ASC, "name");
+        PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
+
         if (isAdmin) {
-            contests = this.repository.findAll();
+            contests = this.repository.findAll(request);
         } else {
             User currentUser = this.userService.getCurrentUser(principal);
-            contests = this.repository.findAllByManagersContaining(currentUser);
+            contests = this.repository.findAllByManagersContaining(currentUser, request);
         }
+
         return contests
-                .stream()
-                .map(contest -> this.mapper.map(contest, ContestServiceModel.class))
-                .collect(Collectors.toList());
+                .map(contest -> this.mapper.map(contest, ContestServiceModel.class));
     }
 
     @Override

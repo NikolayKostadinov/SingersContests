@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{/fragments/header :: head}"></head>
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container" data-aos="fade-up" th:object="${editionDetails}">
+    <div class="row">
+        <div class="offset-md-3 col-md-6 col-8">
+
+        </div>
+    </div>
+    <!-- ======= Jury Section ======= -->
+    <section id="jury" class="team section-bg">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h1 class="display-6 text-center" th:text="|*{contestName} - *{number} Edition|">Contests list</h1>
+                <h3>Our Honorable Jury Members</h3>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100"
+                     th:each="jury, indexator : ${editionDetails.juryMembers}" th:object="${jury}">
+                    <div class="member">
+                        <div class="member-img">
+                            <img th:src="*{imageUrl}" class="img-fluid" alt="" width="100%">
+                        </div>
+                        <div class="member-info">
+                            <h4 th:text="*{fullName}"></h4>
+                            <a data-bs-toggle="collapse" th:href="${'#seeMore'+ indexator.index}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                               see details ...
+                            </a>
+                            <div th:id="${'seeMore'+ indexator.index}" class="collapse">
+                                <span th:text="*{details}">Chief Executive Officer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="regulations" class="mt-md-5">
+        <h2 class="text-center">Regulations</h2>
+        <pre class="text-justify font-weight-normal mt-md-5" th:text="*{regulations}"></pre>
+    </section>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

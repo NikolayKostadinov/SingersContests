@@ -97,6 +97,10 @@ public class UserServiceModel {
         return this;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -104,15 +108,6 @@ public class UserServiceModel {
     public UserServiceModel setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
-    }
-
-    public String getFullName() {
-        if (this.fullName == null) {
-            this.fullName = Stream.of(this.getFirstName(), this.getMiddleName(), this.getLastName())
-                    .filter(n -> n != null && !n.isEmpty())
-                    .collect(Collectors.joining(" "));
-        }
-        return this.fullName;
     }
 
     public Set<String> getRoles() {

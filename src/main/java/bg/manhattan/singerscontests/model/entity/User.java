@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.USER_NAME_MAX_LENGTH;
 
@@ -25,6 +27,9 @@ public class User extends PersonBaseEntity{
 
     @Column(name="phone_number", nullable = false)
     private String phoneNumber; // password of the user.
+
+    @Transient
+    private String fullName;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles;
@@ -74,6 +79,15 @@ public class User extends PersonBaseEntity{
     public User setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
+    }
+
+    public String getFullName() {
+        if (this.fullName == null) {
+            this.fullName = Stream.of(this.getFirstName(), this.getMiddleName(), this.getLastName())
+                    .filter(n -> n != null && !n.isEmpty())
+                    .collect(Collectors.joining(" "));
+        }
+        return this.fullName;
     }
 
     public Set<UserRole> getRoles() {

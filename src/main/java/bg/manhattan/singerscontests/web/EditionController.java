@@ -1,11 +1,14 @@
 package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
+import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.AgeGroupBindingModel;
 import bg.manhattan.singerscontests.model.binding.EditionCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.EditionEditBindingModel;
 import bg.manhattan.singerscontests.model.binding.PerformanceCategoryBindingModel;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
+import bg.manhattan.singerscontests.model.pageing.Paged;
+import bg.manhattan.singerscontests.model.pageing.Paging;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.model.view.ContestEditionsViewModel;
@@ -16,6 +19,7 @@ import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.JuryMemberService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,8 +52,13 @@ public class EditionController extends BaseController {
     }
 
     @GetMapping
-    public String contests(Model model) {
+    public String contests(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+                           @RequestParam(value = "size", required = false, defaultValue = "7") int size,
+                           Model model,
+                           HttpServletRequest request,
+                           Principal principal) {
         setFormTitle("Singers Contests - Contests", model);
+        addContestsToModel(model, pageNumber, size, request, principal);
         return "editions/contests";
     }
 
@@ -164,13 +173,13 @@ public class EditionController extends BaseController {
         }
     }
 
-    @ModelAttribute("contestList")
-    public List<ContestViewModel> initContests(HttpServletRequest request, Principal principal) {
-        return this.contestService
-                .getAllContestsByContestManager(principal, request.isUserInRole(UserRoleEnum.ADMIN.name()))
-                .stream()
-                .map(contest -> this.mapper.map(contest, ContestViewModel.class))
-                .collect(Collectors.toList());
+    public void addContestsToModel(Model model, int pageNumber, int size, HttpServletRequest request, Principal principal) {
+        if (!model.containsAttribute("contestList")) {
+            Page<ContestViewModel> contests = this.contestService
+                    .getAllContestsByContestManager(principal, request.isUserInRole(UserRoleEnum.ADMIN.name()), pageNumber, size)
+                    .map(contest -> this.mapper.map(contest, ContestViewModel.class));
+            model.addAttribute("contestList", new Paged<>(contests, Paging.of(contests.getTotalPages(), pageNumber, size)));
+        }
     }
 
     private void addJuryMembersListToModel(Model model) {

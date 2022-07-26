@@ -5,6 +5,7 @@ import bg.manhattan.singerscontests.model.entity.*;
 import bg.manhattan.singerscontests.model.service.*;
 import bg.manhattan.singerscontests.model.view.ContestEditionsViewModel;
 import bg.manhattan.singerscontests.model.view.EditionListViewModel;
+import bg.manhattan.singerscontests.model.view.JuryDetailsViewModel;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -60,7 +61,6 @@ public class ModelMapperConfiguration {
                         .stream()
                         .map(User::getId)
                         .toList();
-
 
         Converter<List<PerformanceCategoryBindingModel>, Set<PerformanceCategoryServiceModel>> toIndexedPerformanceCategory =
                 ctx -> {
@@ -174,6 +174,10 @@ public class ModelMapperConfiguration {
         mapper.createTypeMap(Edition.class, EditionServiceModel.class)
                 .addMappings(mpr -> mpr.using(toJuryMemberIdList)
                         .map(Edition::getJuryMembers, EditionServiceModel::setJuryMembers));
+
+        mapper.createTypeMap(JuryMemberServiceModel.class, JuryDetailsViewModel.class)
+                .addMapping(src->src.getUser().getFullName(), JuryDetailsViewModel::setFullName);
+
 
 
 //        mapper.createTypeMap(ContestEditBindingModel.class, ContestEditServiceModel.class)

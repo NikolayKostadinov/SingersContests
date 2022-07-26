@@ -1307,6 +1307,7 @@ section {
 
 .team .member .member-info {
     padding: 25px 15px;
+    color: #222222;
 }
 
 .team .member .member-info h4 {
@@ -1874,5 +1875,11 @@ section {
 }
 
 #jury-selector div.list-group{
+    overflow-y: scroll;
+}
+
+#regulations pre{
+    white-space: pre-wrap;
+    max-height: 500px ;
     overflow-y: scroll;
 }

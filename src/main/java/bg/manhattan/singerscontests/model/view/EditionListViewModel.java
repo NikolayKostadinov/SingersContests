@@ -9,6 +9,8 @@ public class EditionListViewModel {
 
     private Long contestId;
 
+    private String contestName;
+
     private Integer number;
 
     private EditionType editionType;
@@ -32,6 +34,15 @@ public class EditionListViewModel {
 
     public EditionListViewModel setContestId(Long contestId) {
         this.contestId = contestId;
+        return this;
+    }
+
+    public String getContestName() {
+        return contestName;
+    }
+
+    public EditionListViewModel setContestName(String contestName) {
+        this.contestName = contestName;
         return this;
     }
 

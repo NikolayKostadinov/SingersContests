@@ -1,7 +1,8 @@
 package bg.manhattan.singerscontests.services;
 
+import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
-import bg.manhattan.singerscontests.model.pageing.Paged;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,5 +16,7 @@ public interface EditionService {
 
     List<LocalDate> getDatesForMonth(int month, int year);
 
-    Paged<EditionServiceModel> getFutureEditions(int pageNumber, int size);
+    Page<EditionServiceModel> getFutureEditions(int pageNumber, int size);
+
+    EditionDetailsServiceModel getEditionDetails(Long editionId);
 }

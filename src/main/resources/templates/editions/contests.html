@@ -8,12 +8,12 @@
 
 <header th:replace="~{/fragments/header :: header}">Main Navigation</header>
 
-<main id="main" class="container" data-aos="zoom-in">
+<main id="main" class="container">
     <h1 class="display-6 text-center ">Manage editions</h1>
     <div class="table-responsive-sm">
         <table class="table table-hover">
             <tbody>
-            <tr th:each="contest : ${contestList}" th:object="${contest}">
+            <tr th:each="contest : ${contestList.page}" th:object="${contest}">
                 <th class="min-width-64" scope="row">
                     <img class="d-none d-md-block ms-2" th:src="@{/images/favicon-64x64.png}"/>
                     <img class="d-none d-sm-block d-md-none ms-2" th:src="@{/images/favicon-32x32.png}"/>
@@ -29,7 +29,7 @@
             </tbody>
         </table>
     </div>
-
+    <th:block th:insert="~{/fragments/navs :: pager(paged=${contestList})}"></th:block>
 </main>
 
 <th:block th:insert="~{/fragments/scripts :: baseScripts}">

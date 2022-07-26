@@ -6,6 +6,8 @@ import bg.manhattan.singerscontests.model.binding.ContestCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.ContestEditBindingModel;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
+import bg.manhattan.singerscontests.model.pageing.Paged;
+import bg.manhattan.singerscontests.model.pageing.Paging;
 import bg.manhattan.singerscontests.model.service.ContestCreateServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestEditServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestServiceModel;
@@ -14,6 +16,7 @@ import bg.manhattan.singerscontests.model.view.UserSelectViewModel;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/contests")
@@ -40,8 +42,13 @@ public class ContestController extends BaseController {
     }
 
     @GetMapping
-    public String contests(Model model) {
+    public String contests(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+                           @RequestParam(value = "size", required = false, defaultValue = "7") int size,
+                           Model model,
+                           HttpServletRequest request,
+                           Principal principal) {
         setFormTitle("Singers Contests - Contests", model);
+        addContestsToModel(model, pageNumber, size, request, principal);
         return "contests/contests";
     }
 
@@ -132,13 +139,13 @@ public class ContestController extends BaseController {
         return "redirect:/contests";
     }
 
-    @ModelAttribute("contestList")
-    public List<ContestViewModel> initContests(HttpServletRequest request, Principal principal) throws UserNotFoundException {
-        return this.contestService
-                .getAllContestsByContestManager(principal, request.isUserInRole(UserRoleEnum.ADMIN.name()))
-                .stream()
-                .map(contest -> this.mapper.map(contest, ContestViewModel.class))
-                .collect(Collectors.toList());
+    public void addContestsToModel(Model model, int pageNumber, int size, HttpServletRequest request, Principal principal) {
+        if (!model.containsAttribute("contestList")) {
+            Page<ContestViewModel> contests = this.contestService
+                    .getAllContestsByContestManager(principal, request.isUserInRole(UserRoleEnum.ADMIN.name()), pageNumber, size)
+                    .map(contest -> this.mapper.map(contest, ContestViewModel.class));
+            model.addAttribute("contestList", new Paged<>(contests, Paging.of(contests.getTotalPages(), pageNumber, size)));
+        }
     }
 
     @ModelAttribute("contestModel")

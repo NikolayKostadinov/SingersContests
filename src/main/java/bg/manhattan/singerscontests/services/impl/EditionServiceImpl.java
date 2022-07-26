@@ -2,9 +2,8 @@ package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.*;
-import bg.manhattan.singerscontests.model.pageing.Paging;
+import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
-import bg.manhattan.singerscontests.model.pageing.Paged;
 import bg.manhattan.singerscontests.repositories.EditionRepository;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.EditionService;
@@ -75,16 +74,24 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public Paged<EditionServiceModel> getFutureEditions(int pageNumber, int size) {
+    public Page<EditionServiceModel> getFutureEditions(int pageNumber, int size) {
         Sort sort = Sort.by(Sort.Direction.ASC, "beginDate");
         PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
 
-        Page<EditionServiceModel> page = this.editionRepository
+        return this.editionRepository
                 .findAllByBeginDateAfter(today, request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
+    }
 
-        return new Paged<>(page, Paging.of(page.getTotalPages(), pageNumber, size));
+    @Override
+    public EditionDetailsServiceModel getEditionDetails(Long editionId) {
+        Edition edition = this.editionRepository
+                .findById(editionId)
+                .orElseThrow(() -> new NotFoundException("Edition", editionId));
+
+
+        return this.mapper.map(edition, EditionDetailsServiceModel.class);
     }
 
     private Set<JuryMember> getJuryMembers(EditionServiceModel editionModel, Edition edition) {
