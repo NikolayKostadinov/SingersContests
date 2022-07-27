@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class ApplicationSecurityConfiguration {
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new Pbkdf2PasswordEncoder();

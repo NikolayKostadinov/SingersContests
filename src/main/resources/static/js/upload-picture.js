@@ -44,7 +44,8 @@
                 showError(data);
             }
         } catch (e) {
-            console.log(e);
+            console.log(e)
+            showError()
         }
 
         resetModal();
@@ -59,7 +60,7 @@
 
     function showError(data) {
         const errModal = new bootstrap.Modal('#errorModal', {keyboard: true})
-        document.getElementById('error-message').textContent = data.message ? data.message : 'Failed to upload file!';
+        document.getElementById('error-message').textContent = (data && data.message) ? data.message : 'Failed to upload file!';
         errModal.show();
     }
 
@@ -78,4 +79,3 @@
         modal.hide();
     }
 })();
-

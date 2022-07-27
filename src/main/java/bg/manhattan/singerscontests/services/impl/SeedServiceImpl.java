@@ -63,7 +63,6 @@ public class SeedServiceImpl implements SeedService {
             seedContestManagers(List.of(contestManagerRole));
             seedJuryMembers(List.of(juryMemberRole));
             seedUsers();
-
         }
 
         if (contestRepository.count() == 0) {

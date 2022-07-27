@@ -28,26 +28,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthenticationControllerIntegrationTest {
 
-    private final int port;
-    private final String host;
-    private final String usename;
-    private final String password;
+    @Value("${mail.port}")
+    private int port;
+
+    @Value("${mail.host}")
+    private String host;
+
+    @Value("${mail.username}")
+    private String usename;
+
+    @Value("${mail.password}")
+    private String password;
     private GreenMail greenMail;
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private ExecutionTimeInterceptor executionTimeInterceptor;
-
-    AuthenticationControllerIntegrationTest(@Value("${mail.port}") int port,
-                                            @Value("${mail.host}") String host,
-                                            @Value("${mail.username}") String usename,
-                                            @Value("${mail.password}")String password) {
-        this.port = port;
-        this.host = host;
-        this.usename = usename;
-        this.password = password;
-    }
 
     @BeforeEach
     void setUp() throws Exception {
