@@ -1,12 +1,36 @@
 package bg.manhattan.singerscontests.model.entity;
 
+import bg.manhattan.singerscontests.model.validators.UniqueUserName;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
+
+import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
 @Entity
 @Table(name="contestants")
 public class Contestant extends PersonBaseEntity {
+
+    @NotBlank(message = "First name is required")
+    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
+    private String firstName;
+
+    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
+    private String middleName;
+
+    @NotBlank(message = "Last name is required")
+    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
+    private String lastName;
+
+    @NotNull(message = "Username is required")
+    @Size(min=USER_NAME_MIN_LENGTH,  max = USER_NAME_MAX_LENGTH,
+            message = "User name length must be between {min} and {max} characters!")
+    @UniqueUserName
+    private String username;
 
     @Column(name="image_url", nullable = false)
     private String imageUrl;

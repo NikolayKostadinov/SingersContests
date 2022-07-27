@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
 @GreaterThanOrEqual(first = "password", second = "confirmPassword", message = "Passwords not match!")
-public class UserRegisterBindingModel implements IHaveNames {
+public class UserRegisterBindingModel {
 
     @NotBlank(message = "First name is required")
     @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")

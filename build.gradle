@@ -24,10 +24,13 @@ dependencies {
     implementation 'org.passay:passay:1.6.1'
     implementation 'org.modelmapper:modelmapper:3.1.0'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
-    implementation 'com.cloudinary:cloudinary-http44:1.17.0'
+    implementation 'com.cloudinary:cloudinary-http44:1.32.2'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.icegreen:greenmail:1.6.9'
+    testRuntimeOnly 'org.hsqldb:hsqldb'
 }
 
 tasks.named('test') {

@@ -45,10 +45,6 @@ public class ExecutionTimeInterceptor implements HandlerInterceptor {
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
 
-        if (modelAndView != null) {
-            modelAndView.addObject(EXECUTION_TIME_ATTR_NAME, executionTime);
-        }
-
         String source = handler.toString();
         if (handler instanceof HandlerMethod) {
             source = ((HandlerMethod) handler).getMethod().toString();
@@ -58,7 +54,6 @@ public class ExecutionTimeInterceptor implements HandlerInterceptor {
             LOGGER.info("[" + source + "] executeTime : " + executionTime + "ms");
         }
 
-        // todo: make event handler to mail for performance issue
         if (executionTime > maxExecutionTime) {
             this.eventPublisher.publishEvent(
                     new PerformanceIssueEvent(this,

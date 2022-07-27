@@ -98,6 +98,11 @@ public class UserServiceModel {
     }
 
     public String getFullName() {
+        if (this.fullName == null) {
+            this.fullName = Stream.of(this.getFirstName(), this.getMiddleName(), this.getLastName())
+                    .filter(n -> n != null && !n.isEmpty())
+                    .collect(Collectors.joining(" "));
+        }
         return fullName;
     }
 

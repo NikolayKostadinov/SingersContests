@@ -16,21 +16,21 @@ public class Song extends BaseEntity {
     @ManyToOne(optional = false)
     private Contestant contestant;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 101, nullable = false)
     private String name;
 
-    @Column(name="composer_full_name", length = 100, nullable = false)
+    @Column(name="composer_full_name", length = 101, nullable = false)
     private String composerFullName;
 
-    @Column(name="arranger_full_name", length = 100)
+    @Column(name="arranger_full_name", length = 101)
     private String arrangerFullName;
 
-    @Column(name="lyricist_full_name", length = 100, nullable = false)
+    @Column(name="lyricist_full_name", length = 101, nullable = false)
     private String lyricistFullName;
 
     @Column(nullable = false)
     private Duration duration;
 
-    @Column(length = 4096, nullable = false)
+    @Column(length = 4097, nullable = false)
     private String instrumentalUrl;
 }

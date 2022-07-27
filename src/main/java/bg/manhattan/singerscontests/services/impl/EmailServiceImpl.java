@@ -66,7 +66,7 @@ public class EmailServiceImpl implements EmailService {
 
         // Prepare message using a Spring helper
         final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, MULTIPART, "UTF-8");
+        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
         message.setSubject(this.registrationSubject);
         message.setFrom(this.sender);
         message.setTo(email);

@@ -20,6 +20,7 @@ public class GreaterThanOrEqualValidator implements ConstraintValidator<GreaterT
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean isValid(Object value, ConstraintValidatorContext context) {
         BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(value);
         Comparable firstValue = (Comparable) beanWrapper.getPropertyValue(this.first);

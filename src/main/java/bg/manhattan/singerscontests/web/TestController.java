@@ -4,9 +4,11 @@ import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.CloudinaryService;
 import bg.manhattan.singerscontests.services.UserService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
@@ -31,9 +33,11 @@ public class TestController {
         return modelAndView;
     }
 
-    @GetMapping("/test")
-    public String home(Model model) {
-        AgeGroup ageGroup = this.ageGroupService.getAgeGroup(1, LocalDate.of(2009, 4, 25));
+    @GetMapping("/test/{editionId}/{birthDate}")
+    public String home(Model model,
+                       @PathVariable("editionId") Long editionId,
+                       @PathVariable("birthDate") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate birthDate) {
+        AgeGroup ageGroup = this.ageGroupService.getAgeGroup(editionId, birthDate);
         model.addAttribute("ageGroup", ageGroup);
         return "test";
     }

@@ -17,7 +17,8 @@
     <!-- ======= Jury Section ======= -->
     <section id="jury" class="team section-bg">
         <div class="container" data-aos="fade-up">
-
+            <a th:href="@{/contestants/register/{editionId}(editionId = *{id})}" class="btn btn-success float-end me-md-4">
+                <i class="bi bi-person-plus fw-bold"></i> Register</a>
             <div class="section-title">
                 <h1 class="display-6 text-center" th:text="|*{contestName} - *{number} Edition|">Contests list</h1>
                 <h3>Our Honorable Jury Members</h3>
@@ -32,8 +33,9 @@
                         </div>
                         <div class="member-info">
                             <h4 th:text="*{fullName}"></h4>
-                            <a data-bs-toggle="collapse" th:href="${'#seeMore'+ indexator.index}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                               see details ...
+                            <a data-bs-toggle="collapse" th:href="${'#seeMore'+ indexator.index}" role="button"
+                               aria-expanded="false" aria-controls="collapseExample">
+                                see details ...
                             </a>
                             <div th:id="${'seeMore'+ indexator.index}" class="collapse">
                                 <span th:text="*{details}">Chief Executive Officer</span>

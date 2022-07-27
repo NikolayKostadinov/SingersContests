@@ -31,21 +31,18 @@ public class SeedServiceImpl implements SeedService {
 
     private final JuryMemberRepository juryMemberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService appUserDetailsService;
     private final String adminPass;
 
     public SeedServiceImpl(UserRepository userRepository,
                            UserRoleRepository userRoleRepository,
                            ContestRepository contestRepository,
                            JuryMemberRepository juryMemberRepository, PasswordEncoder passwordEncoder,
-                           UserDetailsService appUserDetailsService,
                            @Value("${app.default.admin.password}") String adminPass) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.contestRepository = contestRepository;
         this.juryMemberRepository = juryMemberRepository;
         this.passwordEncoder = passwordEncoder;
-        this.appUserDetailsService = appUserDetailsService;
         this.adminPass = adminPass;
     }
 
@@ -65,7 +62,7 @@ public class SeedServiceImpl implements SeedService {
             seedAdmin(List.of(adminRole, contestManagerRole, juryMemberRole));
             seedContestManagers(List.of(contestManagerRole));
             seedJuryMembers(List.of(juryMemberRole));
-            //todo: create Users
+            seedUsers();
 
         }
 
@@ -177,39 +174,20 @@ public class SeedServiceImpl implements SeedService {
 
     }
 
+    private void seedUsers() {
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            User user = new User()
+                    .setUsername("user" + i)
+                    .setEmail("user" + i + "@example.com")
+                    .setPassword(passwordEncoder.encode(adminPass))
+                    .setPhoneNumber("123123123");
+            user.setFirstName("User");
+            user.setMiddleName("User");
+            user.setLastName("User " + i);
+            users.add(user);
+        }
 
-//    private void initJuryMembers(List<UserRoleEntity> roles) {
-//        UserEntity user = new UserEntity().
-//                setUserRoles(roles).
-//                setFirstName("User").
-//                setLastName("Userov").
-//                setEmail("user@example.com").
-//                setPassword(passwordEncoder.encode(adminPass));
-//
-//        userRepository.save(user);
-//    }
-//
-//    public void registerAndLogin(UserRegisterDTO userRegisterDTO) {
-//        UserEntity newUser =
-//                new UserEntity().
-//                        setEmail(userRegisterDTO.getEmail()).
-//                        setFirstName(userRegisterDTO.getFirstName()).
-//                        setLastName(userRegisterDTO.getLastName()).
-//                        setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-//
-//        userRepository.save(newUser);
-//
-//        UserDetails userDetails =
-//                appUserDetailsService.loadUserByUsername(newUser.getEmail());
-//
-//        Authentication auth =
-//                new UsernamePasswordAuthenticationToken(
-//                        userDetails,
-//                        userDetails.getPassword(),
-//                        userDetails.getAuthorities()
-//                );
-//
-//        SecurityContextHolder.clearContext();
-//                setAuthentication(auth);
-//    }
+        userRepository.saveAll(users);
+    }
 }

@@ -6,4 +6,6 @@ public interface IHaveNames {
     String getMiddleName();
 
     String getLastName();
+
+    String getFullName();
 }

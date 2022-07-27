@@ -4,7 +4,10 @@ import bg.manhattan.singerscontests.model.IHaveNames;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.NAME_MAX_LENGTH;
 
@@ -19,6 +22,9 @@ public abstract class PersonBaseEntity extends BaseEntity implements IHaveNames{
 
     @Column(name="last_name", length = NAME_MAX_LENGTH, nullable = false)
     private String lastName;
+
+    @Transient
+    private String fullName;
 
     public String getFirstName() {
         return firstName;
@@ -45,5 +51,15 @@ public abstract class PersonBaseEntity extends BaseEntity implements IHaveNames{
     public PersonBaseEntity setLastName(String lastName) {
         this.lastName = lastName;
         return this;
+    }
+
+
+    public String getFullName() {
+        if (this.fullName == null) {
+            this.fullName = Stream.of(this.getFirstName(), this.getMiddleName(), this.getLastName())
+                    .filter(n -> n != null && !n.isEmpty())
+                    .collect(Collectors.joining(" "));
+        }
+        return this.fullName;
     }
 }
