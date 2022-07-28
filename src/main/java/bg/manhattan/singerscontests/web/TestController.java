@@ -1,6 +1,7 @@
 package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
+import bg.manhattan.singerscontests.model.service.AgeGroupServiceModel;
 import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.CloudinaryService;
 import bg.manhattan.singerscontests.services.UserService;
@@ -37,7 +38,7 @@ public class TestController {
     public String home(Model model,
                        @PathVariable("editionId") Long editionId,
                        @PathVariable("birthDate") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate birthDate) {
-        AgeGroup ageGroup = this.ageGroupService.getAgeGroup(editionId, birthDate);
+        AgeGroupServiceModel ageGroup = this.ageGroupService.getAgeGroup(editionId, birthDate);
         model.addAttribute("ageGroup", ageGroup);
         return "test";
     }

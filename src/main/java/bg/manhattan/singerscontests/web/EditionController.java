@@ -1,7 +1,6 @@
 package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
-import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.AgeGroupBindingModel;
 import bg.manhattan.singerscontests.model.binding.EditionCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.EditionEditBindingModel;
@@ -17,7 +16,6 @@ import bg.manhattan.singerscontests.model.view.UserSelectViewModel;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.JuryMemberService;
-import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -31,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/editions")
@@ -103,8 +100,8 @@ public class EditionController extends BaseController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editEdition(@PathVariable("id") Long id,
-                              Model model) throws NotFoundException {
+    public String edit(@PathVariable("id") Long id,
+                       Model model) throws NotFoundException {
         setFormTitle("Singers Contests - Create edition", model);
         readEditionModel(id, model);
         addJuryMembersListToModel(model);

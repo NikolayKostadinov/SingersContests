@@ -1,5 +1,6 @@
 package bg.manhattan.singerscontests.config;
 
+import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.services.UserService;
 import bg.manhattan.singerscontests.services.impl.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -38,6 +39,8 @@ public class ApplicationSecurityConfiguration {
                 .antMatchers("/").permitAll()
                 .antMatchers("/authentication/register", "/authentication/login", "/authentication/login-error").anonymous()
                 //todo: Configure antMatchers for roles
+                .antMatchers("/contests/**", "/editions/**").hasAnyRole(UserRoleEnum.CONTEST_MANAGER.name(),
+                        UserRoleEnum.ADMIN.name())
 
                 // forbid all other for anonymous users;
                 .anyRequest().authenticated()

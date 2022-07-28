@@ -28,6 +28,7 @@ class AccountManageControllerIntegrationTest extends IntegrationTestWithInjected
 
     @Test
     void testProfile() {
+        // TODO: 28.7.2022 г. Implement test
     }
 
     @Test
@@ -61,5 +62,6 @@ class AccountManageControllerIntegrationTest extends IntegrationTestWithInjected
 
     @Test
     void testDeletePersonalData() {
+        // TODO: 28.7.2022 г. Implement test
     }
 }

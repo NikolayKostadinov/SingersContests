@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,21 +25,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({MaxUploadSizeExceededException.class})
     @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
-    public ResponseEntity<ErrorViewModel> handleMaxUploadSizeExceededException(Exception ex) {
-        String details = ex.getCause().getCause().getMessage();
+    public @ResponseBody ErrorViewModel handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
+        String details = ex.getMostSpecificCause().getMessage();
         ErrorViewModel message =
                 new ErrorViewModel("File too large!\n Maximum file size is " + maxFileSize, details);
 
         LOGGER.warn("{} {}", message.getMessage(), ex.getMessage());
 
-        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(message);
+        return message;
     }
 
     @ExceptionHandler({NotFoundException.class, UserNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView handleMaxUploadSizeExceededException(NotFoundException ex) {
+    public ModelAndView handleNotFoundException(Exception ex) {
         String details = ex.getMessage();
         ErrorViewModel model =
                 new ErrorViewModel("Resource not found", details);
@@ -49,6 +48,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({RuntimeException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleUnhandledExceptions(RuntimeException ex) {
         LOGGER.warn("{} {}", ex.getMessage(), ex.getStackTrace());
         return "error/something-went-wrong";

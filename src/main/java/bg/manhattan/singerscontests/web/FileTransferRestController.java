@@ -18,18 +18,16 @@ import java.util.Map;
 public class FileTransferRestController {
 
     private final CloudinaryService cloudinaryService;
-    public FileTransferRestController(CloudinaryService cloudinaryService                                      ) {
+
+    public FileTransferRestController(CloudinaryService cloudinaryService) {
         this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<FileViewModel> upload(MultipartFile file) {
-        try {
-            String resultUrl = this.cloudinaryService.uploadFile(file, file.getOriginalFilename(), ResourceType.image);
-            return ResponseEntity.ok(new FileViewModel(resultUrl));
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().build();
-        }
+        String resultUrl =
+                this.cloudinaryService.uploadFile(file, file.getOriginalFilename(), ResourceType.image);
+        return ResponseEntity.ok(new FileViewModel(resultUrl));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
