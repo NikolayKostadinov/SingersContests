@@ -39,6 +39,7 @@ public class ApplicationSecurityConfiguration {
                 .antMatchers("/").permitAll()
                 .antMatchers("/authentication/register", "/authentication/login", "/authentication/login-error").anonymous()
                 //todo: Configure antMatchers for roles
+                .antMatchers("/administration/**").hasAnyRole(UserRoleEnum.ADMIN.name())
                 .antMatchers("/contests/**", "/editions/**").hasAnyRole(UserRoleEnum.CONTEST_MANAGER.name(),
                         UserRoleEnum.ADMIN.name())
 

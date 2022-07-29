@@ -3,11 +3,16 @@ package bg.manhattan.singerscontests.model.service;
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.model.enums.EditionType;
 
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
 public class ContestantServiceModel  {
     private Long id;
@@ -21,6 +26,15 @@ public class ContestantServiceModel  {
     private String fullName;
 
     private String imageUrl;
+
+
+    private String country;
+
+
+    private String city;
+
+
+    private String institution;
 
     private Long editionId;
 
@@ -76,31 +90,8 @@ public class ContestantServiceModel  {
         return this;
     }
 
-    public Integer getEditionNumber() {
-        return editionNumber;
-    }
-
-    public ContestantServiceModel setEditionNumber(Integer editionNumber) {
-        this.editionNumber = editionNumber;
-        return this;
-    }
-
-    public String getContestName() {
-        return contestName;
-    }
-
-    public ContestantServiceModel setContestName(String contestName) {
-        this.contestName = contestName;
-        return this;
-    }
-
     public String getFullName() {
-        if (this.fullName == null) {
-            this.fullName = Stream.of(this.getFirstName(), this.getMiddleName(), this.getLastName())
-                    .filter(n -> n != null && !n.isEmpty())
-                    .collect(Collectors.joining(" "));
-        }
-        return this.fullName;
+        return fullName;
     }
 
     public ContestantServiceModel setFullName(String fullName) {
@@ -117,6 +108,33 @@ public class ContestantServiceModel  {
         return this;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public ContestantServiceModel setCountry(String country) {
+        this.country = country;
+        return this;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public ContestantServiceModel setCity(String city) {
+        this.city = city;
+        return this;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public ContestantServiceModel setInstitution(String institution) {
+        this.institution = institution;
+        return this;
+    }
+
     public Long getEditionId() {
         return editionId;
     }
@@ -126,6 +144,32 @@ public class ContestantServiceModel  {
         return this;
     }
 
+    public Integer getEditionNumber() {
+        return editionNumber;
+    }
+
+    public ContestantServiceModel setEditionNumber(Integer editionNumber) {
+        this.editionNumber = editionNumber;
+        return this;
+    }
+
+    public EditionType getEditionType() {
+        return editionType;
+    }
+
+    public ContestantServiceModel setEditionType(EditionType editionType) {
+        this.editionType = editionType;
+        return this;
+    }
+
+    public String getContestName() {
+        return contestName;
+    }
+
+    public ContestantServiceModel setContestName(String contestName) {
+        this.contestName = contestName;
+        return this;
+    }
 
     public AgeGroup getAgeGroup() {
         return ageGroup;
@@ -151,15 +195,6 @@ public class ContestantServiceModel  {
 
     public ContestantServiceModel setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
-        return this;
-    }
-
-    public EditionType getEditionType() {
-        return editionType;
-    }
-
-    public ContestantServiceModel setEditionType(EditionType editionType) {
-        this.editionType = editionType;
         return this;
     }
 }

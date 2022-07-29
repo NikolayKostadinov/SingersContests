@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static bg.manhattan.singerscontests.model.ModelConstants.NAME_MAX_LENGTH;
+import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
 public class ContestantCreateBindingModel {
     @NotBlank(message = "First name is required")
@@ -34,6 +34,17 @@ public class ContestantCreateBindingModel {
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDay;
+
+    @NotBlank(message = "Country name is required")
+    @Size(max = COUNTRY_MAX_LENGTH, message = "Should be shorter than {max} characters!")
+    private String country;
+
+    @NotBlank(message = "City name is required")
+    @Size(max = CITY_MAX_LENGTH, message = "Should be shorter than {max} characters!")
+    private String city;
+
+    @Size(max = INSTITUTION_MAX_LENGTH, message = "Should be shorter than {max} characters!")
+    private String institution;
 
     @NotNull
     private List<SongCreateBindingModel> songs;
@@ -93,6 +104,33 @@ public class ContestantCreateBindingModel {
 
     public ContestantCreateBindingModel setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
+        return this;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public ContestantCreateBindingModel setCountry(String country) {
+        this.country = country;
+        return this;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public ContestantCreateBindingModel setCity(String city) {
+        this.city = city;
+        return this;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public ContestantCreateBindingModel setInstitution(String institution) {
+        this.institution = institution;
         return this;
     }
 

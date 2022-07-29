@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -45,7 +44,7 @@ public class AdminManagerController extends BaseController {
     }
 
     @PostMapping
-    public String Edit(@Valid RoleEditBindingModel roleModel,
+    public String edit(@Valid RoleEditBindingModel roleModel,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()){

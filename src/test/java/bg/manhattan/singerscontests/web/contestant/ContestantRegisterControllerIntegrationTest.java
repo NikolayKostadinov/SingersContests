@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -30,8 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithUserDetails(value="user0", userDetailsServiceBeanName="userDetailsService")
-class ContestantEditionControllerIntegrationTest extends IntegrationTestWithInjectedUserDetails {
-
+class ContestantRegisterControllerIntegrationTest extends IntegrationTestWithInjectedUserDetails {
     @Autowired
     private MockMvc mockMvc;
 
@@ -71,23 +69,9 @@ class ContestantEditionControllerIntegrationTest extends IntegrationTestWithInje
     }
 
     @Test
-    void editions() throws Exception {
-        mockMvc.perform(get("/contestants/editions"))
+    void register() throws Exception {
+        mockMvc.perform(get("/contestants/register/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("contestants/editions"));
-    }
-
-    @Test
-    void editionDetails() throws Exception {
-        mockMvc.perform(get("/contestants/editions/details/1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("contestants/edition-details"));
-    }
-
-    @Test
-    void editionDetailsNotFound() throws Exception {
-        mockMvc.perform(get("/contestants/editions/details/2"))
-                .andExpect(status().isNotFound())
-                .andExpect(view().name("error/error"));
+                .andExpect(view().name("contestants/register"));
     }
 }

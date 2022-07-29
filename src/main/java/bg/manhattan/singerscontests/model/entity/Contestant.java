@@ -12,7 +12,7 @@ import java.util.List;
 import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
 @Entity
-@Table(name="contestants")
+@Table(name = "contestants")
 public class Contestant extends PersonBaseEntity {
 
     @NotBlank(message = "First name is required")
@@ -27,13 +27,26 @@ public class Contestant extends PersonBaseEntity {
     private String lastName;
 
     @NotNull(message = "Username is required")
-    @Size(min=USER_NAME_MIN_LENGTH,  max = USER_NAME_MAX_LENGTH,
+    @Size(min = USER_NAME_MIN_LENGTH, max = USER_NAME_MAX_LENGTH,
             message = "User name length must be between {min} and {max} characters!")
     @UniqueUserName
     private String username;
 
-    @Column(name="image_url", nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
+
+    @Column(name = "birth_day")
+    private LocalDate birthDay;
+
+    @Column(nullable = false, length = COUNTRY_MAX_LENGTH + 1)
+    private String country;
+
+    @NotBlank(message = "City name is required")
+    @Size(max = CITY_MAX_LENGTH, message = "Should be shorter than {max} characters!")
+    private String city;
+
+    @Size(max = INSTITUTION_MAX_LENGTH, message = "Should be shorter than {max} characters!")
+    private String institution;
 
     @ManyToOne(optional = false)
     private Edition edition;
@@ -41,11 +54,9 @@ public class Contestant extends PersonBaseEntity {
     @ManyToOne(optional = false)
     private AgeGroup ageGroup;
 
-    @OneToMany(mappedBy="contestant")
+    @OneToMany(mappedBy = "contestant")
     private List<Song> songs;
 
-    @Column(name="birth_day")
-    private LocalDate birthDay;
 
     /**
      * The person who registered this contestant
