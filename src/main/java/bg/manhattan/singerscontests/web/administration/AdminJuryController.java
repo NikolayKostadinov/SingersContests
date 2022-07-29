@@ -1,8 +1,7 @@
 package bg.manhattan.singerscontests.web.administration;
 
-import bg.manhattan.singerscontests.model.binding.CreateJuryMemberBindingModel;
+import bg.manhattan.singerscontests.model.binding.JuryMemberCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.JuryDemodeBindingModel;
-import bg.manhattan.singerscontests.model.binding.JuryMemberBindingModel;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.JuryMemberServiceModel;
 import bg.manhattan.singerscontests.model.view.JuryDemodeViewModel;
@@ -47,7 +46,7 @@ public class AdminJuryController extends BaseController {
     }
 
     @PostMapping
-    public String jury(@Valid CreateJuryMemberBindingModel juryModel,
+    public String jury(@Valid JuryMemberCreateBindingModel juryModel,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -95,7 +94,7 @@ public class AdminJuryController extends BaseController {
     }
 
     @PostMapping("/edit")
-    public String edit(@Valid CreateJuryMemberBindingModel juryModel,
+    public String edit(@Valid JuryMemberCreateBindingModel juryModel,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -148,7 +147,7 @@ public class AdminJuryController extends BaseController {
     }
 
     @ModelAttribute("juryModel")
-    public CreateJuryMemberBindingModel initModel() {
-        return new CreateJuryMemberBindingModel();
+    public JuryMemberCreateBindingModel initModel() {
+        return new JuryMemberCreateBindingModel();
     }
 }

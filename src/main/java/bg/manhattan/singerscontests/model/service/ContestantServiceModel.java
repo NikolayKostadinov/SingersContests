@@ -1,7 +1,7 @@
 package bg.manhattan.singerscontests.model.service;
 
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
-import bg.manhattan.singerscontests.model.entity.Edition;
+import bg.manhattan.singerscontests.model.enums.EditionType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +25,8 @@ public class ContestantServiceModel  {
     private Long editionId;
 
     private Integer editionNumber;
+
+    private EditionType editionType;
 
     private String contestName;
 
@@ -149,6 +151,15 @@ public class ContestantServiceModel  {
 
     public ContestantServiceModel setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
+        return this;
+    }
+
+    public EditionType getEditionType() {
+        return editionType;
+    }
+
+    public ContestantServiceModel setEditionType(EditionType editionType) {
+        this.editionType = editionType;
         return this;
     }
 }

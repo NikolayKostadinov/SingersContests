@@ -33,6 +33,7 @@ public class ContestantServiceImpl implements ContestantService {
         ContestantServiceModel model = new ContestantServiceModel()
                 .setEditionId(edition.getId())
                 .setEditionNumber(edition.getNumber())
+                .setEditionType(edition.getEditionType())
                 .setContestName(edition.getContestName());
         edition.getPerformanceCategories()
                 .stream()

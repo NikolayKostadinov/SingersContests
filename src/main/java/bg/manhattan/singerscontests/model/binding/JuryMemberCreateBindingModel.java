@@ -3,7 +3,7 @@ package bg.manhattan.singerscontests.model.binding;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class CreateJuryMemberBindingModel {
+public class JuryMemberCreateBindingModel {
     @NotNull(message = "Please choose a valid user!")
     private Long id;
 
@@ -17,7 +17,7 @@ public class CreateJuryMemberBindingModel {
         return id;
     }
 
-    public CreateJuryMemberBindingModel setId(Long id) {
+    public JuryMemberCreateBindingModel setId(Long id) {
         this.id = id;
         return this;
     }
@@ -26,7 +26,7 @@ public class CreateJuryMemberBindingModel {
         return details;
     }
 
-    public CreateJuryMemberBindingModel setDetails(String details) {
+    public JuryMemberCreateBindingModel setDetails(String details) {
         this.details = details;
         return this;
     }
@@ -35,7 +35,7 @@ public class CreateJuryMemberBindingModel {
         return imageUrl;
     }
 
-    public CreateJuryMemberBindingModel setImageUrl(String imageUrl) {
+    public JuryMemberCreateBindingModel setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
         return this;
     }

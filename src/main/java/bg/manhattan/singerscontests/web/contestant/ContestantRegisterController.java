@@ -1,7 +1,8 @@
 package bg.manhattan.singerscontests.web.contestant;
 
-import bg.manhattan.singerscontests.model.binding.ContestantBindingModel;
+import bg.manhattan.singerscontests.model.binding.ContestantCreateBindingModel;
 import bg.manhattan.singerscontests.model.service.ContestantServiceModel;
+import bg.manhattan.singerscontests.model.view.EditionContestantViewModel;
 import bg.manhattan.singerscontests.services.ContestantService;
 import bg.manhattan.singerscontests.web.BaseController;
 import org.modelmapper.ModelMapper;
@@ -35,8 +36,12 @@ public class ContestantRegisterController extends BaseController {
     private void initContestantModel(Long editionId, Model model) {
         if (!model.containsAttribute("contestantModel")) {
             ContestantServiceModel contestant = this.contestantService.getContestantModel(editionId);
-            ContestantBindingModel contestantModel = this.mapper.map(contestant, ContestantBindingModel.class);
+            ContestantCreateBindingModel contestantModel = this.mapper.map(contestant, ContestantCreateBindingModel.class);
             model.addAttribute("contestantModel", contestantModel);
+            model.addAttribute("contestModel", new EditionContestantViewModel()
+                    .setContestName(contestant.getContestName())
+                    .setNumber(contestant.getEditionNumber())
+                    .setEditionType(contestant.getEditionType().name()));
         }
     }
 }
