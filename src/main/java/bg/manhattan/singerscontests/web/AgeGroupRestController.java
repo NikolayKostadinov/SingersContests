@@ -35,7 +35,7 @@ public class AgeGroupRestController {
     @GetMapping("{editionId}/{birthDate}")
     public ResponseEntity<AgeGroupViewModel> getAgeGroup(
             @PathVariable("editionId") Long editionId,
-            @PathVariable("birthDate") @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate birthDate) {
+            @PathVariable("birthDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthDate) {
         AgeGroupServiceModel ageGroup = this.ageGroupService.getAgeGroup(editionId, birthDate);
         return ResponseEntity.ok(this.mapper.map(ageGroup, AgeGroupViewModel.class));
     }

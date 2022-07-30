@@ -60,7 +60,6 @@ class EditionControllerIntegrationTest extends IntegrationTestWithInjectedUserDe
                 .setEndOfSubscriptionDate(LocalDate.of(2022, 7, 29))
                 .setBeginDate(LocalDate.of(2022, 7, 30))
                 .setEndDate(LocalDate.of(2022, 7, 31));
-        edition.setId(1L);
         editionRepository.save(this.edition);
     }
 
@@ -85,14 +84,14 @@ class EditionControllerIntegrationTest extends IntegrationTestWithInjectedUserDe
 
     @Test
     void editions() throws Exception {
-        mockMvc.perform(get("/editions/1"))
+        mockMvc.perform(get("/editions/" + this.edition.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editions/editions"));
     }
 
     @Test
     void editionsUnauthorized() throws Exception {
-        mockMvc.perform(get("/editions/1").with(user("user1")))
+        mockMvc.perform(get("/editions/" + this.edition.getId()).with(user("user1")))
                 .andExpect(status().isForbidden());
     }
 
@@ -116,14 +115,14 @@ class EditionControllerIntegrationTest extends IntegrationTestWithInjectedUserDe
 
     @Test
     void edit() throws Exception {
-        mockMvc.perform(get("/editions/edit/1"))
+        mockMvc.perform(get("/editions/edit/" + this.edition.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("editions/edition-edit"));
     }
 
     @Test
     void editUnauthorized() throws Exception {
-        mockMvc.perform(get("/editions/editions/1").with(user("user1")))
+        mockMvc.perform(get("/editions/editions/" + this.edition.getId()).with(user("user1")))
                 .andExpect(status().isForbidden());
     }
 

@@ -62,7 +62,7 @@ class AgeGroupRestControllerIntegrationTest extends IntegrationTestWithInjectedU
 
     @Test
     void getAgeGroup() throws Exception {
-        mockMvc.perform(get("/api/age-group/5/25-04-2009")
+        mockMvc.perform(get("/api/age-group/5/2009-04-25")
                         .accept("application/json"))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id", is(3)))
@@ -71,7 +71,7 @@ class AgeGroupRestControllerIntegrationTest extends IntegrationTestWithInjectedU
 
     @Test
     void getAgeGroupNotFound() throws Exception {
-        mockMvc.perform(get("/api/age-group/6/25-04-2009")
+        mockMvc.perform(get("/api/age-group/6/2009-04-25")
                         .accept("application/json"))
                 .andExpect(status().is(404))
                 .andExpect(jsonPath("$.message", is("Resource not found")))

@@ -60,7 +60,6 @@ class ContestantEditionControllerIntegrationTest extends IntegrationTestWithInje
                 .setEndOfSubscriptionDate(LocalDate.of(2022,7,29))
                 .setBeginDate(LocalDate.of(2022,7,30))
                 .setEndDate(LocalDate.of(2022,7,31));
-        edition.setId(1L);
         editionRepository.save(this.edition);
     }
 
@@ -78,14 +77,14 @@ class ContestantEditionControllerIntegrationTest extends IntegrationTestWithInje
 
     @Test
     void editionDetails() throws Exception {
-        mockMvc.perform(get("/contestants/editions/details/1"))
+        mockMvc.perform(get("/contestants/editions/details/" + this.edition.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("contestants/edition-details"));
     }
 
     @Test
     void editionDetailsNotFound() throws Exception {
-        mockMvc.perform(get("/contestants/editions/details/2"))
+        mockMvc.perform(get("/contestants/editions/details/" + (this.edition.getId() + 1)))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("error/error"));
     }

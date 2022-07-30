@@ -26,8 +26,8 @@ public class FileTransferRestController {
     @PostMapping("/upload")
     public ResponseEntity<FileViewModel> upload(MultipartFile file) {
         String resultUrl =
-                this.cloudinaryService.uploadFile(file, file.getOriginalFilename(), ResourceType.image);
-        return ResponseEntity.ok(new FileViewModel(resultUrl));
+                this.cloudinaryService.uploadFile(file, file.getOriginalFilename(), ResourceType.getType(file.getContentType()));
+        return ResponseEntity.ok(new FileViewModel(resultUrl, file.getOriginalFilename()));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -44,6 +44,7 @@ class JuryDetailsRestControllerIntegrationTest extends IntegrationTestWithInject
     public void setUpTests() {
         User user = userRepository.findById(1L).orElse(null);
         jm = new JuryMember()
+                .setId(user.getId())
                 .setUser(user)
                 .setDetails("Jury details")
                 .setImageUrl("image url");
@@ -58,7 +59,7 @@ class JuryDetailsRestControllerIntegrationTest extends IntegrationTestWithInject
 
     @Test
     void getDetails() throws Exception {
-        mockMvc.perform(get("/api/jury/1")
+        mockMvc.perform(get("/api/jury/" + jm.getId())
                         .accept("application/json"))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.details", is("Jury details")))

@@ -1,5 +1,5 @@
 (function () {
-    const form = document.getElementById('file-upload');
+    const form = document.getElementById('picture-upload');
     form.addEventListener('submit', formSubmitHandler);
 
     async function formSubmitHandler(event) {
@@ -18,7 +18,7 @@
         spinner.parentElement.disabled = true;
 
         // Select file upload element
-        const uploadElement = document.getElementById('file');
+        const uploadElement = form.getElementsByTagName('input')[0];
 
         // Extract the file (for a single file, always 0 in the list)
         const file = uploadElement.files[0];
@@ -74,7 +74,8 @@
         spinner.hidden = true;
         spinner.parentElement.disabled = false;
 
-        const modalElement = document.getElementById('chooseFileModal');
+        const modalElement = form.closest('.modal');
+        //const modalElement = document.getElementById('chooseFileModal');
         const modal = bootstrap.Modal.getInstance(modalElement);
         modal.hide();
     }

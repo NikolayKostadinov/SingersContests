@@ -82,54 +82,9 @@
     </div>
 </main>
 
-<!-- Modal -->
-<div class="modal fade" id="chooseFileModal" tabindex="-1" role="dialog" aria-labelledby="chooseFileModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="file-upload" th:action="@{/api/file/upload}">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="chooseFileModalLabel">Choose picture to upload</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-row">
-                        <label class="form-label" for="file"></label>
-                        <input type="file" id="file" name="file">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="upload">
-                        <span id="upload-text">Upload</span>
-                        <span id="spinner" hidden="hidden">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Loading...
-                        </span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<th:block th:replace="~{/fragments/modal :: upload-modal('chooseFileModal','picture-upload','Choose picture to upload', @{/api/file/upload})}"></th:block>
+<th:block th:replace="~{/fragments/modal :: error-modal}"></th:block>
 
-<!--ErrorModal-->
-<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Error</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h5 id="error-message" class="text-danger text-center">Failed to upload file!</h5>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 <th:block th:insert="~{/fragments/scripts :: baseScripts}">
 </th:block>
 <script th:src="@{/js/upload-picture.js}"></script>

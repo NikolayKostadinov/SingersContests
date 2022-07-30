@@ -69,9 +69,7 @@ public class User extends PersonBaseEntity{
         return this;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+  
 
     public User setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;

@@ -66,8 +66,7 @@ public class AuthenticationController extends BaseController {
             RedirectAttributes redirectAttributes) {
 
         redirectAttributes.addFlashAttribute("loginModel", new UserLoginBindingModel().setUsername(userName));
-        redirectAttributes.addFlashAttribute("bad_credentials",
-                true);
+        redirectAttributes.addFlashAttribute("bad_credentials", true);
 
         return "redirect:login";
     }

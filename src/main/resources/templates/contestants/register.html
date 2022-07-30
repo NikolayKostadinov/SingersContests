@@ -67,7 +67,7 @@
                     </div>
                     <div class="col-md-4">
                         <label th:for="*{country}" class="form-label">Country</label>
-                        <input th:field="*{birthDay}"
+                        <input th:field="*{country}"
                                th:errorclass="is-invalid"
                                type="text" class="form-control"
                                placeholder="Country"
@@ -93,6 +93,7 @@
                         <label th:for="*{birthDay}" class="form-label">Birthday</label>
                         <input th:field="*{birthDay}"
                                th:errorclass="is-invalid"
+                               th:data-url="${'/api/age-group/'+ editionId}"
                                type="date" class="form-control"
                                required>
                         <p class="invalid-feedback" th:errors="*{birthDay}">
@@ -101,7 +102,7 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Age group</label>
-                        <p class="value-presenter">I group</p>
+                        <p id="age-group" class="value-presenter"></p>
                     </div>
                 </div>
             </div><!--col-md-10-->
@@ -136,23 +137,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <label th:for="*{songs[__${itemStat.index}__].name}">Name</label>
-                    <input th:field="*{songs[__${itemStat.index}__].name}"
+                    <input type="text" th:field="*{songs[__${itemStat.index}__].name}"
                            class="form-control"
-                           required>
-                    <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].name}">
-                        Error message.
-                    </p>
-                    <input type="hidden" th:field="*{songs[__${itemStat.index}__].instrumentalUrl}" th:type="hidden">
-                    <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].instrumentalUrl}">
-                        Error message.
-                    </p>
-                </div>
-                <div class="col-md-1">
-                    <label th:for="*{songs[__${itemStat.index}__].duration}">Duration</label>
-                    <input th:field="*{songs[__${itemStat.index}__].duration}"
-                           class="form-control"
-                           pattern="m:ss"
-                           placeholder="m:ss"
                            required>
                     <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].name}">
                         Error message.
@@ -165,14 +151,33 @@
                 <div class="col-md-1 mt-auto mb-0 pb-1">
                     <button type="button" class="btn btn-sm btn-outline-success"
                             data-bs-toggle="modal"
-                            th:data-for="${itemStat.index}"
-                            data-bs-target="#uploadInstrumental">
-                        Upload
+                            th:data-for="${'songs'+ itemStat.index + '.instrumentalUrl'}"
+                            th:data-display="${'song-name-'+ itemStat.index }"
+                            th:data-duration="${'song-duration-'+ itemStat.index }"
+                            th:data-durationInSeconds="${'songs' + itemStat.index +'.duration'}"
+                            data-bs-target="#uploadInstrumental"
+                            role="instrumental-upload">Upload
                     </button>
                 </div>
                 <div class="col-md-6">
                     <label th:for="'song-name-'+${itemStat.index}">Uploaded File Name</label>
-                    <input type="text" th:id="'song-name-'+${itemStat.index}" class="form-control border-0" disabled="disabled"></input>
+                    <input type="text" th:id="'song-name-'+${itemStat.index}" class="form-control border-0"
+                           disabled="disabled"></input>
+                </div>
+                <div class="col-md-1">
+                    <label th:for="*{songs[__${itemStat.index}__].duration}">Duration</label>
+                    <input type="text" class="form-control" th:id="${'song-duration-'+ itemStat.index }" disabled="disabled">
+                    <input th:field="*{songs[__${itemStat.index}__].duration}"
+                           class="form-control"
+                           type="hidden"
+                           required>
+                    <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].name}">
+                        Error message.
+                    </p>
+                    <input type="hidden" th:field="*{songs[__${itemStat.index}__].instrumentalUrl}" th:type="hidden">
+                    <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].instrumentalUrl}">
+                        Error message.
+                    </p>
                 </div>
             </div>
             <div class="row">
@@ -210,10 +215,16 @@
         </div>
     </form>
 </main>
-<th:block th:replace="~{/fragments/modal :: upload-modal('uploadPictue', @{/api/file/upload})}"></th:block>
-<th:block th:replace="~{/fragments/modal :: upload-modal('uploadInstrumental', @{/api/file/upload})}"></th:block>
-<th:block th:insert="~{/fragments/scripts :: baseScripts}">
-</th:block>
-
+<th:block
+        th:replace="~{/fragments/modal :: upload-modal('uploadPictue','picture-upload','Choose picture to upload',@{/api/file/upload})}"></th:block>
+<th:block
+        th:replace="~{/fragments/modal :: upload-modal('uploadInstrumental','instrumental-upload', 'Choose instrumental to upload', @{/api/file/upload})}"></th:block>
+<th:block th:replace="~{/fragments/modal :: error-modal}"></th:block>
+<th:block th:insert="~{/fragments/scripts :: baseScripts}"></th:block>
+<script th:src="@{/js/upload-picture.js}"></script>
+<script th:src="@{/js/upload-instrumental.js}"></script>
+<script th:src="@{/js/age-group.js}"></script>
 </body>
 </html>
+songs0.duration
+songs1.duration

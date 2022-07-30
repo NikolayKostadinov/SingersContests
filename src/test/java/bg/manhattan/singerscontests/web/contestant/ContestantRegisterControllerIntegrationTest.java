@@ -59,7 +59,6 @@ class ContestantRegisterControllerIntegrationTest extends IntegrationTestWithInj
                 .setEndOfSubscriptionDate(LocalDate.of(2022,7,29))
                 .setBeginDate(LocalDate.of(2022,7,30))
                 .setEndDate(LocalDate.of(2022,7,31));
-        edition.setId(1L);
         editionRepository.save(this.edition);
     }
 
@@ -70,7 +69,7 @@ class ContestantRegisterControllerIntegrationTest extends IntegrationTestWithInj
 
     @Test
     void register() throws Exception {
-        mockMvc.perform(get("/contestants/register/1"))
+        mockMvc.perform(get("/contestants/register/"+this.edition.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("contestants/register"));
     }
