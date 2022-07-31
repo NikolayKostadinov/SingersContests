@@ -1,18 +1,17 @@
 package bg.manhattan.singerscontests.model.binding;
 
-import bg.manhattan.singerscontests.model.service.SongServiceModel;
+import bg.manhattan.singerscontests.model.validators.ExistingAgeGroup;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
+@ExistingAgeGroup(editionId = "editionId", birthDate = "birthDay", message = "Contestant age is out of scope!")
 public class ContestantCreateBindingModel {
     @NotBlank(message = "First name is required")
     @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
@@ -32,6 +31,7 @@ public class ContestantCreateBindingModel {
     private Long editionId;
 
     @NotNull
+    @Past
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDay;
 
@@ -47,7 +47,7 @@ public class ContestantCreateBindingModel {
     private String institution;
 
     @NotNull
-    private List<SongCreateBindingModel> songs;
+    private List<@Valid SongCreateBindingModel> songs;
 
     public ContestantCreateBindingModel() {
         this.songs = new ArrayList<>();

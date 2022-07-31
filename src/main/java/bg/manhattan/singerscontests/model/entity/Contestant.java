@@ -14,24 +14,6 @@ import static bg.manhattan.singerscontests.model.ModelConstants.*;
 @Entity
 @Table(name = "contestants")
 public class Contestant extends PersonBaseEntity {
-
-    @NotBlank(message = "First name is required")
-    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
-    private String firstName;
-
-    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
-    private String middleName;
-
-    @NotBlank(message = "Last name is required")
-    @Size(max = NAME_MAX_LENGTH, message = "Should be shorter than {max} characters!")
-    private String lastName;
-
-    @NotNull(message = "Username is required")
-    @Size(min = USER_NAME_MIN_LENGTH, max = USER_NAME_MAX_LENGTH,
-            message = "User name length must be between {min} and {max} characters!")
-    @UniqueUserName
-    private String username;
-
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
@@ -54,14 +36,15 @@ public class Contestant extends PersonBaseEntity {
     @ManyToOne(optional = false)
     private AgeGroup ageGroup;
 
-    @OneToMany(mappedBy = "contestant")
+    @OneToMany(mappedBy = "contestant", cascade = CascadeType.ALL)
     private List<Song> songs;
 
 
     /**
      * The person who registered this contestant
      */
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private User registrar;
 
     public String getImageUrl() {
@@ -113,8 +96,37 @@ public class Contestant extends PersonBaseEntity {
         return registrar;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public Contestant setCountry(String country) {
+        this.country = country;
+        return this;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public Contestant setCity(String city) {
+        this.city = city;
+        return this;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public Contestant setInstitution(String institution) {
+        this.institution = institution;
+        return this;
+    }
+
     public Contestant setRegistrar(User registrar) {
         this.registrar = registrar;
         return this;
+
+
     }
 }

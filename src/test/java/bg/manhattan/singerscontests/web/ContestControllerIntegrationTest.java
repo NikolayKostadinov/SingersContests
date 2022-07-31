@@ -61,7 +61,7 @@ class ContestControllerIntegrationTest extends IntegrationTestWithInjectedUserDe
                         .with(csrf())
                 )
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+                .andExpect(redirectedUrl("/contests"));
     }
 
     @Test

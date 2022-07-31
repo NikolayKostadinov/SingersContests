@@ -21,6 +21,11 @@ public class AgeGroup extends BaseEntity{
     @ManyToOne
     private Edition edition;
 
+    @Override
+    public AgeGroup setId(Long id) {
+        super.setId(id) ;
+        return this;
+    }
     public String getName() {
         return name;
     }

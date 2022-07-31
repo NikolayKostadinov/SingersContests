@@ -114,7 +114,7 @@
                     const durationDisplay = document.getElementById(form.dataset.duration);
                     const durationValue = document.getElementById(form.dataset.durationInSeconds);
                     durationDisplay.value = displayDuration;
-                    durationValue.value = duration;
+                    durationValue.value = Math.floor(duration);
 
                 },false);
             };

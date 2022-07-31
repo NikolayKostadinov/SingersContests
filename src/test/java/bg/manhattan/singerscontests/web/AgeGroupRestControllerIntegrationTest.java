@@ -1,9 +1,12 @@
 package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
+import bg.manhattan.singerscontests.model.entity.AgeGroup;
+import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
 import bg.manhattan.singerscontests.model.service.AgeGroupServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
+import bg.manhattan.singerscontests.repositories.EditionRepository;
 import bg.manhattan.singerscontests.services.EditionService;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,29 +39,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AgeGroupRestControllerIntegrationTest extends IntegrationTestWithInjectedUserDetails {
 
     @MockBean
-    private EditionService editionService;
+    private EditionRepository editionRepository;
 
     @Autowired
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        when(editionService.getById(5L))
-                .thenReturn(new EditionServiceModel()
+        when(editionRepository.findById(5L))
+                .thenReturn(Optional.of(new Edition()
                         .setAgeCalculationType(AgeCalculationType.START_OF_CONTEST)
                         .setBeginDate(LocalDate.of(2022, 9, 23))
                         .setAgeGroups(
                                 new HashSet<>(
                                         Arrays.asList(
-                                                new AgeGroupServiceModel().setId(1L).setName("I").setMinAge(5).setMaxAge(8),
-                                                new AgeGroupServiceModel().setId(2L).setName("II").setMinAge(9).setMaxAge(12),
-                                                new AgeGroupServiceModel().setId(3L).setName("III").setMinAge(13).setMaxAge(16),
-                                                new AgeGroupServiceModel().setId(4L).setName("IV").setMinAge(17).setMaxAge(25)
+                                                new AgeGroup().setId(1L).setName("I").setMinAge(5).setMaxAge(8),
+                                                new AgeGroup().setId(2L).setName("II").setMinAge(9).setMaxAge(12),
+                                                new AgeGroup().setId(3L).setName("III").setMinAge(13).setMaxAge(16),
+                                                new AgeGroup().setId(4L).setName("IV").setMinAge(17).setMaxAge(25)
                                         )
                                 )
                         )
+                        )
                 );
-        when(editionService.getById(6L)).thenThrow(new NotFoundException("Edition", 6L));
+        when(editionRepository.findById(6L)).thenReturn(Optional.empty());
     }
 
     @Test

@@ -1,28 +1,20 @@
 package bg.manhattan.singerscontests.services.impl;
 
+import bg.manhattan.singerscontests.exceptions.AgeGroupNotFoundException;
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
-import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
+import bg.manhattan.singerscontests.model.entity.AgeGroup;
+import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.model.service.AgeGroupServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
-import bg.manhattan.singerscontests.model.view.ErrorViewModel;
 import bg.manhattan.singerscontests.services.AgeCalculatorService;
 import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.EditionService;
-import bg.manhattan.singerscontests.web.controlleradvice.GlobalExceptionHandler;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class AgeGroupServiceImpl implements AgeGroupService {
@@ -38,17 +30,37 @@ public class AgeGroupServiceImpl implements AgeGroupService {
 
     @Override
     public AgeGroupServiceModel getAgeGroup(long editionId, LocalDate birthDate) {
-        EditionServiceModel edition = this.editionService
-                .getById(editionId);
-        AgeCalculationDto data = this.modelMapper.map(edition, AgeCalculationDto.class)
-                .setBirthDate(birthDate);
+        Edition edition = this.editionService.getEntityById(editionId);
+        AgeGroup ageGroupEntity = this.getAgeGroupEntity(edition, birthDate);
+        return this.modelMapper.map(ageGroupEntity, AgeGroupServiceModel.class);
+    }
 
-        int age = this.ageCalculatorService.calculateAge(data);
+    @Override
+    public AgeGroup getAgeGroupEntity(Edition edition, LocalDate birthDate) {
 
+        int age = getAge(this.modelMapper.map(edition, AgeCalculationDto.class), birthDate);
+        Optional<AgeGroup> ageGroup = getAgeGroup(edition, age);
+
+        return ageGroup.orElseThrow(() -> new AgeGroupNotFoundException("Cannot find age group for age " + age));
+    }
+
+    @Override
+    public boolean isBirthDateInRange(Long editionId, LocalDate birthDate) {
+        Edition edition = this.editionService.getEntityById(editionId);
+        int age = getAge(this.modelMapper.map(edition, AgeCalculationDto.class), birthDate);
+
+        return this.getAgeGroup(edition, age).isPresent();
+    }
+
+    private Optional<AgeGroup> getAgeGroup(Edition edition, int age) {
         return edition.getAgeGroups()
                 .stream()
                 .filter(ag -> ag.getMinAge() <= age && age <= ag.getMaxAge())
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find age group for age " + age));
+                .findFirst();
+    }
+
+    private int getAge(AgeCalculationDto model, LocalDate birthDate) {
+        AgeCalculationDto data = model.setBirthDate(birthDate);
+        return this.ageCalculatorService.calculateAge(data);
     }
 }

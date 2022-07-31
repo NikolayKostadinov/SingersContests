@@ -16,7 +16,7 @@ public class SongServiceModel {
 
     private String lyricistFullName;
 
-    private Duration duration;
+    private Integer duration;
 
     private String instrumentalUrl;
 
@@ -74,11 +74,11 @@ public class SongServiceModel {
         return this;
     }
 
-    public Duration getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public SongServiceModel setDuration(Duration duration) {
+    public SongServiceModel setDuration(Integer duration) {
         this.duration = duration;
         return this;
     }

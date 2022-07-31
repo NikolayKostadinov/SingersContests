@@ -1,5 +1,6 @@
 package bg.manhattan.singerscontests.web;
 
+import bg.manhattan.singerscontests.exceptions.AgeGroupNotFoundException;
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
@@ -47,6 +48,15 @@ public class AgeGroupRestController {
         ErrorViewModel model =
                 new ErrorViewModel("Resource not found", details);
         LOGGER.warn("{} {}", model.getMessage(), ex.getMessage());
+        return model;
+    }
+
+    @ExceptionHandler({AgeGroupNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody ErrorViewModel handleAgeGroupNotFoundException(Exception ex) {
+        String details = ex.getMessage();
+        ErrorViewModel model = new ErrorViewModel(ex.getMessage(), "");
+        LOGGER.warn("{} {}", model.getMessage(), ex.getStackTrace());
         return model;
     }
 }

@@ -61,12 +61,7 @@ public class AccountManageController extends BaseController {
         }
 
         UserServiceProfileDetailsModel userModel = this.mapper.map(profileDetails, UserServiceProfileDetailsModel.class);
-
-        try {
-            this.userService.changeUserProfileDetails(principal.getName(), userModel);
-        } catch (UserNotFoundException e) {
-            throw new UsernameNotFoundException(e.getMessage());
-        }
+        this.userService.changeUserProfileDetails(principal.getName(), userModel);
 
         request.logout();
         return "redirect:/authentication/login";

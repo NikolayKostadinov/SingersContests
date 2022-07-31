@@ -2,21 +2,33 @@ package bg.manhattan.singerscontests.model.binding;
 
 import bg.manhattan.singerscontests.model.service.PerformanceCategoryServiceModel;
 
+import javax.validation.constraints.*;
 import java.time.Duration;
+
+import static bg.manhattan.singerscontests.model.ModelConstants.NAME_MAX_LENGTH;
 
 public class SongCreateBindingModel {
 
     private PerformanceCategoryViewModel category;
+
+    @NotBlank(message = "Name name is required")
     private String name;
 
+
+    @NotBlank(message = "Composer name is required")
     private String composerFullName;
 
     private String arrangerFullName;
 
+    @NotBlank(message = "Lyricist name is required")
     private String lyricistFullName;
 
-    private Duration duration;
+    @NotNull(message = "Required")
+    @Min(value = 120, message = "Must be equal or greater than {value/60}")
+    @Max(value = 240, message = "Must be equal or less than {value/60}")
+    private Integer duration;
 
+    @NotNull(message = "Instrumental is required")
     private String instrumentalUrl;
 
     public PerformanceCategoryViewModel getCategory() {
@@ -64,11 +76,11 @@ public class SongCreateBindingModel {
         return this;
     }
 
-    public Duration getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public SongCreateBindingModel setDuration(Duration duration) {
+    public SongCreateBindingModel setDuration(Integer duration) {
         this.duration = duration;
         return this;
     }

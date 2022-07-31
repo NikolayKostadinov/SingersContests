@@ -1,5 +1,6 @@
 package bg.manhattan.singerscontests.services;
 
+import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ public interface EditionService {
     void insert(EditionServiceModel editionModel);
 
     EditionServiceModel getById(Long editionId);
+    Edition getEntityById(Long editionId);
 
     void delete(Long id);
 

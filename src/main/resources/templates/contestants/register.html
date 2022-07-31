@@ -17,7 +17,8 @@
         <th:block th:text="${#strings.toLowerCase(contestModel.editionType)}"></th:block>
         edition
     </h1>
-    <form th:action="@{/authentication/register}" th:method="post" th:object="${contestantModel}"
+    <form th:action="@{/contestants/register/{editionId}(editionId=*{editionId})}" th:method="post"
+          th:object="${contestantModel}"
           class="main-form mx-auto col-md-10 d-flex flex-column justify-content-center aos-init aos-animate"
           autoComplete="off">
         <div class="row">
@@ -110,7 +111,7 @@
                 <div class="col d-flex justify-content-end pe-1">
                     <div class="text-center">
                         <label class="form-label" for="picture-holder">Picture</label>
-                        <img src="#" id="picture-holder" class="picture-holder">
+                        <img th:src="*{imageUrl}" id="picture-holder" class="picture-holder">
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                                 data-bs-target="#uploadPictue">
                             Upload picture
@@ -134,21 +135,28 @@
             <input type="hidden" name="song.instrumentalUrl">
             <h4 class="form-label"
                 th:text="|${itemStat.index + 1}. ${song.category.name}|">Category</h4>
+            <input type="hidden" th:field="*{songs[__${itemStat.index}__].category.name}">
             <div class="row">
                 <div class="col-md-4">
                     <label th:for="*{songs[__${itemStat.index}__].name}">Name</label>
-                    <input type="text" th:field="*{songs[__${itemStat.index}__].name}"
+                    <input type="text"
+                           th:field="*{songs[__${itemStat.index}__].name}"
+                           th:errorclass="is-invalid"
                            class="form-control"
                            required>
                     <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].name}">
                         Error message.
                     </p>
-                    <input type="hidden" th:field="*{songs[__${itemStat.index}__].instrumentalUrl}" th:type="hidden">
+                    <input type="hidden"
+                           th:field="*{songs[__${itemStat.index}__].instrumentalUrl}"
+                           th:errorclass="is-invalid"
+                           th:type="hidden">
                     <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].instrumentalUrl}">
                         Error message.
                     </p>
                 </div>
-                <div class="col-md-1 mt-auto mb-0 pb-1">
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
                     <button type="button" class="btn btn-sm btn-outline-success"
                             data-bs-toggle="modal"
                             th:data-for="${'songs'+ itemStat.index + '.instrumentalUrl'}"
@@ -162,19 +170,24 @@
                 <div class="col-md-6">
                     <label th:for="'song-name-'+${itemStat.index}">Uploaded File Name</label>
                     <input type="text" th:id="'song-name-'+${itemStat.index}" class="form-control border-0"
-                           disabled="disabled"></input>
+                           disabled="disabled">
                 </div>
                 <div class="col-md-1">
                     <label th:for="*{songs[__${itemStat.index}__].duration}">Duration</label>
-                    <input type="text" class="form-control" th:id="${'song-duration-'+ itemStat.index }" disabled="disabled">
+                    <input type="text" class="form-control" th:id="${'song-duration-'+ itemStat.index }"
+                           disabled="disabled">
                     <input th:field="*{songs[__${itemStat.index}__].duration}"
+                           th:errorclass="is-invalid"
                            class="form-control"
                            type="hidden"
                            required>
-                    <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].name}">
+                    <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].duration}">
                         Error message.
                     </p>
-                    <input type="hidden" th:field="*{songs[__${itemStat.index}__].instrumentalUrl}" th:type="hidden">
+                    <input type="hidden"
+                           th:field="*{songs[__${itemStat.index}__].instrumentalUrl}"
+                           th:errorclass="is-invalid"
+                           th:type="hidden">
                     <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].instrumentalUrl}">
                         Error message.
                     </p>
@@ -185,6 +198,7 @@
                     <label th:for="*{songs[__${itemStat.index}__].composerFullName}">Composer</label>
                     <input th:field="*{songs[__${itemStat.index}__].composerFullName}"
                            class="form-control"
+                           th:errorclass="is-invalid"
                            required>
                     <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].composerFullName}">
                         Error message.
@@ -194,6 +208,7 @@
                     <label th:for="*{songs[__${itemStat.index}__].arrangerFullName}">Arranger</label>
                     <input th:field="*{songs[__${itemStat.index}__].arrangerFullName}"
                            class="form-control"
+                           th:errorclass="is-invalid"
                            required>
                     <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].arrangerFullName}">
                         Error message.
@@ -202,6 +217,7 @@
                 <div class="col-md-4">
                     <label th:for="*{songs[__${itemStat.index}__].lyricistFullName}">Lyricist</label>
                     <input th:field="*{songs[__${itemStat.index}__].lyricistFullName}"
+                           th:errorclass="is-invalid"
                            class="form-control"
                            required>
                     <p class="invalid-feedback" th:errors="*{songs[__${itemStat.index}__].lyricistFullName}">

@@ -56,9 +56,14 @@ public class EditionServiceImpl implements EditionService {
 
     @Override
     public EditionServiceModel getById(Long editionId) {
-        Edition edition = this.editionRepository.findById(editionId)
-                .orElseThrow(() -> new NotFoundException("Edition", editionId));
+        Edition edition = this.getEntityById(editionId);
         return this.mapper.map(edition, EditionServiceModel.class);
+    }
+
+    @Override
+    public Edition getEntityById(Long editionId) {
+        return this.editionRepository.findById(editionId)
+                .orElseThrow(() -> new NotFoundException("Edition", editionId));
     }
 
     @Override
