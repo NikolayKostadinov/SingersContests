@@ -91,7 +91,12 @@ public class ContestantServiceModel  {
     }
 
     public String getFullName() {
-        return fullName;
+        if (this.fullName == null) {
+            this.fullName = Stream.of(this.getFirstName(), this.getMiddleName(), this.getLastName())
+                    .filter(n -> n != null && !n.isEmpty())
+                    .collect(Collectors.joining(" "));
+        }
+        return this.fullName;
     }
 
     public ContestantServiceModel setFullName(String fullName) {

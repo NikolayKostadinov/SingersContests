@@ -4,6 +4,7 @@ import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.*;
 import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
+import bg.manhattan.singerscontests.repositories.ContestantRepository;
 import bg.manhattan.singerscontests.repositories.EditionRepository;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.EditionService;
@@ -30,15 +31,17 @@ import static java.util.stream.Collectors.groupingBy;
 @Transactional
 public class EditionServiceImpl implements EditionService {
     private final EditionRepository editionRepository;
+    private final ContestantRepository contestantRepository;
     private final ContestService contestService;
     private final JuryMemberService juryMemberService;
     private final ModelMapper mapper;
 
     public EditionServiceImpl(EditionRepository editionRepository,
-                              ContestService contestService,
+                              ContestantRepository contestantRepository, ContestService contestService,
                               JuryMemberService juryMemberService,
                               ModelMapper mapper) {
         this.editionRepository = editionRepository;
+        this.contestantRepository = contestantRepository;
         this.contestService = contestService;
         this.juryMemberService = juryMemberService;
         this.mapper = mapper;
@@ -122,6 +125,11 @@ public class EditionServiceImpl implements EditionService {
                                 AtomicInteger ix = new AtomicInteger(1);
                                 contestants.forEach(c -> c.setScenarioNumber(ix.getAndIncrement()));
                             });
+
+                    this.contestantRepository.saveAll(ageGroups.values()
+                            .stream()
+                            .flatMap(lc -> lc.stream())
+                            .toList());
                 });
 
         this.editionRepository.saveAll(editions);

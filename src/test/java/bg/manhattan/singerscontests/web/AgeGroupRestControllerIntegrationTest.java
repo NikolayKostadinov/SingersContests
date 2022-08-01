@@ -38,11 +38,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithUserDetails(value = "user0", userDetailsServiceBeanName = "userDetailsService")
 class AgeGroupRestControllerIntegrationTest extends IntegrationTestWithInjectedUserDetails {
 
-    @MockBean
-    private EditionRepository editionRepository;
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private EditionRepository editionRepository;
 
     @BeforeEach
     void setUp() {

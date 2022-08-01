@@ -4,14 +4,12 @@ import bg.manhattan.singerscontests.model.entity.*;
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
 import bg.manhattan.singerscontests.model.enums.EditionType;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
-import bg.manhattan.singerscontests.model.service.ContestantServiceModel;
-import bg.manhattan.singerscontests.model.service.PerformanceCategoryServiceModel;
-import bg.manhattan.singerscontests.model.service.SongServiceModel;
 import bg.manhattan.singerscontests.repositories.*;
-import bg.manhattan.singerscontests.services.ContestantService;
+import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.SeedService;
 import bg.manhattan.singerscontests.util.DateTimeProvider;
 import bg.manhattan.singerscontests.util.Utils;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +19,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -37,9 +32,13 @@ public class SeedServiceImpl implements SeedService {
     private final EditionRepository editionRepository;
     private final JuryMemberRepository juryMemberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final AgeGroupService ageGroupService;
+
+    private final ModelMapper mapper;
     private final String adminPass;
 
-    private final ContestantService contestantService;
+    private final ContestantRepository contestantRepository;
 
     private final Properties seedProps;
 
@@ -49,16 +48,18 @@ public class SeedServiceImpl implements SeedService {
                            EditionRepository editionRepository,
                            JuryMemberRepository juryMemberRepository,
                            PasswordEncoder passwordEncoder,
-                           @Value("${app.default.admin.password}") String adminPass,
-                           ContestantService contestantService) {
+                           AgeGroupService ageGroupService, ModelMapper mapper, @Value("${app.default.admin.password}") String adminPass,
+                           ContestantRepository contestantRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.contestRepository = contestRepository;
         this.editionRepository = editionRepository;
         this.juryMemberRepository = juryMemberRepository;
         this.passwordEncoder = passwordEncoder;
+        this.ageGroupService = ageGroupService;
+        this.mapper = mapper;
         this.adminPass = adminPass;
-        this.contestantService = contestantService;
+        this.contestantRepository = contestantRepository;
 
         this.seedProps = new Properties();
         try {
@@ -74,7 +75,7 @@ public class SeedServiceImpl implements SeedService {
     public void seed() {
         LOGGER.info("----------------- Begin DB Initialization ------------------");
         if (userRepository.count() == 0 && userRoleRepository.count() == 0) {
-            LOGGER.info("----------------- Seed roles ------------------");
+            LOGGER.info("-----------------      Seed roles     ------------------");
             UserRole adminRole = new UserRole().setUserRole(UserRoleEnum.ADMIN);
             UserRole contestManagerRole = new UserRole().setUserRole(UserRoleEnum.CONTEST_MANAGER);
             UserRole juryMemberRole = new UserRole().setUserRole(UserRoleEnum.JURY_MEMBER);
@@ -95,61 +96,62 @@ public class SeedServiceImpl implements SeedService {
             seedContestants(editions);
         }
 
-        LOGGER.info("-----------------DB Initialized and ready ------------------");
+        LOGGER.info("----------------- DB Initialized and ready ------------------");
     }
 
     private void seedContestants(List<Edition> editions) {
-        List<ContestantServiceModel> contestants = new ArrayList<>();
-        LOGGER.info("----------------- Seed contestants ------------------");
-        try {
-            File file = new ClassPathResource("seed_contestants.txt").getFile();
-            FileReader fr = new FileReader(file);   //reads the file
-            BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream
-            StringBuffer sb = new StringBuffer();    //constructs a string buffer with no characters
-            String line;
-            while ((line = br.readLine()) != null) {
-                contestants.add(parseContestant(line));
-            }
-            fr.close();    //closes the stream and release the resources
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        User user = this.userRepository.findByUsername("user1").orElse(null);
+        LOGGER.info("-----------------      Seed contestants    ------------------");
 
         editions.forEach(edition -> {
+                    List<Contestant> contestants = new ArrayList<>();
+                    try {
+                        File file = new ClassPathResource("seed_contestants.txt").getFile();
+                        FileReader fr = new FileReader(file);   //reads the file
+                        BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream
+                        StringBuffer sb = new StringBuffer();    //constructs a string buffer with no characters
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            contestants.add(parseContestant(line).setRegistrar(user));
+                        }
+                        fr.close();    //closes the stream and release the resources
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     contestants.forEach(contestant -> {
                         List<PerformanceCategory> categories = edition.getPerformanceCategories().stream().toList();
-                        contestant.getSongs().get(0).setCategory(new PerformanceCategoryServiceModel()
-                                .setId(categories.get(0).getId()));
-                        contestant.getSongs().get(1).setCategory(new PerformanceCategoryServiceModel()
-                                .setId(categories.get(1).getId()));
-                        contestant.setEditionId(edition.getId());
-                        LOGGER.info("---------------------------------- Seed contestants {}------------------", contestant.getFirstName());
-                        this.contestantService.create(contestant, () -> "user1");
+                        contestant.getSongs().get(0).setCategory(categories.get(0)).setContestant(contestant);
+                        contestant.getSongs().get(1).setCategory(categories.get(0)).setContestant(contestant);
+                        contestant.setEdition(edition);
+                        contestant.setAgeGroup(this.ageGroupService.getAgeGroupEntity(edition,
+                                contestant.getBirthDay()));
                     });
+                    this.contestantRepository.saveAll(contestants);
                 }
         );
     }
 
-    private ContestantServiceModel parseContestant(String line) {
+    private Contestant parseContestant(String line) {
         String[] tokens = line.split(",");
-        return new ContestantServiceModel()
+        return ((Contestant) new Contestant()
                 .setFirstName(tokens[0])
                 .setMiddleName(tokens[1].isBlank() ? null : tokens[1])
-                .setLastName(tokens[2])
+                .setLastName(tokens[2]))
                 .setImageUrl(this.seedProps.getProperty("anonymous.picture"))
                 .setBirthDay(LocalDate.of(Integer.parseInt(tokens[6]), Integer.parseInt(tokens[7]), Integer.parseInt(tokens[8])))
                 .setCity(tokens[3])
                 .setCountry(tokens[4])
                 .setInstitution(tokens[5])
                 .setSongs(List.of(
-                        new SongServiceModel()
+                        new Song()
                                 .setName(tokens[9])
                                 .setComposerFullName(tokens[10])
                                 .setArrangerFullName(tokens[11])
                                 .setLyricistFullName(tokens[12])
                                 .setInstrumentalUrl("https://res.cloudinary.com/dsylyy9iz/raw/upload/v1659174204/1.%20%D0%96%D0%B0%D0%BA%D0%BB%D0%B8%D0%BD%20%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2%D0%B0%20%D0%9A%D0%BE%D1%81%D1%82%D0%B0%D0%B4%D0%B8%D0%BD%D0%BE%D0%B2%D0%B0%20%D0%9E%D1%81%D1%82%D0%B0%D0%BD%D0%B8%20%D1%82%D0%B0%D0%B7%D0%B8%20%D0%BD%D0%BE%D1%89.mp3")
                                 .setDuration(Utils.getRandomNumberInRange(150, 240)),
-                        new SongServiceModel()
+                        new Song()
                                 .setName(tokens[13])
                                 .setComposerFullName(tokens[14])
                                 .setArrangerFullName(tokens[15])
@@ -159,7 +161,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private List<Edition> seedEditions(List<Contest> contests) {
-        LOGGER.info("----------------- Seed editions ------------------");
+        LOGGER.info("-----------------      Seed editions  ------------------");
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
         List<JuryMember> juryMembers = this.juryMemberRepository.findAll();
         List<Edition> editions = new ArrayList<>();
@@ -203,7 +205,8 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private List<Contest> seedContests() {
-        LOGGER.info("----------------- Seed Contests ------------------");
+        LOGGER.info("-----------------      Seed Contests  ------------------");
+
         List<User> managers = this.userRepository.findByRole(UserRoleEnum.CONTEST_MANAGER);
         managers.addAll(this.userRepository.findByRole(UserRoleEnum.ADMIN));
 
@@ -253,7 +256,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private void seedAdmin(List<UserRole> roles) {
-        LOGGER.info("----------------- Seed Admin ------------------");
+        LOGGER.info("-----------------      Seed Admin     ------------------");
         User admin = new User()
                 .setRoles(new HashSet<>(roles))
                 .setUsername("admin")
@@ -268,7 +271,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private void seedContestManagers(List<UserRole> roles) {
-        LOGGER.info("----------------- Seed Contest Managers ------------------");
+        LOGGER.info("-----------------      Seed Contest Managers -----------");
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             User user = new User()
@@ -288,7 +291,7 @@ public class SeedServiceImpl implements SeedService {
 
 
     private void seedJuryMembers(List<UserRole> roles) {
-        LOGGER.info("----------------- Seed Jury Members ------------------");
+        LOGGER.info("-----------------      Seed Jury Members ---------------");
         List<User> users = new ArrayList<>();
         User jury = new User()
                 .setUsername("jury")
@@ -375,7 +378,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private void seedUsers() {
-        LOGGER.info("----------------- Seed Users ------------------");
+        LOGGER.info("-----------------      Seed Users     ------------------");
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             User user = new User()
