@@ -12,8 +12,11 @@ import bg.manhattan.singerscontests.services.ContestantService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.UserService;
 import jdk.jfr.Category;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -80,7 +83,7 @@ public class ContestantServiceImpl implements ContestantService {
             song.setContestant(contestant);
             song.setCategory(edition.getPerformanceCategories()
                     .stream()
-                    .filter(c -> c.getId() == songModel.getCategory().getId())
+                    .filter(c -> c.getId().equals(songModel.getCategory().getId()))
                     .findFirst()
                     .orElseThrow(() ->
                             new NotFoundException(

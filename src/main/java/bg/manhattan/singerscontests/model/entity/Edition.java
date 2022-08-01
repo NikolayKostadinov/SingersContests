@@ -45,17 +45,17 @@ public class Edition extends BaseEntity {
     @ManyToOne(optional = false)
     private Contest contest;
 
-    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "edition", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PerformanceCategory> performanceCategories;
 
-    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "edition", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<AgeGroup> ageGroups;
 
-    @OneToMany(mappedBy = "edition", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "edition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Contestant> contestants;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<JuryMember> juryMembers;
 
     public Edition() {

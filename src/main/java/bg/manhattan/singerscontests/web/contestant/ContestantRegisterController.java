@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
@@ -24,6 +25,7 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/contestants")
+@Transactional
 public class ContestantRegisterController extends BaseController {
     private final ContestantService contestantService;
     private final ModelMapper mapper;
