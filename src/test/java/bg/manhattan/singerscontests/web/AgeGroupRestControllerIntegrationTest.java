@@ -42,45 +42,20 @@ class AgeGroupRestControllerIntegrationTest extends IntegrationTestWithInjectedU
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private EditionRepository editionRepository;
-
-    @BeforeEach
-    void setUp() {
-        when(editionRepository.findById(5L))
-                .thenReturn(Optional.of(new Edition()
-                        .setAgeCalculationType(AgeCalculationType.START_OF_CONTEST)
-                        .setBeginDate(LocalDate.of(2022, 9, 23))
-                        .setAgeGroups(
-                                new HashSet<>(
-                                        Arrays.asList(
-                                                new AgeGroup().setId(1L).setName("I").setMinAge(5).setMaxAge(8),
-                                                new AgeGroup().setId(2L).setName("II").setMinAge(9).setMaxAge(12),
-                                                new AgeGroup().setId(3L).setName("III").setMinAge(13).setMaxAge(16),
-                                                new AgeGroup().setId(4L).setName("IV").setMinAge(17).setMaxAge(25)
-                                        )
-                                )
-                        )
-                        )
-                );
-        when(editionRepository.findById(6L)).thenReturn(Optional.empty());
-    }
-
     @Test
     void getAgeGroup() throws Exception {
-        mockMvc.perform(get("/api/age-group/5/2009-04-25")
+        mockMvc.perform(get("/api/age-group/1/2009-04-25")
                         .accept("application/json"))
                 .andExpect(status().is(200))
-                .andExpect(jsonPath("$.id", is(3)))
                 .andExpect(jsonPath("$.name", is("III")));
     }
 
     @Test
     void getAgeGroupNotFound() throws Exception {
-        mockMvc.perform(get("/api/age-group/6/2009-04-25")
+        mockMvc.perform(get("/api/age-group/"+ Long.MAX_VALUE+"/2009-04-25")
                         .accept("application/json"))
                 .andExpect(status().is(404))
                 .andExpect(jsonPath("$.message", is("Resource not found")))
-                .andExpect(jsonPath("$.details", containsString( "id: 6 not found!")));
+                .andExpect(jsonPath("$.details", containsString( "id: "+Long.MAX_VALUE+" not found!")));
     }
 }
