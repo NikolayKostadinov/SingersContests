@@ -21,4 +21,6 @@ public interface EditionService {
     Page<EditionServiceModel> getFutureEditions(int pageNumber, int size);
 
     EditionDetailsServiceModel getEditionDetails(Long editionId);
+
+    void generateScenarioOrder();
 }

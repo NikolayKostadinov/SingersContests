@@ -16,8 +16,7 @@ public class JuryMember {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
-    @Lob
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String details;
 
     @Column(name="image_url", nullable = false)

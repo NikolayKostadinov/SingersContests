@@ -21,4 +21,7 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
     List<LocalDate> findAllByBeginDateIsBetween(LocalDate begin, LocalDate end);
 
     Page<Edition> findAllByBeginDateAfter(LocalDate targetDate, PageRequest request);
+
+
+    List<Edition> findAllByEndOfSubscriptionDate(LocalDate targetDate);
 }

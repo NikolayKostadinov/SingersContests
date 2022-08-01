@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.web.administration;
+package bg.manhattan.singerscontests.test_utility.administration;
 
 import bg.manhattan.singerscontests.web.IntegrationTestWithInjectedUserDetails;
 import org.junit.jupiter.api.Test;

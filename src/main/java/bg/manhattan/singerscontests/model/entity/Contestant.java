@@ -47,6 +47,8 @@ public class Contestant extends PersonBaseEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User registrar;
 
+    private Integer scenarioNumber;
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -126,7 +128,14 @@ public class Contestant extends PersonBaseEntity {
     public Contestant setRegistrar(User registrar) {
         this.registrar = registrar;
         return this;
+    }
 
+    public Integer getScenarioNumber() {
+        return scenarioNumber;
+    }
 
+    public Contestant setScenarioNumber(Integer scenarioNumber) {
+        this.scenarioNumber = scenarioNumber;
+        return this;
     }
 }

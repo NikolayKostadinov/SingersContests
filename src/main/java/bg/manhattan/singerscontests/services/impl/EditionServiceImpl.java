@@ -17,9 +17,14 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @Transactional
@@ -97,6 +102,29 @@ public class EditionServiceImpl implements EditionService {
 
 
         return this.mapper.map(edition, EditionDetailsServiceModel.class);
+    }
+
+    @Override
+    public void generateScenarioOrder() {
+        LocalDate targetDate = DateTimeProvider.getCurrent().utcNow().toLocalDate();
+        List<Edition> editions = this.editionRepository.findAllByEndOfSubscriptionDate(targetDate);
+        editions
+                .stream()
+                .forEach(edition -> {
+                    Map<AgeGroup, List<Contestant>> ageGroups = edition.getContestants()
+                            .stream()
+                            .collect(groupingBy(Contestant::getAgeGroup));
+                    ageGroups.entrySet()
+                            .stream()
+                            .forEach(ag -> {
+                                List<Contestant> contestants = ag.getValue();
+                                Collections.shuffle(contestants);
+                                AtomicInteger ix = new AtomicInteger(1);
+                                contestants.forEach(c -> c.setScenarioNumber(ix.getAndIncrement()));
+                            });
+                });
+
+        this.editionRepository.saveAll(editions);
     }
 
     private Set<JuryMember> getJuryMembers(EditionServiceModel editionModel, Edition edition) {
