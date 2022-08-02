@@ -19,7 +19,7 @@ public class FinalizeEditionRegistrationScheduler {
         this.editionService = editionService;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 19 19 * * ?")
     public void ScheduleEditionFinalize(){
         LocalDate targetDate = DateTimeProvider
                 .getCurrent()

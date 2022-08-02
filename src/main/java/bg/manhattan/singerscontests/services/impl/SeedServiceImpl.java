@@ -95,7 +95,7 @@ public class SeedServiceImpl implements SeedService {
         if (contestRepository.count() == 0) {
             List<Contest> contests = seedContests();
             List<Edition> editions = seedEditions(contests);
-            //seedContestants(editions);
+            seedContestants(editions);
         }
         LOGGER.info("----------------- DB Initialized and ready -----------------");
     }
@@ -144,7 +144,9 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private Contestant parseContestant(String line) {
-        String[] tokens = line.split(",");
+        String[] tokens = Arrays.stream(line.split(","))
+                .map(String::trim)
+                .toArray(String[]::new);
         return ((Contestant) new Contestant()
                 .setFirstName(tokens[0])
                 .setMiddleName(tokens[1].isBlank() ? null : tokens[1])
