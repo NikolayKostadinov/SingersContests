@@ -2,6 +2,7 @@ package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.*;
+import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestantServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.model.service.PerformanceCategoryServiceModel;
@@ -11,18 +12,13 @@ import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.ContestantService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.UserService;
-import jdk.jfr.Category;
-import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ContestantServiceImpl implements ContestantService {
@@ -93,5 +89,38 @@ public class ContestantServiceImpl implements ContestantService {
         }
 
         return list;
+    }
+
+    @Override
+    public boolean isRegistrar(Principal principal, Long id) {
+        User currentUser = this.userService.getCurrentUser(principal);
+        Contestant contestant = getContestant(id);
+
+        if (isAdmin(currentUser)
+                || IsManager(contestant, currentUser)) {
+            return true;
+        }
+
+        return contestant.getRegistrar().getId().equals(currentUser.getId());
+    }
+
+    private boolean IsManager(Contestant contestant, User currentUser) {
+        return contestant.getEdition()
+                .getContest()
+                .getManagers()
+                .stream()
+                .anyMatch(manager -> manager.getId().equals(currentUser.getId()));
+    }
+
+    private boolean isAdmin(User currentUser) {
+        return currentUser.getRoles()
+                .stream()
+                .anyMatch(role -> role.getUserRole() == UserRoleEnum.ADMIN);
+    }
+
+    private Contestant getContestant(Long id) {
+        return this.repository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("Contestant", id));
     }
 }

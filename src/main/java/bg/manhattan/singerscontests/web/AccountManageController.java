@@ -181,19 +181,14 @@ public class AccountManageController extends BaseController {
     public ProfileDetailsBindingModel initProfileDetails(Principal principal) {
 
         UserServiceModel user = this.userService
-                .getUserByUsername(principal.getName())
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User " + principal.getName() + "not found!"));
+                .getUserByUsername(principal.getName());
 
         return this.mapper.map(user, ProfileDetailsBindingModel.class);
     }
 
     @ModelAttribute("emailModel")
     public EmailChangeBindingModel initEmailModel(Principal principal) {
-        UserServiceModel user = this.userService
-                .getUserByUsername(principal.getName())
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User " + principal.getName() + "not found!"));
+        UserServiceModel user = this.userService.getUserByUsername(principal.getName());
 
         return this.mapper.map(user, EmailChangeBindingModel.class);
     }

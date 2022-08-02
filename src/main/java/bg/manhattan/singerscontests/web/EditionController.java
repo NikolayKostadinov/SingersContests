@@ -12,12 +12,14 @@ import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEdition
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.model.view.ContestEditionsViewModel;
 import bg.manhattan.singerscontests.model.view.ContestViewModel;
+import bg.manhattan.singerscontests.model.view.EditionListViewModel;
 import bg.manhattan.singerscontests.model.view.UserSelectViewModel;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.JuryMemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -59,21 +61,29 @@ public class EditionController extends BaseController {
         return "editions/contests";
     }
 
+    @PreAuthorize("isOwner(#contestId)")
     @GetMapping("/{contestId}")
-    public String editions(@PathVariable Long contestId, Model model) {
+    public String editions(@RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+                           @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                           @PathVariable Long contestId, Model model) {
         setFormTitle("Singers Contests - Editions", model);
-        initEditions(model, contestId);
+        initEditions(model, contestId, pageNumber, size);
         return "editions/editions";
     }
 
-    private void initEditions(Model model, Long contestId) {
+    private void initEditions(Model model, Long contestId, int pageNumber, int size) {
         if (!model.containsAttribute("editionsModel")) {
-            ContestServiceModelWithEditions contest = this.contestService.getContestByIdWithEditions(contestId);
+            ContestServiceModelWithEditions contestModel = this.editionService.getEditionsByContestId(contestId, pageNumber, size);
+            Page<EditionListViewModel> editions = contestModel.getEditions()
+                    .map(edition -> this.mapper.map(edition, EditionListViewModel.class));
+
             model.addAttribute("editionsModel",
-                    this.mapper.map(contest, ContestEditionsViewModel.class));
+                    new ContestEditionsViewModel(contestModel.getId(), contestModel.getName(),
+                            new Paged<>(editions, Paging.of(editions.getTotalPages(), pageNumber, size))));
         }
     }
 
+    @PreAuthorize("isOwner(#contestId)")
     @GetMapping("/{contestId}/create")
     public String createEdition(@PathVariable("contestId") Long contestId, Model model) {
         setFormTitle("Singers Contests - Create edition", model);
@@ -82,6 +92,7 @@ public class EditionController extends BaseController {
         return "editions/edition-create";
     }
 
+    @PreAuthorize("isOwner(#contestId)")
     @PostMapping("/{contestId}/create")
     public String create(@PathVariable("contestId") Long contestId,
                          @Valid EditionCreateBindingModel editionModel,
@@ -99,6 +110,7 @@ public class EditionController extends BaseController {
         return "redirect:/editions/" + contestId;
     }
 
+    @PreAuthorize("isEditionOwner(#id)")
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id,
                        Model model) throws NotFoundException {
@@ -108,6 +120,7 @@ public class EditionController extends BaseController {
         return "editions/edition-edit";
     }
 
+    @PreAuthorize("isEditionOwner(#editionModel.id)")
     @PostMapping("/edit")
     public String edit(@Valid EditionEditBindingModel editionModel,
                        BindingResult bindingResult,
@@ -122,6 +135,7 @@ public class EditionController extends BaseController {
         return "redirect:/editions/" + editionModel.getContestId();
     }
 
+    @PreAuthorize("isOwner(#contestId)")
     @DeleteMapping("/delete/{contestId}/{id}")
     public String deleteEdition(@PathVariable("contestId") Long contestId,
                                 @PathVariable("id") Long id) {
@@ -129,7 +143,7 @@ public class EditionController extends BaseController {
         return "redirect:/editions/" + contestId;
     }
 
-    private void readEditionModel(Long editionId, Model model){
+    private void readEditionModel(Long editionId, Model model) {
         if (!model.containsAttribute("editionModel")) {
             EditionServiceModel edition = this.editionService.getById(editionId);
             EditionEditBindingModel editionModel = this.mapper.map(edition, EditionEditBindingModel.class);
@@ -159,7 +173,7 @@ public class EditionController extends BaseController {
     }
 
 
-    private void setEditionModel(long contestId, Model model){
+    private void setEditionModel(long contestId, Model model) {
         if (!model.containsAttribute("editionModel")) {
             EditionCreateBindingModel editionModel = new EditionCreateBindingModel()
                     .setContestId(contestId)
@@ -170,7 +184,9 @@ public class EditionController extends BaseController {
         }
     }
 
-    public void addContestsToModel(Model model, int pageNumber, int size, HttpServletRequest request, Principal principal) {
+    public void addContestsToModel(Model model, int pageNumber, int size,
+                                   HttpServletRequest request,
+                                   Principal principal) {
         if (!model.containsAttribute("contestList")) {
             Page<ContestViewModel> contests = this.contestService
                     .getAllContestsByContestManager(principal, request.isUserInRole(UserRoleEnum.ADMIN.name()), pageNumber, size)

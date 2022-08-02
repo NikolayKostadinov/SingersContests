@@ -18,12 +18,12 @@ import bg.manhattan.singerscontests.services.RoleService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.security.Principal;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -58,7 +58,8 @@ public class UserServiceImpl implements UserService {
     public void register(UserServiceModel model, Locale locale) throws MessagingException {
         User user = this.mapper.map(model, User.class);
         this.repository.save(user);
-        this.eventPublisher.publishEvent(new UserRegisteredEvent(this, model.getEmail(), model.getFullName(), locale));
+        this.eventPublisher.publishEvent(
+                new UserRegisteredEvent(this, model.getEmail(), model.getFullName(), locale));
     }
 
     @Override
@@ -68,8 +69,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserServiceModel> getUserByUsername(String userName) {
-        Optional<User> user = this.repository.findByUsername(userName);
+    public UserServiceModel getUserByUsername(String userName) {
+       User user = this.repository.findByUsername(userName)
+                .orElseThrow(() -> new UsernameNotFoundException("User " + userName + "not found!"));
         return toUserServiceModel(user);
     }
 
@@ -152,6 +154,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean existsUser(String userName) {
+        return this.repository.existsByUsername(userName);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return this.repository.existsByEmail(email);
+    }
+
     private void addUserInRole(User user) {
         UserRole userRole = this.roleService.getRoleByName(UserRoleEnum.JURY_MEMBER);
         user.getRoles().add(userRole);
@@ -198,17 +210,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserServiceModel> getUserByEmail(String email) {
-        Optional<User> user = this.repository.findByEmail(email);
+    public UserServiceModel getUserByEmail(String email) {
+        User user = this.repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with" + email + "not found!"));
         return toUserServiceModel(user);
     }
 
-    private Optional<UserServiceModel> toUserServiceModel(Optional<User> user) {
-        return user.map(value -> {
-            UserServiceModel userModel = this.mapper.map(value, UserServiceModel.class);
-            value.getRoles()
+    private UserServiceModel toUserServiceModel(User user) {
+            UserServiceModel userModel = this.mapper.map(user, UserServiceModel.class);
+            user.getRoles()
                     .forEach(role -> userModel.addRole(role.getUserRole().name()));
             return userModel;
-        });
     }
 }

@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithUserDetails(value = "manager1", userDetailsServiceBeanName = "userDetailsService")
+@WithUserDetails(value = "admin", userDetailsServiceBeanName = "userDetailsService")
 class EditionControllerIntegrationTest extends IntegrationTestWithInjectedUserDetails {
 
     @Autowired

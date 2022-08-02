@@ -22,6 +22,8 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
+import static bg.manhattan.singerscontests.util.Utils.removeBom;
+
 @Service
 @Transactional
 public class SeedServiceImpl implements SeedService {
@@ -75,7 +77,7 @@ public class SeedServiceImpl implements SeedService {
     public void seed() {
         LOGGER.info("----------------- Begin DB Initialization ------------------");
         if (userRepository.count() == 0 && userRoleRepository.count() == 0) {
-            LOGGER.info("-----------------      Seed roles     ------------------");
+            LOGGER.info("-----------------      Seed Roles         ------------------");
             UserRole adminRole = new UserRole().setUserRole(UserRoleEnum.ADMIN);
             UserRole contestManagerRole = new UserRole().setUserRole(UserRoleEnum.CONTEST_MANAGER);
             UserRole juryMemberRole = new UserRole().setUserRole(UserRoleEnum.JURY_MEMBER);
@@ -93,23 +95,24 @@ public class SeedServiceImpl implements SeedService {
         if (contestRepository.count() == 0) {
             List<Contest> contests = seedContests();
             List<Edition> editions = seedEditions(contests);
-            seedContestants(editions);
+            //seedContestants(editions);
         }
-
-        LOGGER.info("----------------- DB Initialized and ready ------------------");
+        LOGGER.info("----------------- DB Initialized and ready -----------------");
     }
 
     private void seedContestants(List<Edition> editions) {
+        LOGGER.info("-----------------      Seed Contestants   ------------------");
         User user = this.userRepository.findByUsername("user1").orElse(null);
-        LOGGER.info("-----------------      Seed contestants    ------------------");
+        ClassPathResource classPathResource = new ClassPathResource("seed_contestants.txt");
 
         editions.forEach(edition -> {
                     List<Contestant> contestants = new ArrayList<>();
                     try {
-                        File file = new ClassPathResource("seed_contestants.txt").getFile();
+                        File file = classPathResource.getFile();
                         FileReader fr = new FileReader(file);   //reads the file
                         BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream
-                        StringBuffer sb = new StringBuffer();    //constructs a string buffer with no characters
+                        char[] bom = new char[1];
+                        int bomBytes = br.read(bom);
                         String line;
                         while ((line = br.readLine()) != null) {
                             contestants.add(parseContestant(line).setRegistrar(user));
@@ -130,6 +133,14 @@ public class SeedServiceImpl implements SeedService {
                     this.contestantRepository.saveAll(contestants);
                 }
         );
+    }
+
+    private static void removeBOM(ClassPathResource classPathResource) {
+        try {
+            removeBom(classPathResource.getFile().toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Contestant parseContestant(String line) {
@@ -161,7 +172,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private List<Edition> seedEditions(List<Contest> contests) {
-        LOGGER.info("-----------------      Seed editions  ------------------");
+        LOGGER.info("-----------------      Seed Editions      ------------------");
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
         List<JuryMember> juryMembers = this.juryMemberRepository.findAll();
         List<Edition> editions = new ArrayList<>();
@@ -205,8 +216,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private List<Contest> seedContests() {
-        LOGGER.info("-----------------      Seed Contests  ------------------");
-
+        LOGGER.info("-----------------      Seed Contests      ------------------");
         List<User> managers = this.userRepository.findByRole(UserRoleEnum.CONTEST_MANAGER);
         managers.addAll(this.userRepository.findByRole(UserRoleEnum.ADMIN));
 
@@ -256,7 +266,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private void seedAdmin(List<UserRole> roles) {
-        LOGGER.info("-----------------      Seed Admin     ------------------");
+        LOGGER.info("-----------------      Seed Admin         ------------------");
         User admin = new User()
                 .setRoles(new HashSet<>(roles))
                 .setUsername("admin")
@@ -271,7 +281,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private void seedContestManagers(List<UserRole> roles) {
-        LOGGER.info("-----------------      Seed Contest Managers -----------");
+        LOGGER.info("-----------------      Seed Contest Managers ---------------");
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             User user = new User()
@@ -291,7 +301,7 @@ public class SeedServiceImpl implements SeedService {
 
 
     private void seedJuryMembers(List<UserRole> roles) {
-        LOGGER.info("-----------------      Seed Jury Members ---------------");
+        LOGGER.info("-----------------      Seed Jury Members  ------------------");
         List<User> users = new ArrayList<>();
         User jury = new User()
                 .setUsername("jury")
@@ -378,7 +388,7 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private void seedUsers() {
-        LOGGER.info("-----------------      Seed Users     ------------------");
+        LOGGER.info("-----------------      Seed Users         ------------------");
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             User user = new User()

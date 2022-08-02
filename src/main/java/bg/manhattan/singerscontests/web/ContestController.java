@@ -17,6 +17,7 @@ import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -76,6 +77,7 @@ public class ContestController extends BaseController {
         return "redirect:/contests";
     }
 
+    @PreAuthorize("isOwner(#id)")
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable Long id) {
         setFormTitle("Singers Contests - Create Contest", model);
@@ -84,14 +86,7 @@ public class ContestController extends BaseController {
         return "contests/contest-edit";
     }
 
-    private void setContest(Model model, Long id) {
-        if (!model.containsAttribute("contestEditModel")) {
-            ContestServiceModel contest = this.contestService.getContestById(id);
-            ContestCreateBindingModel contestModel = this.mapper.map(contest, ContestEditBindingModel.class);
-            model.addAttribute("contestEditModel", contestModel);
-        }
-    }
-
+    @PreAuthorize("isOwner(#contestEditModel.id)")
     @PostMapping("/edit")
     public String edit(@Valid ContestEditBindingModel contestEditModel,
                        BindingResult bindingResult,
@@ -109,6 +104,22 @@ public class ContestController extends BaseController {
 
         this.contestService.update(contestModel);
         return "redirect:/contests";
+    }
+
+    @PreAuthorize("isOwner(#id)")
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        //todo: only if current user is contest manager
+        this.contestService.delete(id);
+        return "redirect:/contests";
+    }
+
+    private void setContest(Model model, Long id) {
+        if (!model.containsAttribute("contestEditModel")) {
+            ContestServiceModel contest = this.contestService.getContestById(id);
+            ContestCreateBindingModel contestModel = this.mapper.map(contest, ContestEditBindingModel.class);
+            model.addAttribute("contestEditModel", contestModel);
+        }
     }
 
     private void ensureOneManager(List<Long> managers, Principal principal) throws UserNotFoundException {
@@ -132,14 +143,7 @@ public class ContestController extends BaseController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        //todo: only if current user is contest manager
-        this.contestService.delete(id);
-        return "redirect:/contests";
-    }
-
-    public void addContestsToModel(Model model, int pageNumber, int size, HttpServletRequest request, Principal principal) {
+    private void addContestsToModel(Model model, int pageNumber, int size, HttpServletRequest request, Principal principal) {
         if (!model.containsAttribute("contestList")) {
             Page<ContestViewModel> contests = this.contestService
                     .getAllContestsByContestManager(principal, request.isUserInRole(UserRoleEnum.ADMIN.name()), pageNumber, size)

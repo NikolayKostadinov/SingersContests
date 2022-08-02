@@ -9,4 +9,6 @@ public interface ContestantService {
     ContestantServiceModel getContestantModel(Long editionId);
 
     void create(ContestantServiceModel contestant, Principal principal);
+
+    boolean isRegistrar(Principal principal, Long id);
 }

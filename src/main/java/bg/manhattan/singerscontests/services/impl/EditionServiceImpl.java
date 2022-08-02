@@ -2,6 +2,7 @@ package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.*;
+import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.repositories.ContestantRepository;
@@ -98,6 +99,17 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
+    public Page<EditionServiceModel> getEditionsByContest(Contest contest, int pageNumber, int size) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "beginDate");
+        PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
+        LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
+
+        return this.editionRepository
+                .findAllByContest(contest, request)
+                .map(e -> this.mapper.map(e, EditionServiceModel.class));
+    }
+
+    @Override
     public EditionDetailsServiceModel getEditionDetails(Long editionId) {
         Edition edition = this.editionRepository
                 .findById(editionId)
@@ -108,8 +120,7 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public void generateScenarioOrder() {
-        LocalDate targetDate = DateTimeProvider.getCurrent().utcNow().toLocalDate();
+    public void generateScenarioOrder(LocalDate targetDate) {
         List<Edition> editions = this.editionRepository.findAllByEndOfSubscriptionDate(targetDate);
         editions
                 .stream()
@@ -133,6 +144,19 @@ public class EditionServiceImpl implements EditionService {
                 });
 
         this.editionRepository.saveAll(editions);
+    }
+
+    @Override
+    public ContestServiceModelWithEditions getEditionsByContestId(Long contestId, int pageNumber, int size) {
+        Contest contest = this.contestService.getContestEntityById(contestId);
+        Page<EditionServiceModel> editions = this.getEditionsByContest(contest, pageNumber, size);
+        return new ContestServiceModelWithEditions(contest.getId(), contest.getName(), editions);
+    }
+
+    @Override
+    public boolean isEditionOwner(String userName, Long id) {
+        Edition edition = getEntityById(id);
+        return this.contestService.isOwner(userName, edition.getContest().getId());
     }
 
     private Set<JuryMember> getJuryMembers(EditionServiceModel editionModel, Edition edition) {

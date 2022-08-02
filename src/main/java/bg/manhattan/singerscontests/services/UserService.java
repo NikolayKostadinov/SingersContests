@@ -13,7 +13,6 @@ import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 public interface UserService {
     void register(UserServiceModel model, Locale locale) throws MessagingException;
@@ -27,9 +26,9 @@ public interface UserService {
 
     void changeUserProfileDetails(String username, UserServiceProfileDetailsModel userModel) throws UserNotFoundException;
 
-    Optional<UserServiceModel> getUserByEmail(String email);
+    UserServiceModel getUserByEmail(String email);
 
-    Optional<UserServiceModel> getUserByUsername(String userName);
+    UserServiceModel getUserByUsername(String userName);
 
     List<UserServiceModel> getUsersByRole(UserRoleEnum contestManager);
 
@@ -48,4 +47,8 @@ public interface UserService {
     void addUserInRole(Long userId, UserRoleEnum role);
 
     void removeUserFromRole(Long userId, UserRoleEnum role);
+
+    boolean existsUser(String userName);
+
+    boolean existsByEmail(String email);
 }

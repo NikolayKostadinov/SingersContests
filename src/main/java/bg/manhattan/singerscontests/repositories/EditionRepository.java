@@ -1,5 +1,6 @@
 package bg.manhattan.singerscontests.repositories;
 
+import bg.manhattan.singerscontests.model.entity.Contest;
 import bg.manhattan.singerscontests.model.entity.Edition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,4 +29,6 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
             "FROM Edition e " +
             "WHERE e.endOfSubscriptionDate = :date")
     List<Edition> findAllByEndOfSubscriptionDate(@Param("date") LocalDate targetDate);
+
+    Page<Edition> findAllByContest(Contest contest, PageRequest request);
 }

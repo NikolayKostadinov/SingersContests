@@ -1,6 +1,8 @@
 package bg.manhattan.singerscontests.services;
 
+import bg.manhattan.singerscontests.model.entity.Contest;
 import bg.manhattan.singerscontests.model.entity.Edition;
+import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import org.springframework.data.domain.Page;
@@ -20,7 +22,13 @@ public interface EditionService {
 
     Page<EditionServiceModel> getFutureEditions(int pageNumber, int size);
 
+    Page<EditionServiceModel> getEditionsByContest(Contest contest, int pageNumber, int size);
+
     EditionDetailsServiceModel getEditionDetails(Long editionId);
 
-    void generateScenarioOrder();
+    void generateScenarioOrder(LocalDate targetDate);
+
+    ContestServiceModelWithEditions getEditionsByContestId(Long contestId, int pageNumber, int size);
+
+    boolean isEditionOwner(String userName, Long id);
 }

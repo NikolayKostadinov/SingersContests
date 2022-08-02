@@ -39,4 +39,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.id = :id AND r.userRole = :role " +
             "ORDER BY u.firstName, u.middleName, u.lastName")
     List<User> findByRoleAndId(@Param("role") UserRoleEnum role, @Param("id") Long id);
+
+    boolean existsByUsername(String username);
+    boolean existsByEmail(String email);
 }

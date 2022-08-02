@@ -21,6 +21,8 @@ public interface ContestService {
 
     ContestServiceModel getContestById(Long id);
 
+    boolean isOwner(String userName, Long id);
+
     void update(ContestEditServiceModel map);
 
     ContestServiceModelWithEditions getContestByIdWithEditions(Long contestId);

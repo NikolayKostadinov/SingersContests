@@ -4,10 +4,7 @@ import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.Contest;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
-import bg.manhattan.singerscontests.model.service.ContestCreateServiceModel;
-import bg.manhattan.singerscontests.model.service.ContestEditServiceModel;
-import bg.manhattan.singerscontests.model.service.ContestServiceModel;
-import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
+import bg.manhattan.singerscontests.model.service.*;
 import bg.manhattan.singerscontests.repositories.ContestRepository;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.UserService;
@@ -81,7 +78,7 @@ public class ContestServiceImpl implements ContestService {
         this.repository.save(contest);
     }
 
-    private void addManagersToContest(Contest contest, List<Long> managers){
+    private void addManagersToContest(Contest contest, List<Long> managers) {
         for (Long managerId : managers) {
             if (managerId != null) {
                 contest
@@ -94,7 +91,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     @Cacheable("contests")
-    public ContestServiceModel getContestById(Long id){
+    public ContestServiceModel getContestById(Long id) {
         Contest contest = getContestEntityById(id);
 
         return this.mapper.map(contest, ContestServiceModel.class)
@@ -105,10 +102,31 @@ public class ContestServiceImpl implements ContestService {
                         .toList());
     }
 
-    public Contest getContestEntityById(Long id){
+    @Override
+    public Contest getContestEntityById(Long id) {
         Contest contest = this.repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Contest", id));
         return contest;
+    }
+
+    @Override
+    public boolean isOwner(String userName, Long id) {
+        UserServiceModel currentUser = this.userService.getUserByUsername(userName);
+        if (isAdmin(currentUser)) {
+            return true;
+        }
+
+        Contest contest = getContestEntityById(id);
+
+        return contest.getManagers()
+                .stream()
+                .anyMatch(manager -> manager.getId().equals(currentUser.getId()));
+    }
+
+    private boolean isAdmin(UserServiceModel currentUser) {
+        return currentUser.getRoles()
+                .stream()
+                .anyMatch(role -> role == UserRoleEnum.ADMIN.name());
     }
 
     @Override
