@@ -3,10 +3,9 @@ package bg.manhattan.singerscontests.services.impl;
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.*;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
-import bg.manhattan.singerscontests.model.service.ContestantServiceModel;
-import bg.manhattan.singerscontests.model.service.EditionServiceModel;
-import bg.manhattan.singerscontests.model.service.PerformanceCategoryServiceModel;
-import bg.manhattan.singerscontests.model.service.SongServiceModel;
+import bg.manhattan.singerscontests.model.service.*;
+import bg.manhattan.singerscontests.model.view.EditionListViewModel;
+import bg.manhattan.singerscontests.model.view.ScenarioViewModel;
 import bg.manhattan.singerscontests.repositories.ContestantRepository;
 import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.ContestantService;
@@ -16,9 +15,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class ContestantServiceImpl implements ContestantService {
@@ -102,6 +103,19 @@ public class ContestantServiceImpl implements ContestantService {
         }
 
         return contestant.getRegistrar().getId().equals(currentUser.getId());
+    }
+
+    @Override
+    public ScenarioViewModel getContestantsForEditionOrderedByAgeGroupAndScenarioNumber(Long id) {
+        Edition edition = this.editionService.getEntityById(id);
+        Map<AgeGroupServiceModel, List<ContestantServiceModel>> ageGroups = this.repository.findAllByEdition(edition)
+                .stream()
+                .sorted(Comparator.comparingInt((Contestant c) -> c.getAgeGroup().getDisplayNumber())
+                        .thenComparingInt(Contestant::getScenarioNumber))
+                .map(contestant -> this.mapper.map(contestant, ContestantServiceModel.class))
+                .collect(groupingBy(ContestantServiceModel::getAgeGroup , TreeMap::new, toList()));
+
+        return new ScenarioViewModel(this.mapper.map(edition, EditionServiceModel.class), ageGroups);
     }
 
     private boolean IsManager(Contestant contestant, User currentUser) {

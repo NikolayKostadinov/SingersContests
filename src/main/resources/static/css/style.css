@@ -1890,3 +1890,31 @@ section {
     font-weight: bold;
     font-size: 1.3rem;
 }
+
+/*--------------------------------------------------------------
+# Song details
+--------------------------------------------------------------*/
+
+dl.song-details {
+    font-size: 0.75em ;
+    margin-bottom: 0;
+}
+.song-details dt {
+    float: left;
+    clear: left;
+    width: 100px;
+    text-align: right;
+    font-weight: bold;
+    color: #4173a1;
+}
+.song-details dt::after {
+    content: ":";
+}
+.song-details dd {
+    margin: 0 0 0 110px;
+    padding: 0 0 0.5em 0;
+}
+
+.fw-light-bold {
+    font-weight: 500;
+}

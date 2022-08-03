@@ -30,5 +30,10 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
             "WHERE e.endOfSubscriptionDate = :date")
     List<Edition> findAllByEndOfSubscriptionDate(@Param("date") LocalDate targetDate);
 
+    @Query("SELECT e " +
+            "FROM Edition e " +
+            "WHERE e.endOfSubscriptionDate = :date")
+    Page<Edition> findAllByEndOfSubscriptionDate(@Param("date") LocalDate targetDate, PageRequest request);
+
     Page<Edition> findAllByContest(Contest contest, PageRequest request);
 }

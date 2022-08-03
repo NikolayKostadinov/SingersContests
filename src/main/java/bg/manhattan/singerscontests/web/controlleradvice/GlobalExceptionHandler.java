@@ -3,6 +3,7 @@ package bg.manhattan.singerscontests.web.controlleradvice;
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.view.ErrorViewModel;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,5 +55,12 @@ public class GlobalExceptionHandler {
     public String handleUnhandledExceptions(RuntimeException ex) {
         LOGGER.warn("{} {}", ex.getMessage(), ex.getStackTrace());
         return "error/something-went-wrong";
+    }
+
+    @ExceptionHandler({NotImplementedException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleNotImplementedException(NotImplementedException ex) {
+        LOGGER.warn("{} {}", ex.getMessage(), ex.getStackTrace());
+        return "error/not-implemented";
     }
 }

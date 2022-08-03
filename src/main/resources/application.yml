@@ -56,3 +56,6 @@ cloudinary:
 logging:
   level:
     root: info
+
+seed:
+  initScenario: false

@@ -72,6 +72,14 @@ public class SeedServiceImpl implements SeedService {
         }
     }
 
+    private static void removeBOM(ClassPathResource classPathResource) {
+        try {
+            removeBom(classPathResource.getFile().toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     @Transactional
     public void seed() {
@@ -135,14 +143,6 @@ public class SeedServiceImpl implements SeedService {
         );
     }
 
-    private static void removeBOM(ClassPathResource classPathResource) {
-        try {
-            removeBom(classPathResource.getFile().toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private Contestant parseContestant(String line) {
         String[] tokens = Arrays.stream(line.split(","))
                 .map(String::trim)
@@ -185,8 +185,8 @@ public class SeedServiceImpl implements SeedService {
                         .setNumber(i + 1)
                         .setBeginDate(today.plusDays(i + 15))
                         .setEndDate(today.plusDays(i + 17))
-                        .setBeginOfSubscriptionDate(today.plusDays(i - 1))
-                        .setEndOfSubscriptionDate(today.plusDays(i))
+                        .setBeginOfSubscriptionDate(today.plusDays(i - 5))
+                        .setEndOfSubscriptionDate(today.plusDays(i - 3))
                         .setAgeCalculationType(
                                 switch (i % 3) {
                                     case 0 -> AgeCalculationType.START_OF_CONTEST;

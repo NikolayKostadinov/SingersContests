@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{/fragments/header :: head}"></head>
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container">
+    <div class="row">
+        <div class="offset-md-3 col-md-6 col-8">
+            <h1 class="display-5 fw-bold text-center"
+                th:text="| ${scenarioOrder.edition.contestName} - ${scenarioOrder.edition.number} edition |">Editions
+                list</h1>
+        </div>
+    </div>
+
+    <th:block th:each="ageGroup : ${scenarioOrder.ageGroups.entrySet()}" th:object="${ageGroup}">
+        <h2 class="display-6 text-center mt-5 fw-bold" th:text="|*{key.name} age group|"></h2>
+        <table class="table table-hover table-striped table-responsive-sm">
+            <thead>
+            <tr>
+                <th>Number</th>
+                <th>Picture</th>
+                <th>Contestant name</th>
+                <th>City</th>
+                <th th:each="category : ${scenarioOrder.edition.performanceCategories}" th:text="${category.name}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contestant : *{value}">
+                <td th:text="${contestant.scenarioNumber} + '. '">1.</td>
+                <td><img th:src="${contestant.imageUrl}" class="img-thumbnail" width="80"></td>
+                <td th:text="${contestant.fullName}">FullName</td>
+                <td th:text="${contestant.city}">City</td>
+                <td th:each="song: ${contestant.songs}">
+                    <span class="text-decoration-underline" th:text="${song.name}"></span>
+                    <dl class="song-details mt-2">
+                        <dt>composer</dt>
+                        <dd th:text="${song.composerFullName}">Composer Name</dd>
+                        <dt th:if="${song.arrangerFullName} != null">arranger</dt>
+                        <dd th:if="${song.arrangerFullName} != null"
+                            th:text="${song.arrangerFullName}">Arranger Full Name
+                        </dd>
+                        <dt>lyricist</dt>
+                        <dd th:text="${song.lyricistFullName}">Composer Name</dd>
+                    </dl>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

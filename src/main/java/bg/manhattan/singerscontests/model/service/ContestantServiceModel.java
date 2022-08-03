@@ -44,7 +44,10 @@ public class ContestantServiceModel  {
 
     private String contestName;
 
-    private AgeGroup ageGroup;
+
+    private Integer scenarioNumber;
+
+    private AgeGroupServiceModel ageGroup;
 
     private List<SongServiceModel> songs;
 
@@ -176,11 +179,11 @@ public class ContestantServiceModel  {
         return this;
     }
 
-    public AgeGroup getAgeGroup() {
+    public AgeGroupServiceModel getAgeGroup() {
         return ageGroup;
     }
 
-    public ContestantServiceModel setAgeGroup(AgeGroup ageGroup) {
+    public ContestantServiceModel setAgeGroup(AgeGroupServiceModel ageGroup) {
         this.ageGroup = ageGroup;
         return this;
     }
@@ -200,6 +203,15 @@ public class ContestantServiceModel  {
 
     public ContestantServiceModel setBirthDay(LocalDate birthDay) {
         this.birthDay = birthDay;
+        return this;
+    }
+
+    public Integer getScenarioNumber() {
+        return scenarioNumber;
+    }
+
+    public ContestantServiceModel setScenarioNumber(Integer scenarioNumber) {
+        this.scenarioNumber = scenarioNumber;
         return this;
     }
 }

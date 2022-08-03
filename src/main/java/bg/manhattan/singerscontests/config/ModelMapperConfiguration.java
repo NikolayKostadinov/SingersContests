@@ -153,18 +153,6 @@ public class ModelMapperConfiguration {
                         .map(EditionServiceModel::getAgeGroups, EditionEditBindingModel::setAgeGroups));
 
 
-
-//        Converter<List<Long>, List<ManagerBindingModel>> toManagerList = ctx -> ctx.getSource() == null ? null :
-//                ctx.getSource()
-//                        .stream()
-//                        .map(usrId -> new ManagerBindingModel()
-//                                .setId(usrId))
-//                        .toList();
-//
-//        mapper.createTypeMap(ContestServiceModel.class, ContestEditBindingModel.class)
-//                .addMappings(mpr -> mpr.using(toManagerList)
-//                        .map(ContestServiceModel::getManagers, ContestCreateBindingModel::setManagers));
-//
         Converter<Set<JuryMember>, Set<Long>> toJuryMemberIdList = ctx -> (ctx.getSource() == null) ? null :
                 ctx.getSource()
                         .stream()
@@ -179,11 +167,6 @@ public class ModelMapperConfiguration {
                 .addMapping(src->src.getUser().getFullName(), JuryDetailsViewModel::setFullName);
 
 
-
-//        mapper.createTypeMap(ContestEditBindingModel.class, ContestEditServiceModel.class)
-//                .addMappings(mpr -> mpr.using(toManagerIdList)
-//                        .map(ContestEditBindingModel::getManagers, ContestEditServiceModel::setManagers));
-
         Converter<List<Edition>, Collection<EditionListViewModel>> toEditionList = ctx -> (ctx.getSource() == null) ?
                 null :
                 ctx.getSource()
@@ -192,9 +175,22 @@ public class ModelMapperConfiguration {
                         .map(e -> mapper.map(e, EditionListViewModel.class))
                         .toList();
 
+
         mapper.createTypeMap(ContestServiceModelWithEditions.class, ContestEditionsViewModel.class)
                 .addMappings(mpr -> mpr.using(toEditionList)
                         .map(ContestServiceModelWithEditions::getEditions, ContestEditionsViewModel::setEditions));
+
+//        Converter<Set<Song>, List<SongServiceModel>> toSongServiceModel = ctx -> (ctx.getSource() == null) ?
+//                null :
+//                ctx.getSource()
+//                        .stream()
+//                        .sorted(Comparator.comparing(s -> s.getCategory().getDisplayNumber()))
+//                        .map(s -> mapper.map(s, SongServiceModel.class))
+//                        .toList();
+//
+//        mapper.createTypeMap(Contestant.class, ContestantServiceModel.class)
+//                .addMappings(mpr -> mpr.using(toSongServiceModel)
+//                        .map(Contestant::getSongs, ContestantServiceModel::setSongs));
         return mapper;
     }
 

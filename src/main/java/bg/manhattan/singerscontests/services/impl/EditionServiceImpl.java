@@ -159,6 +159,17 @@ public class EditionServiceImpl implements EditionService {
         return this.contestService.isOwner(userName, edition.getContest().getId());
     }
 
+    @Override
+    public Page<EditionServiceModel> getEditionsClosedForSubscription( int pageNumber, int size) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "beginDate");
+        PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
+        LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
+
+        return this.editionRepository
+                .findAllByEndOfSubscriptionDate(today, request)
+                .map(e -> this.mapper.map(e, EditionServiceModel.class));
+    }
+
     private Set<JuryMember> getJuryMembers(EditionServiceModel editionModel, Edition edition) {
         return this.juryMemberService
                 .getAllById(editionModel.getJuryMembers())

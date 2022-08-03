@@ -5,6 +5,7 @@ import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
@@ -31,4 +32,6 @@ public interface EditionService {
     ContestServiceModelWithEditions getEditionsByContestId(Long contestId, int pageNumber, int size);
 
     boolean isEditionOwner(String userName, Long id);
+
+    Page<EditionServiceModel> getEditionsClosedForSubscription(int pageNumber, int size);
 }
