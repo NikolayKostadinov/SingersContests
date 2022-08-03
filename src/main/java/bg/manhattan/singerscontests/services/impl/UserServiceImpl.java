@@ -37,9 +37,6 @@ public class UserServiceImpl implements UserService {
     private final ApplicationEventPublisher eventPublisher;
     private final RoleService roleService;
 
-
-    // private final EmailService emailService;
-
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper mapper,
                            PasswordEncoder passwordEncoder,
