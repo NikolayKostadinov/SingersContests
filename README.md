@@ -2,7 +2,7 @@
 System for organizing of singers contests
 
   To be able to run all the integration tests on Windows you have to make changes to you UTF-8 settings as in picture
-  ![Figure](https://github.com/NikolayKostadinov/Spring-Fundamentals/blob/main/Certificates/Spring%20Fundamentals%20-%20May%202022%20-%20Certificate.jpeg)
+  ![Figure](https://github.com/NikolayKostadinov/SingersContests/blob/main/UTF-8%20Settings.png)
 
 ## Rest controllers
 - JuryDetailsRestController
