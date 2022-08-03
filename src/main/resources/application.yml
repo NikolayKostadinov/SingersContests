@@ -58,4 +58,4 @@ logging:
     root: info
 
 seed:
-  initScenario: false
+  initScenario: true
