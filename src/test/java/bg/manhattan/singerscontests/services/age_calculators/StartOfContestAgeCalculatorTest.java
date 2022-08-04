@@ -2,7 +2,7 @@ package bg.manhattan.singerscontests.services.age_calculators;
 
 import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
-import bg.manhattan.singerscontests.services.age_calculators.StartOfContestAgeCalculator;
+import bg.manhattan.singerscontests.services.impl.age_calculators.StartOfContestAgeCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

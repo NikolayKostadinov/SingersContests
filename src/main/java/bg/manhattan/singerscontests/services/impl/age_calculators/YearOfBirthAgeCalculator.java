@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.services.age_calculators;
+package bg.manhattan.singerscontests.services.impl.age_calculators;
 
 import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;

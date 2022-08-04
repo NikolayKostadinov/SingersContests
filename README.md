@@ -1,4 +1,5 @@
-# SingersContests
+# <u>Singers Contests</u>
+
 System for organizing of singers contests
 
 ## Rest controllers
