@@ -115,13 +115,13 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public Page<EditionServiceModel> getEditionsByContest(Contest contest, int pageNumber, int size) {
+    public Page<EditionServiceModel> getEditionsByContestInFuture(Contest contest, int pageNumber, int size) {
         Sort sort = Sort.by(Sort.Direction.ASC, "beginDate");
         PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
 
         return this.editionRepository
-                .findAllByContest(contest, request)
+                .findAllByContestIdInFuture(contest.getId(), today,request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
     }
 
@@ -163,9 +163,9 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public ContestServiceModelWithEditions getEditionsByContestId(Long contestId, int pageNumber, int size) {
+    public ContestServiceModelWithEditions getEditionsInFutureByContestId(Long contestId, int pageNumber, int size) {
         Contest contest = this.contestService.getContestEntityById(contestId);
-        Page<EditionServiceModel> editions = this.getEditionsByContest(contest, pageNumber, size);
+        Page<EditionServiceModel> editions = this.getEditionsByContestInFuture(contest, pageNumber, size);
         return new ContestServiceModelWithEditions(contest.getId(), contest.getName(), editions);
     }
 

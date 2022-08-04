@@ -24,13 +24,13 @@ public interface EditionService {
 
     Page<EditionServiceModel> getFutureEditions(int pageNumber, int size);
 
-    Page<EditionServiceModel> getEditionsByContest(Contest contest, int pageNumber, int size);
+    Page<EditionServiceModel> getEditionsByContestInFuture(Contest contest, int pageNumber, int size);
 
     EditionDetailsServiceModel getEditionDetails(Long editionId);
 
     void generateScenarioOrder(LocalDate targetDate);
 
-    ContestServiceModelWithEditions getEditionsByContestId(Long contestId, int pageNumber, int size);
+    ContestServiceModelWithEditions getEditionsInFutureByContestId(Long contestId, int pageNumber, int size);
 
     boolean isEditionOwner(String userName, Long id);
 

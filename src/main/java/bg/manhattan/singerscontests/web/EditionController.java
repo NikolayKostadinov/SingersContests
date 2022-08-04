@@ -73,7 +73,7 @@ public class EditionController extends BaseController {
 
     private void initEditions(Model model, Long contestId, int pageNumber, int size) {
         if (!model.containsAttribute("editionsModel")) {
-            ContestServiceModelWithEditions contestModel = this.editionService.getEditionsByContestId(contestId, pageNumber, size);
+            ContestServiceModelWithEditions contestModel = this.editionService.getEditionsInFutureByContestId(contestId, pageNumber, size);
             Page<EditionListViewModel> editions = contestModel.getEditions()
                     .map(edition -> this.mapper.map(edition, EditionListViewModel.class));
 
