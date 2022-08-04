@@ -107,13 +107,5 @@ class ContestControllerIntegrationTest extends IntegrationTestWithInjectedUserDe
                 .andExpect(status().isForbidden());
     }
 
-    @Test
-    void testEdit() {
-        // TODO: 28.7.2022 г. Implement test
-    }
 
-    @Test
-    void delete() {
-        // TODO: 28.7.2022 г. Implement test
-    }
 }

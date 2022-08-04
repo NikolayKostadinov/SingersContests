@@ -28,11 +28,6 @@ class AdminJuryControllerIntegrationTest extends IntegrationTestWithInjectedUser
     }
 
     @Test
-    void testJury() {
-        // TODO: 28.7.2022 г. Implement test
-    }
-
-    @Test
     void demodeJury() throws Exception {
         mockMvc.perform(get("/administration/jury/demode"))
                 .andExpect(status().isOk())
@@ -40,19 +35,9 @@ class AdminJuryControllerIntegrationTest extends IntegrationTestWithInjectedUser
     }
 
     @Test
-    void testDemodeJury() {
-        // TODO: 28.7.2022 г. Implement test
-    }
-
-    @Test
     void edit() throws Exception {
         mockMvc.perform(get("/administration/jury/edit"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/administration/edit-jury-details"));
-    }
-
-    @Test
-    void editJury() {
-        // TODO: 28.7.2022 г. Implement test
     }
 }

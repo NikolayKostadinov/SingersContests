@@ -106,7 +106,7 @@ public class EditionController extends BaseController {
             return "redirect:/editions/" + contestId + "/create";
         }
 
-        this.editionService.insert(this.mapper.map(editionModel, EditionServiceModel.class));
+        this.editionService.create(this.mapper.map(editionModel, EditionServiceModel.class));
         return "redirect:/editions/" + contestId;
     }
 
@@ -131,7 +131,7 @@ public class EditionController extends BaseController {
             return "redirect:/editions/edit/" + editionModel.getId();
         }
 
-        this.editionService.insert(this.mapper.map(editionModel, EditionServiceModel.class));
+        this.editionService.edit(this.mapper.map(editionModel, EditionServiceModel.class));
         return "redirect:/editions/" + editionModel.getContestId();
     }
 

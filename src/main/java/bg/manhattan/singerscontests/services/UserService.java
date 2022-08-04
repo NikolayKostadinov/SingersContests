@@ -15,16 +15,15 @@ import java.util.List;
 import java.util.Locale;
 
 public interface UserService {
-    void register(UserServiceModel model, Locale locale) throws MessagingException;
+    void register(UserServiceModel model, Locale locale);
 
     User getCurrentUser(Principal principal) ;
 
-    void deleteUser(String username, String password) throws UserNotFoundException, PasswordNotMatchesException;
+    void deleteUser(String username, String password) ;
 
-    void changeUserPassword(String username, String oldPassword, String newPassword) throws UserNotFoundException,
-            PasswordNotMatchesException;
+    void changeUserPassword(String username, String oldPassword, String newPassword);
 
-    void changeUserProfileDetails(String username, UserServiceProfileDetailsModel userModel) throws UserNotFoundException;
+    void changeUserProfileDetails(String username, UserServiceProfileDetailsModel userModel);
 
     UserServiceModel getUserByEmail(String email);
 
@@ -32,9 +31,9 @@ public interface UserService {
 
     List<UserServiceModel> getUsersByRole(UserRoleEnum contestManager);
 
-    void changeUserEmail(String username, String newEmail, Locale locale) throws UserNotFoundException;
+    void changeUserEmail(String username, String newEmail, Locale locale);
 
-    User getUserByRoleAndId(UserRoleEnum contestManager, Long managerId) throws UserNotFoundException;
+    User getUserByRoleAndId(UserRoleEnum contestManager, Long managerId);
 
     List<UserServiceModel> getUserNotInRole(UserRoleEnum role);
 

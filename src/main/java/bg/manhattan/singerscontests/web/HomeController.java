@@ -26,4 +26,9 @@ public class HomeController extends BaseController {
         throw new NotImplementedException();
     }
 
+    @GetMapping("/test")
+    public String test(){
+        return "test";
+    }
+
 }

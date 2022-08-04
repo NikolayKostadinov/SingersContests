@@ -26,11 +26,6 @@ class AccountManageControllerIntegrationTest extends IntegrationTestWithInjected
     }
 
     @Test
-    void testProfile() {
-        // TODO: 28.7.2022 г. Implement test
-    }
-
-    @Test
     void email() throws Exception {
         mockMvc.perform(get("/account/email"))
                 .andExpect(status().isOk())
@@ -57,10 +52,5 @@ class AccountManageControllerIntegrationTest extends IntegrationTestWithInjected
         mockMvc.perform(get("/account/delete_personal_data"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account-manage/account-delete"));
-    }
-
-    @Test
-    void testDeletePersonalData() {
-        // TODO: 28.7.2022 г. Implement test
     }
 }

@@ -16,8 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.groupingBy;
 
 @Service
-@Transactional
+@Transactional()
 public class EditionServiceImpl implements EditionService {
     private final EditionRepository editionRepository;
     private final ContestantRepository contestantRepository;
@@ -49,18 +49,34 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public void insert(EditionServiceModel editionModel) {
+    public void create(EditionServiceModel editionModel) {
         Contest contest = contestService.getContestEntityById(editionModel.getContestId());
         Edition edition = this.mapper.map(editionModel, Edition.class).setContest(contest);
+        mapCollectionProperties(editionModel, edition);
+        this.editionRepository.save(edition);
+    }
 
+    @Override
+    public void edit(EditionServiceModel editionModel) {
+        Edition edition = this.getEntityById(editionModel.getId());
+        this.mapper.map(editionModel, edition);
+        mapCollectionProperties(editionModel, edition);
+        this.editionRepository.save(edition);
+    }
+
+    private void mapCollectionProperties(EditionServiceModel editionModel, Edition edition) {
         Set<JuryMember> juryMembers = getJuryMembers(editionModel, edition);
         Set<AgeGroup> ageGroups = getAgeGroups(editionModel, edition);
         Set<PerformanceCategory> categories = getCategories(editionModel, edition);
 
-        this.editionRepository.save(edition
-                .setJuryMembers(juryMembers)
-                .setAgeGroups(ageGroups)
-                .setPerformanceCategories(categories));
+        edition.getJuryMembers().clear();
+        edition.getJuryMembers().addAll(juryMembers);
+
+        edition.getAgeGroups().clear();
+        edition.getAgeGroups().addAll(ageGroups);
+
+        edition.getPerformanceCategories().clear();
+        edition.getPerformanceCategories().addAll(categories);
     }
 
     @Override
@@ -160,7 +176,7 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public Page<EditionServiceModel> getEditionsClosedForSubscription( int pageNumber, int size) {
+    public Page<EditionServiceModel> getEditionsClosedForSubscription(int pageNumber, int size) {
         Sort sort = Sort.by(Sort.Direction.ASC, "beginDate");
         PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
@@ -183,7 +199,8 @@ public class EditionServiceImpl implements EditionService {
                 .stream()
                 .filter(category -> !category.isDeleted())
                 .map(category -> this.mapper.map(category, PerformanceCategory.class)
-                        .setEdition(edition))
+                        .setEdition(edition)
+                )
                 .collect(Collectors.toSet());
     }
 

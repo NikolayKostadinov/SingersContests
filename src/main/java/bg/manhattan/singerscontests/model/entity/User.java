@@ -42,6 +42,16 @@ public class User extends PersonBaseEntity{
         this.roles = new HashSet<>();
     }
 
+    public User(Long id, String firstName, String middleName, String lastName) {
+        this();
+        setId(id);
+        setFirstName(firstName);
+        setMiddleName(middleName);
+        setLastName(lastName);
+    }
+
+
+
     public String getUsername() {
         return username;
     }

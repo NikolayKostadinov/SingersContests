@@ -21,8 +21,13 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     public UserRoleServiceModel getRoleByName(UserRoleEnum userRole) {
-        UserRole userRoleEntity = this.userRoleRepository.findByUserRole(userRole)
-                .orElseThrow(() -> new NotFoundException("UserRole", userRole));
+        UserRole userRoleEntity = this.getRoleEntityByName(userRole);
         return this.mapper.map(userRoleEntity, UserRoleServiceModel.class);
+    }
+
+    @Override
+    public UserRole getRoleEntityByName(UserRoleEnum role) {
+        return this.userRoleRepository.findByUserRole(role)
+                .orElseThrow(()->new NotFoundException("UserRole", role));
     }
 }

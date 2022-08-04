@@ -49,7 +49,6 @@ public class Edition extends BaseEntity {
     private Set<PerformanceCategory> performanceCategories;
 
     @OneToMany(mappedBy = "edition", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
     private Set<AgeGroup> ageGroups;
 
     @OneToMany(mappedBy = "edition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

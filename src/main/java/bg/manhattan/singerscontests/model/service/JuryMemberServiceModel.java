@@ -10,6 +10,7 @@ public class JuryMemberServiceModel {
         return id;
     }
 
+
     public JuryMemberServiceModel setId(Long id) {
         this.id = id;
         return this;

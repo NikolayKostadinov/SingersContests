@@ -100,11 +100,6 @@ class EditionControllerIntegrationTest extends IntegrationTestWithInjectedUserDe
     }
 
     @Test
-    void create() {
-        // TODO: 28.7.2022 г. Implement test
-    }
-
-    @Test
     void edit() throws Exception {
         mockMvc.perform(get("/editions/edit/" + 1))
                 .andExpect(status().isOk())
@@ -117,13 +112,4 @@ class EditionControllerIntegrationTest extends IntegrationTestWithInjectedUserDe
                 .andExpect(status().isForbidden());
     }
 
-    @Test
-    void editEdition() {
-        // TODO: 28.7.2022 г. Implement test
-    }
-
-    @Test
-    void deleteEdition() {
-        // TODO: 28.7.2022 г. Implement test
-    }
 }

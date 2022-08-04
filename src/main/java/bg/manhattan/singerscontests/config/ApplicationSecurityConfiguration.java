@@ -40,12 +40,11 @@ public class ApplicationSecurityConfiguration {
                 .antMatchers("/multiselect/**").permitAll()
                 // allows anonymous access to home, login and registration
                 .antMatchers("/").permitAll()
+                // fine gained permission for certain functionalities
                 .antMatchers("/authentication/register", "/authentication/login", "/authentication/login-error").anonymous()
-                //todo: Configure antMatchers for roles
                 .antMatchers("/administration/**").hasAnyRole(UserRoleEnum.ADMIN.name())
                 .antMatchers("/contests/**", "/editions/**").hasAnyRole(UserRoleEnum.CONTEST_MANAGER.name(),
                         UserRoleEnum.ADMIN.name())
-
                 // forbid all other for anonymous users;
                 .anyRequest().authenticated()
             .and()

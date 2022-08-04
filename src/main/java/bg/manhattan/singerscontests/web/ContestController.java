@@ -109,7 +109,6 @@ public class ContestController extends BaseController {
     @PreAuthorize("isOwner(#id)")
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
-        //todo: only if current user is contest manager
         this.contestService.delete(id);
         return "redirect:/contests";
     }

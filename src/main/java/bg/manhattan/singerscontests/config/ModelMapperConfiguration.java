@@ -180,6 +180,15 @@ public class ModelMapperConfiguration {
                 .addMappings(mpr -> mpr.using(toEditionList)
                         .map(ContestServiceModelWithEditions::getEditions, ContestEditionsViewModel::setEditions));
 
+        mapper.createTypeMap(EditionServiceModel.class, Edition.class)
+                .addMappings(mpr -> {
+                    mpr.skip(Edition::setJuryMembers);
+                    mpr.skip(Edition::setAgeGroups);
+                    mpr.skip(Edition::setPerformanceCategories);
+                });
+
+
+
 //        Converter<Set<Song>, List<SongServiceModel>> toSongServiceModel = ctx -> (ctx.getSource() == null) ?
 //                null :
 //                ctx.getSource()

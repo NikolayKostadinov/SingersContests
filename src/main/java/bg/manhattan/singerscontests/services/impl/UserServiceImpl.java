@@ -13,8 +13,7 @@ import bg.manhattan.singerscontests.model.service.JuryMemberServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel;
 import bg.manhattan.singerscontests.repositories.UserRepository;
-import bg.manhattan.singerscontests.services.EmailService;
-import bg.manhattan.singerscontests.services.RoleService;
+import bg.manhattan.singerscontests.services.UserRoleService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -22,11 +21,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,14 +32,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final ApplicationEventPublisher eventPublisher;
-    private final RoleService roleService;
+    private final UserRoleService roleService;
 
     public UserServiceImpl(UserRepository userRepository,
                            ModelMapper mapper,
                            PasswordEncoder passwordEncoder,
-                           EmailService emailService,
                            ApplicationEventPublisher eventPublisher,
-                           RoleService roleService) {
+                           UserRoleService roleService) {
         this.repository = userRepository;
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
@@ -52,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void register(UserServiceModel model, Locale locale) throws MessagingException {
+    public void register(UserServiceModel model, Locale locale){
         User user = this.mapper.map(model, User.class);
         this.repository.save(user);
         this.eventPublisher.publishEvent(
@@ -67,9 +63,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel getUserByUsername(String userName) {
-       User user = this.repository.findByUsername(userName)
-                .orElseThrow(() -> new UsernameNotFoundException("User " + userName + "not found!"));
+        User user = getUserEntityByUserName(userName);
         return toUserServiceModel(user);
+    }
+
+    private User getUserEntityByUserName(String userName) {
+        return this.repository.findByUsername(userName)
+                .orElseThrow(() -> new UsernameNotFoundException("User " + userName + "not found!"));
     }
 
     @Override
@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeUserEmail(String username, String newEmail, Locale locale) throws UserNotFoundException {
-        User userEntity = getUser(username);
+    public void changeUserEmail(String username, String newEmail, Locale locale) {
+        User userEntity = getUserEntityByUserName(username);
         UserServiceModel userModel = this.mapper.map(userEntity, UserServiceModel.class);
         userEntity.setEmail(newEmail);
         this.repository.save(userEntity);
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         JuryMember juryMember = this.mapper.map(juryModel, JuryMember.class);
         juryMember.setUser(user);
         user.setJuryMember(juryMember);
-        this.addUserInRole(user);
+        this.addUserInRole(user, UserRoleEnum.JURY_MEMBER);
         this.repository.save(user);
     }
 
@@ -134,18 +134,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUserInRole(Long userId, UserRoleEnum role) {
         User user = this.getUsersById(userId);
-        if (user.getRoles().stream().noneMatch(r -> r.getUserRole() == role)){
-            UserRole roleEntity = this.roleService.getRoleByName(role);
+        addUserInRole(user, role);
+        this.repository.save(user);
+    }
+
+    private void addUserInRole(User user, UserRoleEnum role) {
+        if (user.getRoles().stream().noneMatch(r -> r.getUserRole() == role)) {
+            UserRole roleEntity = this.roleService.getRoleEntityByName(role);
             user.getRoles().add(roleEntity);
-            this.repository.save(user);
         }
     }
 
     @Override
     public void removeUserFromRole(Long userId, UserRoleEnum role) {
         User user = this.getUsersById(userId);
-        if (user.getRoles().stream().anyMatch(r -> r.getUserRole() == role)){
-            UserRole roleEntity = this.roleService.getRoleByName(role);
+        if (user.getRoles().stream().anyMatch(r -> r.getUserRole() == role)) {
+            UserRole roleEntity = this.roleService.getRoleEntityByName(role);
             user.getRoles().remove(roleEntity);
             this.repository.save(user);
         }
@@ -161,15 +165,10 @@ public class UserServiceImpl implements UserService {
         return this.repository.existsByEmail(email);
     }
 
-    private void addUserInRole(User user) {
-        UserRole userRole = this.roleService.getRoleByName(UserRoleEnum.JURY_MEMBER);
-        user.getRoles().add(userRole);
-    }
-
     @Override
     public void deleteUser(String username, String password) {
-        User user = getUser(username);
-        if (!passwordMatches(password, user.getPassword())) {
+        User user = getUserEntityByUserName(username);
+        if (passwordNotMatches(password, user.getPassword())) {
             throw new PasswordNotMatchesException();
         }
 
@@ -177,9 +176,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeUserPassword(String username, String oldPassword, String newPassword) throws UserNotFoundException, PasswordNotMatchesException {
-        User user = getUser(username);
-        if (!passwordMatches(oldPassword, user.getPassword())) {
+    public void changeUserPassword(String username, String oldPassword, String newPassword){
+        User user = getUserEntityByUserName(username);
+        if (passwordNotMatches(oldPassword, user.getPassword())) {
             throw new PasswordNotMatchesException();
         }
 
@@ -188,34 +187,30 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private boolean passwordMatches(String password, String encodedPassword) {
-        return this.passwordEncoder
+    private boolean passwordNotMatches(String password, String encodedPassword) {
+        return !this.passwordEncoder
                 .matches(password, encodedPassword);
     }
 
     @Override
-    public void changeUserProfileDetails(String username, UserServiceProfileDetailsModel userModel) throws UserNotFoundException {
-        User userEntity = getUser(username);
+    public void changeUserProfileDetails(String username,
+                                         UserServiceProfileDetailsModel userModel) throws UserNotFoundException {
+        User userEntity = getUserEntityByUserName(username);
         this.mapper.map(userModel, userEntity);
         this.repository.save(userEntity);
     }
 
-    private User getUser(String username) {
-        return this.repository
-                .findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(username));
-    }
-
     @Override
     public UserServiceModel getUserByEmail(String email) {
-        User user = this.repository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with" + email + "not found!"));
+        User user = this.repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User with " + email + " not found!"));
         return toUserServiceModel(user);
     }
 
     private UserServiceModel toUserServiceModel(User user) {
-            UserServiceModel userModel = this.mapper.map(user, UserServiceModel.class);
-            user.getRoles()
-                    .forEach(role -> userModel.addRole(role.getUserRole().name()));
-            return userModel;
+        UserServiceModel userModel = this.mapper.map(user, UserServiceModel.class);
+        user.getRoles()
+                .forEach(role -> userModel.addRole(role.getUserRole().name()));
+        return userModel;
     }
 }

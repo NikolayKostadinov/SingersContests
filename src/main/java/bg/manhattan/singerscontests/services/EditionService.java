@@ -5,16 +5,17 @@ import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface EditionService {
-    void insert(EditionServiceModel editionModel);
+    void create(EditionServiceModel editionModel);
+    void edit(EditionServiceModel editionModel);
 
     EditionServiceModel getById(Long editionId);
+
     Edition getEntityById(Long editionId);
 
     void delete(Long id);
