@@ -8,16 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -50,17 +47,24 @@ public class GlobalExceptionHandler {
         return result;
     }
 
-    @ExceptionHandler({RuntimeException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleUnhandledExceptions(RuntimeException ex) {
-        LOGGER.warn("{} {}", ex.getMessage(), ex.getStackTrace());
-        return "error/something-went-wrong";
-    }
-
     @ExceptionHandler({NotImplementedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleNotImplementedException(NotImplementedException ex) {
         LOGGER.warn("{} {}", ex.getMessage(), ex.getStackTrace());
         return "error/not-implemented";
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleUnhandledExceptions(AccessDeniedException ex) {
+        LOGGER.warn("{} {}", ex.getMessage(), ex.getStackTrace());
+        return "error/403";
+    }
+
+    @ExceptionHandler({RuntimeException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleUnhandledExceptions(RuntimeException ex) {
+        LOGGER.warn("{} {}", ex.getMessage(), ex.getStackTrace());
+        return "error/something-went-wrong";
     }
 }

@@ -1,5 +1,6 @@
 package bg.manhattan.singerscontests.config;
 
+import bg.manhattan.singerscontests.handler.CustomAccessDeniedHandler;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.services.UserService;
 import bg.manhattan.singerscontests.services.impl.UserDetailsServiceImpl;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletResponse;
@@ -61,6 +63,9 @@ public class ApplicationSecurityConfiguration {
                 // where to go in case that the login failed
                 .failureForwardUrl("/authentication/login-error")
             .and()
+                // custom access denied handler
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+            .and()
                 .logout()
                 // the logout page
                     .logoutUrl("/authentication/logout")
@@ -69,5 +74,10 @@ public class ApplicationSecurityConfiguration {
                     .deleteCookies("JSESSIONID")
             .and()
                 .build();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new CustomAccessDeniedHandler();
     }
 }
