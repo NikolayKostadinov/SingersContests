@@ -22,8 +22,10 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
             "WHERE e.beginDate BETWEEN :begin AND :end")
     List<LocalDate> findAllByBeginDateIsBetween(LocalDate begin, LocalDate end);
 
-    Page<Edition> findAllByBeginDateAfter(LocalDate targetDate, PageRequest request);
-
+    @Query("SELECT e " +
+            "FROM Edition e " +
+            "WHERE e.endOfSubscriptionDate > :date")
+    Page<Edition> findAllAvailableForSubscription(@Param("date") LocalDate targetDate, PageRequest request);
 
     @Query("SELECT e " +
             "FROM Edition e " +

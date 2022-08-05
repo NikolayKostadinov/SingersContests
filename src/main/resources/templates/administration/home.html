@@ -13,32 +13,30 @@
     <section id="services" class="services">
         <div class="container" data-aos="fade-up">
             <div class="row">
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in"
+                     data-aos-delay="300">
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-user"></i></div>
+                        <h4><a th:href="@{/administration/administrators}">Promote Administrators</a></h4>
+                        <p>Management of administrators. Here you can add exist user in role "ADMIN".</p>
+                    </div>
+                </div>
+
                 <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
                     <div class="icon-box">
-                        <div class="icon"><i class='bx bx-user-voice'></i></div>
+                        <div class="icon"><i class='bx bx-user-plus'></i></div>
                         <h4><a th:href="@{/administration/managers}">Administration Of Managers</a></h4>
-                        <p>Management of contest managers. Here you can add exist user in role "CONTEST_MANAGER" and add
-                            additional details.</p>
+                        <p>Management of contest managers. Here you can add exist user in role "CONTEST_MANAGER".</p>
                     </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
                      data-aos-delay="200">
                     <div class="icon-box">
-                        <div class="icon"><i class='bx bxs-user-check'></i></div>
+                        <div class="icon"><i class='bx bx-user-check'></i></div>
                         <h4><a th:href="@{/administration/jury}">Administration Of Jury</a></h4>
                         <p>Management of jury members. Here you can add exist user in role "JURY_MEMBER" and add
                             additional details.</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="zoom-in"
-                     data-aos-delay="300">
-                    <div class="icon-box">
-                        <div class="icon"><i class="bx bx-user-voice"></i></div>
-                        <h4><a href="">Register Contestant</a></h4>
-                        <p>Registration and management of the contestant. Here you can register a contestant in the
-                            concrete contest.</p>
                     </div>
                 </div>
             </div>

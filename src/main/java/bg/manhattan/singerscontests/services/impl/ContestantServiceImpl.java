@@ -64,7 +64,6 @@ public class ContestantServiceImpl implements ContestantService {
         AgeGroup ageGroup = this.ageGroupService.getAgeGroupEntity(edition, contestantModel.getBirthDay());
         Contestant contestant = this.mapper.map(contestantModel, Contestant.class);
         List<Song> songs = createSongs(contestantModel.getSongs(), edition, contestant);
-        //edition.getContestants().add(contestant);
         contestant.setRegistrar(registrar);
         contestant.setEdition(edition);
         contestant.setAgeGroup(ageGroup);

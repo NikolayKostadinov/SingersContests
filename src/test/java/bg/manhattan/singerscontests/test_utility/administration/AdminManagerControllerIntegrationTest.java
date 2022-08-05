@@ -25,7 +25,7 @@ class AdminManagerControllerIntegrationTest extends IntegrationTestWithInjectedU
     void managers() throws Exception {
         mockMvc.perform(get("/administration/managers"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("administration/managers-administration"));
+                .andExpect(view().name("administration/roles"));
     }
 
     @Test

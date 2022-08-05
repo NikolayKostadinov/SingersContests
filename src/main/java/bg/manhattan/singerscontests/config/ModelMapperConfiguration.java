@@ -187,19 +187,11 @@ public class ModelMapperConfiguration {
                     mpr.skip(Edition::setPerformanceCategories);
                 });
 
+        mapper.createTypeMap(ContestantCreateBindingModel.class, ContestantServiceModel.class)
+                .addMappings(mpr -> {
+                    mpr.skip(ContestantServiceModel::setId);
+                });
 
-
-//        Converter<Set<Song>, List<SongServiceModel>> toSongServiceModel = ctx -> (ctx.getSource() == null) ?
-//                null :
-//                ctx.getSource()
-//                        .stream()
-//                        .sorted(Comparator.comparing(s -> s.getCategory().getDisplayNumber()))
-//                        .map(s -> mapper.map(s, SongServiceModel.class))
-//                        .toList();
-//
-//        mapper.createTypeMap(Contestant.class, ContestantServiceModel.class)
-//                .addMappings(mpr -> mpr.using(toSongServiceModel)
-//                        .map(Contestant::getSongs, ContestantServiceModel::setSongs));
         return mapper;
     }
 

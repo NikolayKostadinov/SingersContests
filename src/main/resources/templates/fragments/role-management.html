@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="form(managerModel)">
+    <input type="hidden" th:field="${managerModel.userRole}"/>
+    <div class="row mb-4 mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header bg-primary text-white">
+                    Add To
+                    <th:block th:text="${managerModel.userRole.name()}"></th:block>
+                </h5>
+                <div class="table-wrapper">
+                    <table class="table table-bordered table-condensed table-striped">
+                        <th:block th:if="${managerModel.nonMembers.isEmpty()}">
+                            <tr>
+                                <td colspan="2">All Users Are Members</td>
+                            </tr>
+                        </th:block>
+                        <th:block th:unless="${managerModel.nonMembers.isEmpty()}">
+                            <tr th:each="user : ${managerModel.nonMembers}" th:object="${user}">
+                                <td th:text="*{fullName}"></td>
+                                <td>
+                                    <input type="checkbox" name="IdsToAdd" th:value="*{id}">
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="card-header bg-primary text-white">
+                    Remove From
+                    <th:block th:text="${managerModel.userRole.name}"></th:block>
+                </h5>
+                <div class="table-wrapper">
+                    <table class="table table-bordered table-condensed table-striped">
+                        <th:block th:if="${managerModel.members.isEmpty()}">
+                            <tr>
+                                <td colspan="2">No Users Are Members</td>
+                            </tr>
+                        </th:block>
+                        <th:block th:unless="${managerModel.members.isEmpty()}">
+                            <tr th:each="user : ${managerModel.members}" th:object="${user}">
+                                <td th:text="*{fullName}"></td>
+                                <td>
+                                    <input type="checkbox" name="IdsToDelete" th:value="*{id}">
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a th:href="@{/administration/home}" class="btn btn-default">Cancel</a>
+</th:block>
+
+</body>
+</html>

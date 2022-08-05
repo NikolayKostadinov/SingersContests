@@ -19,7 +19,7 @@ public class JuryMemberServiceImpl implements JuryMemberService {
     private final JuryMemberRepository repository;
     private final ModelMapper mapper;
 
-    public JuryMemberServiceImpl(UserService userService, JuryMemberRepository repository,
+    public JuryMemberServiceImpl(JuryMemberRepository repository,
                                  ModelMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;

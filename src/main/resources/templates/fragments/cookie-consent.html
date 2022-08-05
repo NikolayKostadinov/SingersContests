@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<th:block th:fragment="cookie-consent">
+        <div class="container mt-5" data-aos="zoom-in" data-aos-delay="800">
+        <div id="cookieConsent" class="alert alert-primary d-flex align-items-center alert-dismissible fade show aos-init aos-animate" data-aos="zoom-in" data-aos-delay="100"
+             role="alert">
+            This website uses cookies. You have to accept them to continue working
+            <button type="button" class="btn btn-outline-primary mb-auto right" data-bs-dismiss="alert"
+                    data-cookie-string="cc=yes ;expires=31 Dec 9999 23:59:59 GMT; path=/; secure; samesite=none">Accept
+            </button>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

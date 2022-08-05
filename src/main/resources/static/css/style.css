@@ -1918,3 +1918,7 @@ dl.song-details {
 .fw-light-bold {
     font-weight: 500;
 }
+
+.right {
+    margin-left: auto;
+}

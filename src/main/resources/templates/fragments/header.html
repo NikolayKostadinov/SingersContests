@@ -4,8 +4,8 @@
 <head th:fragment="head">
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta name="_csrf" th:content="${_csrf.token}" />
-    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title th:text="${title}">Singers Contents</title>
 
     <!-- Favicons -->
@@ -32,7 +32,9 @@
     <div class="container d-flex justify-content-center justify-content-md-between">
         <div class="contact-info d-flex align-items-center">
             <i class="bi bi-envelope d-flex align-items-center"><a
-                    th:href="|mailto:${@environment.getProperty('mail.sender')}|"><th:block th:text="${@environment.getProperty('mail.sender')}"></th:block></a></i>
+                    th:href="|mailto:${@environment.getProperty('mail.sender')}|">
+                <th:block th:text="${@environment.getProperty('mail.sender')}"></th:block>
+            </a></i>
             <i class="bi bi-phone d-flex align-items-center ms-4"><span>+359 886 630 111</span></i>
         </div>
         <div class="text-white fw-bolder" sec:authorize="isAuthenticated()">
@@ -49,38 +51,40 @@
         </div>
     </div>
 </section>
-
 <!-- ======= Main navigation ======= -->
-<header th:fragment="header" id="header" class="d-flex align-items-center">
-    <div class="container d-flex align-items-center justify-content-between">
+<th:block th:fragment="header">
+    <header id="header" class="d-flex align-items-center">
+        <div class="container d-flex align-items-center justify-content-between">
 
-        <a th:href="@{/}" class="logo"><img src="/images/android-chrome-192x192.png" alt="Logo">
-            <span class="logo">Singers Contests</span>
-        </a>
+            <a th:href="@{/}" class="logo"><img src="/images/android-chrome-192x192.png" alt="Logo">
+                <span class="logo">Singers Contests</span>
+            </a>
 
-        <nav id="navbar" class="navbar">
-            <ul>
-                <li sec:authorize="hasRole('ADMIN')">
-                    <a class="nav-link scrollto " th:href="@{/administration/home}">Administration</a>
-                </li>
-                <li sec:authorize="!isAuthenticated()">
-                    <a class="nav-link scrollto " th:href="@{/authentication/register}">Register</a>
-                </li>
-                <li sec:authorize="!isAuthenticated()">
-                    <a class="nav-link scrollto" th:href="@{/authentication/login}">Login</a>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <div class="form-inline my-2 my-lg-0 px-3">
-                        <form id="logout" th:action="@{/authentication/logout}" method="POST">
-                            <a class="nav-link" href="javascript:{}"
-                               onclick="document.getElementById('logout').submit();">Logout</a>
-                        </form>
-                    </div>
-                </li>
-            </ul>
-            <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav><!-- .navbar -->
-    </div>
-</header><!-- End Header -->
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link scrollto " th:href="@{/administration/home}">Administration</a>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()">
+                        <a class="nav-link scrollto " th:href="@{/authentication/register}">Register</a>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()">
+                        <a class="nav-link scrollto" th:href="@{/authentication/login}">Login</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <div class="form-inline my-2 my-lg-0 px-3">
+                            <form id="logout" th:action="@{/authentication/logout}" method="POST">
+                                <a class="nav-link" href="javascript:{}"
+                                   onclick="document.getElementById('logout').submit();">Logout</a>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+        </div>
+    </header><!-- End Header -->
+    <th:block th:replace="~{/fragments/cookie-consent :: cookie-consent}"></th:block>
+</th:block>
 </body>
 </html>

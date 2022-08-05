@@ -110,7 +110,7 @@ public class EditionServiceImpl implements EditionService {
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
 
         return this.editionRepository
-                .findAllByBeginDateAfter(today, request)
+                .findAllAvailableForSubscription(today, request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
     }
 

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/header :: head}"></head>
+
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container">
+    <h1 th:text="|Edit ${roleDisplayName}|">Edit Contest Managers</h1>
+    <p th:if="${#fields.hasAnyErrors()}"
+       th:each="err : ${#fields.errors()}"
+       th:text="${err}" class="text-danger">Error message</p>
+    <form th:if="${roleDisplayName.equals('Administrators')}" th:action="@{/administration/administrators}"
+          th:method="post">
+        <th:block th:replace="~{/fragments/role-management :: form(${managerModel})}"></th:block>
+    </form>
+
+    <form th:if="${roleDisplayName.equals('Contest Managers')}" th:action="@{/administration/managers}"
+          th:method="post">
+        <th:block th:replace="~{/fragments/role-management :: form(${managerModel})}"></th:block>
+    </form>
+</main>
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

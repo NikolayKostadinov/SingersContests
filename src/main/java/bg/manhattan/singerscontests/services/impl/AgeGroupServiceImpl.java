@@ -12,11 +12,13 @@ import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.EditionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AgeGroupServiceImpl implements AgeGroupService {
     private final EditionService editionService;
     private final AgeCalculatorService ageCalculatorService;

@@ -37,7 +37,6 @@ public class SeedServiceImpl implements SeedService {
 
     private final AgeGroupService ageGroupService;
 
-    private final ModelMapper mapper;
     private final String adminPass;
 
     private final ContestantRepository contestantRepository;
@@ -50,7 +49,8 @@ public class SeedServiceImpl implements SeedService {
                            EditionRepository editionRepository,
                            JuryMemberRepository juryMemberRepository,
                            PasswordEncoder passwordEncoder,
-                           AgeGroupService ageGroupService, ModelMapper mapper, @Value("${app.default.admin.password}") String adminPass,
+                           AgeGroupService ageGroupService,
+                           @Value("${app.default.admin.password}") String adminPass,
                            ContestantRepository contestantRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
@@ -59,7 +59,6 @@ public class SeedServiceImpl implements SeedService {
         this.juryMemberRepository = juryMemberRepository;
         this.passwordEncoder = passwordEncoder;
         this.ageGroupService = ageGroupService;
-        this.mapper = mapper;
         this.adminPass = adminPass;
         this.contestantRepository = contestantRepository;
 
@@ -269,15 +268,17 @@ public class SeedServiceImpl implements SeedService {
 
     private void seedAdmin(List<UserRole> roles) {
         LOGGER.info("-----------------      Seed Admin         ------------------");
+        LOGGER.info("----------------- u/n: admin; pass: P@ssw0rd ---------------");
+        LOGGER.info("!!!!!!!! Please change admin password immediately !!!!!!!!!!");
         User admin = new User()
                 .setRoles(new HashSet<>(roles))
                 .setUsername("admin")
                 .setEmail("kostadinov.nikolay.d@gmail.com")
                 .setPassword(passwordEncoder.encode(adminPass))
-                .setPhoneNumber("+359 886 630 111");
-        admin.setFirstName("Nikolay");
-        admin.setMiddleName("Dimitrov");
-        admin.setLastName("Kostadinov");
+                .setPhoneNumber("+359 888 888 888");
+        admin.setFirstName("Admin");
+        admin.setMiddleName("Admin");
+        admin.setLastName("Admin");
 
         userRepository.save(admin);
     }
