@@ -19,7 +19,7 @@ System for organizing of singers contests
    - It starts every night at 00:00 and generates the scenario order for all contests for which registration has closed the previous day.
 
 ## Self management
-  Implemented self-management functionality. When you click on greeting message on the top of the screen you will be redirected to ***"Manage your account"***
+  Implemented self-management functionality. When you click on greeting message at the top of the screen you will be redirected to ***"Manage your account"***
 
 &nbsp;
 &nbsp;
