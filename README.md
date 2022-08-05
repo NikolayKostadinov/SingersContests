@@ -20,13 +20,22 @@ System for organizing of singers contests
 
 ## Self management
   Implemented self-management functionality. When you click on greeting message on the top of the screen you will be redirected to ***"Manage your account"***
-_________________________________________________________
-> ***Note***
+
+&nbsp;
+&nbsp;
+&nbsp;
+
+> ***Note 1***
+> ______
 > 
+> **To be able to run project you have to run MailHog on ports :**
+>   - smpt: 65000 - instead of default 1025
+>   - http: 8025
+>
+> ***Note 2***
+> _____
 >To be able to run all the integration tests on Windows you have to make changes to you UTF-8 settings as in picture
 > 
 >![Figure](/UTF-8%20Settings.png)
-> 
-> To be able to run project you have to run MailHog on ports :
->   - smpt: 65000 - instead of default 1025
->   - http: 8025
+>
+
