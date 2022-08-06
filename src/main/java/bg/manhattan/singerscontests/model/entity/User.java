@@ -31,7 +31,7 @@ public class User extends PersonBaseEntity{
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles;
 
-    @ManyToMany(mappedBy = "managers",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "managers", fetch = FetchType.EAGER)
     private Set<Contest> contests;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)

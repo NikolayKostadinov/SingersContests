@@ -85,16 +85,11 @@ public class AccountManageController extends BaseController {
             return "redirect:email";
         }
 
-        if (!emailModel.getEmail().equals(emailModel.getNewEmail())) {
-            try {
-                Locale locale = LocaleContextHolder.getLocale();
-                this.userService.changeUserEmail(principal.getName(), emailModel.getNewEmail(), locale);
-            } catch (UserNotFoundException e) {
-                throw new UsernameNotFoundException(e.getMessage());
-            }
-        }
-        return "redirect:email";
-    }
+        Locale locale = LocaleContextHolder.getLocale();
+        this.userService.changeUserEmail(principal.getName(), emailModel.getNewEmail(), locale);
+
+        return"redirect:email";
+}
 
     @GetMapping("/password")
     public String password(Model model) {
@@ -110,25 +105,14 @@ public class AccountManageController extends BaseController {
                            Principal principal,
                            HttpServletRequest request) throws ServletException {
         if (bindingResult.hasErrors()) {
-            return getPasswordErrorResponse(passwordModel, bindingResult, redirectAttributes);
+            redirectAttributes.addFlashAttribute("passwordModel", passwordModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordModel", bindingResult);
+            return "redirect:password";
         }
-
-        if (!passwordModel.getNewPassword().equals(passwordModel.getCurrentPassword())) {
-            try {
                 this.userService.changeUserPassword(
                         principal.getName(),
                         passwordModel.getCurrentPassword(),
                         passwordModel.getNewPassword());
-            } catch (UserNotFoundException e) {
-                throw new UsernameNotFoundException(e.getMessage());
-            } catch (PasswordNotMatchesException e) {
-                bindingResult.addError(
-                        new ObjectError("badCredentials",
-                                "Incorrect password"));
-                return getPasswordErrorResponse(passwordModel, bindingResult, redirectAttributes);
-            }
-        }
-
         request.logout();
         return "redirect:/authentication/login";
     }
@@ -167,14 +151,6 @@ public class AccountManageController extends BaseController {
 
         request.logout();
         return "redirect:/authentication/login";
-    }
-
-    private String getPasswordErrorResponse(PasswordChangeBindingModel passwordModel,
-                                            BindingResult bindingResult,
-                                            RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("passwordModel", passwordModel);
-        redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordModel", bindingResult);
-        return "redirect:password";
     }
 
     @ModelAttribute("profileDetails")

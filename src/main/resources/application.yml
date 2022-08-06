@@ -44,6 +44,7 @@ mail:
   sender: "office@singerscontests.bg"
   admin: "office@singerscontests.bg"
   registration_mail_subject: "You have registered in Singers Contest System!"
+  change_mail_subject: "You have change you email in Singers Contest System!"
   performance_issue_mail_subject: "There was an performance issue!"
 
 cloudinary:
@@ -59,3 +60,5 @@ logging:
 
 seed:
   initScenario: true
+
+max_execution_time: 500

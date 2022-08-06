@@ -27,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
     private final String sender;
     private final String registrationSubject;
-
+    private final String changeEmailSubject;
     private final String performanceIssueSubject;
     private final String adminEmail;
 
@@ -36,29 +36,33 @@ public class EmailServiceImpl implements EmailService {
                             JavaMailSender javaMailSender,
                             @Value("${mail.sender}") String sender,
                             @Value("${mail.registration_mail_subject}") String registrationSubject,
-                            @Value("${mail.performance_issue_mail_subject}")String performanceIssueSubject,
+                            @Value("${mail.change_mail_subject}") String changeEmailSubject,
+                            @Value("${mail.performance_issue_mail_subject}") String performanceIssueSubject,
                             @Value("${mail.admin}") String adminEmail) {
 
         this.templateEngine = templateEngine;
         this.mailSender = javaMailSender;
         this.sender = sender;
         this.registrationSubject = registrationSubject;
+        this.changeEmailSubject = changeEmailSubject;
         this.performanceIssueSubject = performanceIssueSubject;
         this.adminEmail = adminEmail;
     }
 
     @EventListener(UserRegisteredEvent.class)
     public void onUserRegistered(UserRegisteredEvent event) throws MessagingException {
-        this.sendEmail(event.getEmail(), event.getFullName(), event.getLocale(), REGISTRATION_EMAIL_TEMPLATE_NAME);
+        this.sendEmail(event.getEmail(), this.registrationSubject, event.getFullName(), event.getLocale(),
+                REGISTRATION_EMAIL_TEMPLATE_NAME);
     }
 
     @EventListener(UserChangeEmailEvent.class)
     public void onUserRegistered(UserChangeEmailEvent event) throws MessagingException {
-        this.sendEmail(event.getEmail(), event.getFullName(), event.getLocale(), UPDATE_EMAIL_TEMPLATE_NAME);
+        this.sendEmail(event.getEmail(), this.changeEmailSubject, event.getFullName(), event.getLocale(),
+                UPDATE_EMAIL_TEMPLATE_NAME);
     }
 
     @Override
-    public void sendEmail(String email, String fullName, Locale locale, String templateName) throws MessagingException {
+    public void sendEmail(String email, String subject, String fullName, Locale locale, String templateName) throws MessagingException {
 
         // Prepare the evaluation context
         final Context context = new Context(locale);
@@ -67,7 +71,7 @@ public class EmailServiceImpl implements EmailService {
         // Prepare message using a Spring helper
         final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
         final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
-        message.setSubject(this.registrationSubject);
+        message.setSubject(subject);
         message.setFrom(this.sender);
         message.setTo(email);
 
@@ -93,14 +97,14 @@ public class EmailServiceImpl implements EmailService {
 
         // Prepare message using a Spring helper
         final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, MULTIPART, "UTF-8");
+        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
         message.setSubject(this.performanceIssueSubject);
         message.setFrom(this.sender);
         message.setTo(email);
 
         // Create the HTML body using Thymeleaf
         final String htmlContent = this.templateEngine.process(PERFORMANCE_ISSUE_EMAIL_TEMPLATE_NAME, context);
-        message.setText(htmlContent, true );
+        message.setText(htmlContent, true);
 
         // Send mail
         this.mailSender.send(mimeMessage);

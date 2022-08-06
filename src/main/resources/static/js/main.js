@@ -291,7 +291,8 @@
     document.onkeydown = function (event) {
         if (event.code === 'Enter') {
             event.preventDefault();
-            document.querySelector('form').submit();
+            let lastForm = Array.from(document.getElementsByTagName('form')).pop();
+            lastForm.submit();
         }
     }
 })()

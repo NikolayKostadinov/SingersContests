@@ -7,6 +7,7 @@ import java.util.Locale;
 
 public interface EmailService{
 
-    void sendEmail(String email, String fullName, Locale locale, String templateName) throws MessagingException;
+    void sendEmail(String email, String subject, String fullName, Locale locale, String templateName) throws MessagingException;
+
     void sendPerformanceIssueEmail(String email, Object source, PerformanceIssueViewModel issue) throws MessagingException;
 }

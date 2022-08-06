@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.test_utility.administration;
+package bg.manhattan.singerscontests.web.administration;
 
 import bg.manhattan.singerscontests.model.entity.JuryMember;
 import bg.manhattan.singerscontests.model.entity.User;
@@ -59,6 +59,15 @@ class JuryDetailsRestControllerIntegrationTest extends IntegrationTestWithInject
 
     @Test
     void getDetails() throws Exception {
+        mockMvc.perform(get("/api/jury/" + jm.getId())
+                        .accept("application/json"))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.details", is("Jury details")))
+                .andExpect(jsonPath("$.imageUrl", is("image url")));
+    }
+
+    @Test
+    void getDetails_runningTooSlow() throws Exception {
         mockMvc.perform(get("/api/jury/" + jm.getId())
                         .accept("application/json"))
                 .andExpect(status().is(200))

@@ -1,4 +1,4 @@
-package bg.manhattan.singerscontests.services;
+package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.UnsupportedAgeCalculationType;
 import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
