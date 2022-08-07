@@ -29,7 +29,7 @@ class AdminJuryControllerIntegrationTest extends IntegrationTestWithInjectedUser
 
     @Test
     void demodeJury() throws Exception {
-        mockMvc.perform(get("/administration/jury/demode"))
+        mockMvc.perform(get("/administration/jury/demote"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("administration/demote-jury"));
     }

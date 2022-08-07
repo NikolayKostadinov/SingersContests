@@ -1,23 +1,22 @@
 package bg.manhattan.singerscontests.web;
 
-import bg.manhattan.singerscontests.interseptor.ExecutionTimeInterceptor;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.util.Arrays;
 
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,19 +42,16 @@ class AuthenticationControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private ExecutionTimeInterceptor executionTimeInterceptor;
 
     @BeforeEach
-    void setUp() throws Exception {
-        doCallRealMethod().when(executionTimeInterceptor).preHandle(Mockito.any(), Mockito.any(), Mockito.any());
+    void setUp(){
         this.greenMail = new GreenMail(new ServerSetup(port, host, "smtp"));
         this.greenMail.start();
         greenMail.setUser(usename, password);
     }
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         this.greenMail.stop();
     }
 
@@ -83,15 +79,35 @@ class AuthenticationControllerIntegrationTest {
                 .andExpect(redirectedUrl("/"));
 
         MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
-        Assertions.assertEquals( 1, receivedMessages.length);
-        MimeMessage receivedMessage = receivedMessages[0];
 
-        String message = receivedMessage.getContent().toString();
-        Assertions.assertTrue(message.contains("Pesho Ivanov Peshev"));
+        Assertions.assertEquals(1,
+                Arrays.stream(receivedMessages)
+                        .filter(AuthenticationControllerIntegrationTest::messageContains)
+                        .count());
 
-        String subject = receivedMessage.getSubject();
-        Assertions.assertTrue(subject.contains("You have registered in Singers Contest System!"));
+        Assertions.assertEquals(1,
+                Arrays.stream(receivedMessages)
+                        .filter(this::subjectContains)
+                        .count());
+    }
 
+    private boolean subjectContains(MimeMessage message) {
+         try {
+            return message.getSubject()
+                    .contains("You have registered in Singers Contest System!");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static boolean messageContains(MimeMessage message) {
+        try {
+            return message.getContent()
+                    .toString()
+                    .contains("Pesho Ivanov Peshev");
+        } catch (IOException | MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
