@@ -29,7 +29,7 @@ System for organizing of singers contests
 > ______
 > 
 > **To be able to run project you have to run MailHog on ports :**
->   - smpt: 65000 - instead of default 1025
+>   - smtp: 65000 - instead of default 1025
 >   - http: 8025
 >
 > ***Note 2***
