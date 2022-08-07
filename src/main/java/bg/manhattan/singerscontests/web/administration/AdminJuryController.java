@@ -1,10 +1,10 @@
 package bg.manhattan.singerscontests.web.administration;
 
+import bg.manhattan.singerscontests.model.binding.JuryDemoteBindingModel;
 import bg.manhattan.singerscontests.model.binding.JuryMemberCreateBindingModel;
-import bg.manhattan.singerscontests.model.binding.JuryDemodeBindingModel;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.JuryMemberServiceModel;
-import bg.manhattan.singerscontests.model.view.JuryDemodeViewModel;
+import bg.manhattan.singerscontests.model.view.JuryDemoteViewModel;
 import bg.manhattan.singerscontests.model.view.UserSelectViewModel;
 import bg.manhattan.singerscontests.services.JuryMemberService;
 import bg.manhattan.singerscontests.services.UserService;
@@ -57,32 +57,32 @@ public class AdminJuryController extends BaseController {
         }
 
         this.userService.createJuryMember(this.mapper.map(juryModel, JuryMemberServiceModel.class));
-        return "redirect:/administration/home";
+        return "redirect:/administration/jury";
     }
 
-    @GetMapping("/demode")
+    @GetMapping("/demote")
     public String demodeJury(Model model) {
         setFormTitle("Singers Contests - Promote Jury", model);
-        model.addAttribute("demode", "active");
+        model.addAttribute("demote", "active");
         addJuryMembers(model);
         return "administration/demote-jury";
     }
 
-    @PostMapping("/demode")
-    public String demodeJury(@Valid JuryDemodeBindingModel juryDemodeModel,
+    @PostMapping("/demote")
+    public String demoteJury(@Valid JuryDemoteBindingModel juryDemoteModel,
                              BindingResult bindingResult,
                              RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("juryDemodeModel", juryDemodeModel);
+            redirectAttributes.addFlashAttribute("juryDemoteModel", juryDemoteModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.juryModel", bindingResult);
             return "redirect:/administration/jury/demote";
         }
 
-        juryDemodeModel.getIdsToRemove()
+        juryDemoteModel.getIdsToRemove()
                 .stream()
                 .distinct()
                 .forEach(userId -> this.userService.removeUserFromRole(userId, UserRoleEnum.JURY_MEMBER));
-        return "redirect:/administration/home";
+        return "redirect:/administration/jury/demote";
     }
 
     @GetMapping("/edit")
@@ -105,7 +105,7 @@ public class AdminJuryController extends BaseController {
         }
 
         this.userService.editJuryMember(this.mapper.map(juryModel, JuryMemberServiceModel.class));
-        return "redirect:/administration/home";
+        return "redirect:/administration/jury/edit";
     }
 
     private void addJuryToEdit(Model model){
@@ -115,11 +115,11 @@ public class AdminJuryController extends BaseController {
     }
 
     private void addJuryMembers(Model model) {
-        if (!model.containsAttribute("juryDemodeModel")) {
-            JuryDemodeViewModel demodeMadel = new JuryDemodeViewModel()
+        if (!model.containsAttribute("juryDemoteModel")) {
+            JuryDemoteViewModel demoteMadel = new JuryDemoteViewModel()
                     .setUserRole(UserRoleEnum.JURY_MEMBER)
                     .setMembers(getJuryMembers());
-            model.addAttribute("juryDemodeModel", demodeMadel);
+            model.addAttribute("juryDemoteModel", demoteMadel);
         }
     }
 

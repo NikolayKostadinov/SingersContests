@@ -288,11 +288,11 @@
         dashboardcode.BsMultiSelect("[data-purpose='multiselect']"); //, {placeholder: "-- Please select --"});
     }
 
-    document.onkeydown = function (event) {
-        if (event.code === 'Enter') {
-            event.preventDefault();
-            let lastForm = Array.from(document.getElementsByTagName('form')).pop();
-            lastForm.submit();
-        }
-    }
+    // document.onkeydown = function (event) {
+    //     if (event.code === 'Enter') {
+    //         event.preventDefault();
+    //         let lastForm = Array.from(document.getElementsByTagName('form')).pop();
+    //         lastForm.submit();
+    //     }
+    // }
 })()

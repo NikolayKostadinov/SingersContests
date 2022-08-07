@@ -15,18 +15,18 @@
             <th:block th:insert="~{/fragments/jury-management :: site-bar}"></th:block>
         </div>
         <div class="col-md-9 mb-3" data-aos="zoom-in" data-aos-delay="100">
-            <h1 class="display-6 text-center">Select Jury Members To Demode</h1>
-            <form th:action="@{/administration/jury/demode}"
+            <h1 class="display-6 text-center">Select Jury Members To Demote</h1>
+            <form th:action="@{/administration/jury/demote}"
                   th:method="post">
                     <div class="table-wrapper mt-md-4 mb-md-4 ">
                         <table class="table table-bordered table-condensed table-striped">
-                            <th:block th:if="${juryDemodeModel.members.isEmpty()}">
+                            <th:block th:if="${juryDemoteModel.members.isEmpty()}">
                                 <tr>
                                     <td colspan="2">No Users Are Members</td>
                                 </tr>
                             </th:block>
-                            <th:block th:unless="${juryDemodeModel.members.isEmpty()}">
-                                <tr th:each="user : ${juryDemodeModel.members}" th:object="${user}">
+                            <th:block th:unless="${juryDemoteModel.members.isEmpty()}">
+                                <tr th:each="user : ${juryDemoteModel.members}" th:object="${user}">
                                     <td th:text="*{fullName}"></td>
                                     <td>
                                         <input type="checkbox" name="IdsToRemove" th:value="*{id}">

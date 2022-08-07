@@ -9,7 +9,6 @@ import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.SeedService;
 import bg.manhattan.singerscontests.util.DateTimeProvider;
 import bg.manhattan.singerscontests.util.Utils;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +20,6 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
-
-import static bg.manhattan.singerscontests.util.Utils.removeBom;
 
 @Service
 @Transactional
@@ -66,14 +63,6 @@ public class SeedServiceImpl implements SeedService {
         try {
             String regulationPath = new ClassPathResource("seed.properties").getFile().getPath();
             seedProps.load(new FileInputStream(regulationPath));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void removeBOM(ClassPathResource classPathResource) {
-        try {
-            removeBom(classPathResource.getFile().toPath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

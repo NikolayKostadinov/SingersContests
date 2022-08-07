@@ -105,18 +105,37 @@ public class AccountManageController extends BaseController {
                            Principal principal,
                            HttpServletRequest request) throws ServletException {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("passwordModel", passwordModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.passwordModel", bindingResult);
-            return "redirect:password";
+            return getPasswordErrorResponse(passwordModel,"passwordModel", bindingResult, redirectAttributes, "redirect:password");
         }
+
+        if (!passwordModel.getNewPassword().equals(passwordModel.getCurrentPassword())) {
+            try {
                 this.userService.changeUserPassword(
                         principal.getName(),
                         passwordModel.getCurrentPassword(),
                         passwordModel.getNewPassword());
+            } catch (PasswordNotMatchesException e) {
+                bindingResult.addError(
+                        new ObjectError("badCredentials",
+                                "Incorrect password"));
+                return getPasswordErrorResponse(passwordModel,"passwordModel", bindingResult, redirectAttributes, "redirect:password");
+            }
+        }
+
         request.logout();
         return "redirect:/authentication/login";
     }
 
+
+    private <T> String getPasswordErrorResponse(T model,
+                                            String modelName,
+                                            BindingResult bindingResult,
+                                            RedirectAttributes redirectAttributes,
+                                            String redirectTo) {
+        redirectAttributes.addFlashAttribute(modelName, model);
+        redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult." + modelName, bindingResult);
+        return redirectTo;
+    }
 
     @GetMapping("/delete_personal_data")
     public String deletePersonalData(Model model) {
@@ -132,21 +151,24 @@ public class AccountManageController extends BaseController {
                                      Principal principal,
                                      HttpServletRequest request) throws ServletException {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("deleteUserModel", deleteUserModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.deleteUserModel", bindingResult);
-            return "redirect:delete_personal_data";
+            return getPasswordErrorResponse(deleteUserModel,"deleteUserModel", bindingResult, redirectAttributes, "redirect:delete_personal_data");
+
+//            redirectAttributes.addFlashAttribute("deleteUserModel", deleteUserModel);
+//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.deleteUserModel", bindingResult);
+//            return "redirect:delete_personal_data";
         }
         try {
             this.userService.deleteUser(principal.getName(), deleteUserModel.getPassword());
-        } catch (UserNotFoundException e) {
-            throw new UsernameNotFoundException(e.getMessage());
         } catch (PasswordNotMatchesException e) {
             bindingResult.addError(
                     new ObjectError("password",
                             "Incorrect password"));
-            redirectAttributes.addFlashAttribute("deleteUserModel", deleteUserModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.deleteUserModel", bindingResult);
-            return "redirect:delete_personal_data";
+            return getPasswordErrorResponse(deleteUserModel,"deleteUserModel", bindingResult, redirectAttributes, "redirect:delete_personal_data");
+
+
+//            redirectAttributes.addFlashAttribute("deleteUserModel", deleteUserModel);
+//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.deleteUserModel", bindingResult);
+//            return "redirect:delete_personal_data";
         }
 
         request.logout();
