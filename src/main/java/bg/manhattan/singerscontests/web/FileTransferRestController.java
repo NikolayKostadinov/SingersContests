@@ -3,6 +3,9 @@ package bg.manhattan.singerscontests.web;
 import bg.manhattan.singerscontests.model.enums.ResourceType;
 import bg.manhattan.singerscontests.model.view.FileViewModel;
 import bg.manhattan.singerscontests.services.CloudinaryService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -23,6 +26,12 @@ public class FileTransferRestController {
         this.cloudinaryService = cloudinaryService;
     }
 
+    @Tag(name = "Upload file",
+            description = "Uploads file content to the Cloudinary")
+    @Parameter(name = "file",
+            description = "A representation of a file received in a multipart request.",
+            required = true)
+    @ApiResponse(responseCode = "200", description = "If file was uploaded successfully")
     @PostMapping("/upload")
     public ResponseEntity<FileViewModel> upload(MultipartFile file) {
         String resultUrl =

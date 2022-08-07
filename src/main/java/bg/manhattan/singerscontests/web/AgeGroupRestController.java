@@ -9,6 +9,9 @@ import bg.manhattan.singerscontests.model.view.AgeGroupViewModel;
 import bg.manhattan.singerscontests.model.view.ErrorViewModel;
 import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.impl.AgeGroupServiceImpl;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +36,16 @@ public class AgeGroupRestController {
         this.mapper = mapper;
     }
 
+    @Tag(name = "Get the age group of the contestant by Edition ID and Birthday",
+            description = "Returns ID and name of the age group determined according to the edition's rules")
+    @Parameter(name = "editionId",
+            description = "The ID of the Edition",
+            required = true)
+
+    @Parameter(name = "birthDate",
+            description = "The birthday of the contestant",
+            required = true)
+    @ApiResponse(responseCode = "200", description = "If the age group was determined successfully")
     @GetMapping("{editionId}/{birthDate}")
     public ResponseEntity<AgeGroupViewModel> getAgeGroup(
             @PathVariable("editionId") Long editionId,
