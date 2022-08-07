@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.TransactionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,6 +55,19 @@ public class GlobalExceptionHandler {
         LOGGER.warn("{} {}", model.getMessage(), model.getDetails());
         return result;
     }
+
+        @ExceptionHandler({TransactionException.class, PersistenceException.class})
+        public ModelAndView handleDatabaseErrors(RuntimeException ex) {
+            String details = ex.getMessage();
+            ErrorViewModel model =
+                    new ErrorViewModel("We experience some database issues", details);
+            ModelAndView modelAndView = new ModelAndView("index");
+            modelAndView.addObject("message", ex.getMessage());
+            LOGGER.warn("{} {}", ex.getMessage(), ex.getStackTrace());
+            ModelAndView result = new ModelAndView("error/error");
+            return modelAndView;
+        }
+
 
     @ExceptionHandler({NotImplementedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
