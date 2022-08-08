@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{/fragments/header :: head}"></head>
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container">
+    <form
+            th:method="post"
+            th:action="@{/jury/scorecard/{songId}(songId=${scoreCard.songId})}"
+            th:object="${scoreCard}">
+        <div class="row">
+            <div class="col-md-2">
+                <img class = "img-thumbnail" th:src="*{contestantImageUrl}" width="100%">
+            </div>
+            <div class="col-md-10 ps-4 pe-4">
+                <h1 class="display-5 text-center" th:text="*{contestantFullName}"></h1>
+                <h1 class="display-6 text-center mt-4" th:text="*{songName}"></h1>
+                <div class="row mt-4">
+                    <div class="col-4 text-center">
+                        <label class="form-label fw-bold">Composer</label>
+                        <p th:text="*{songComposerFullName}"></p>
+                    </div>
+                    <div class="col-4 text-center">
+                        <label class="form-label fw-bold">Arranger</label>
+                        <p th:text="*{songArrangerFullName}"></p>
+                    </div>
+                    <div class="col-4 text-center">
+                        <label class="form-label fw-bold">Lyricist</label>
+                        <p th:text="*{songLyricistFullName}"></p>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-4">
+                        <label class="form-label" th:for="*{artistry}">Artistry score</label>
+                        <input class="form-control valid"
+                               th:field="*{artistry}"
+                               th:errorclass="is-invalid">
+                        <p class="invalid-feedback" th:errors="*{artistry}">
+                            Error message.
+                        </p>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label" th:for="*{intonation}">Intonation score</label>
+                        <input class="form-control valid"
+                               th:field="*{intonation}"
+                               th:errorclass="is-invalid">
+                        <p class="invalid-feedback" th:errors="*{intonation}">
+                            Error message.
+                        </p>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label" th:for="*{repertoire}">Repertoire score
+                        </label>
+                        <input class="form-control valid"
+                               th:field="*{repertoire}"
+                               th:errorclass="is-invalid">
+                        <p class="invalid-feedback" th:errors="*{repertoire}">
+                            Error message.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

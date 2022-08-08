@@ -25,10 +25,4 @@ public class HomeController extends BaseController {
     public String ranking(){
         throw new NotImplementedException();
     }
-
-    @GetMapping("/test")
-    public String test(){
-        return "test";
-    }
-
 }

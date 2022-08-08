@@ -11,6 +11,7 @@ import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.ContestantService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.UserService;
+import org.apache.commons.lang3.NotImplementedException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

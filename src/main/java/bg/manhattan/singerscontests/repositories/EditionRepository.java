@@ -1,6 +1,5 @@
 package bg.manhattan.singerscontests.repositories;
 
-import bg.manhattan.singerscontests.model.entity.Contest;
 import bg.manhattan.singerscontests.model.entity.Edition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +38,15 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
 
     @Query("SELECT e " +
             "FROM Edition e " +
+            "WHERE e.beginDate <= :date AND e.endDate >= :date AND " +
+            "EXISTS ( SELECT ed " +
+            "FROM Edition ed INNER JOIN ed.juryMembers j " +
+            "WHERE ed.id = e.id AND j.id = :juryMemberId)")
+    Page<Edition> findAllActiveForJuryMember(@Param("date") LocalDate targetDate,
+                                             @Param("juryMemberId") Long juryMemberId, PageRequest request);
+
+    @Query("SELECT e " +
+            "FROM Edition e " +
             "WHERE e.contest.id = :contestId AND e.beginOfSubscriptionDate > :date")
-    Page<Edition> findAllByContestIdInFuture(@Param("contestId") Long contestId, @Param("date") LocalDate targetDate,PageRequest request);
+    Page<Edition> findAllByContestIdInFuture(@Param("contestId") Long contestId, @Param("date") LocalDate targetDate, PageRequest request);
 }

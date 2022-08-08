@@ -7,6 +7,7 @@ import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import org.springframework.data.domain.Page;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -35,4 +36,6 @@ public interface EditionService {
     boolean isEditionOwner(String userName, Long id);
 
     Page<EditionServiceModel> getEditionsClosedForSubscription(int pageNumber, int size);
+
+    Page<EditionServiceModel> getEditionsActiveForJuryMember(Principal principal, int pageNumber, int size);
 }

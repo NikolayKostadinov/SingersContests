@@ -23,7 +23,6 @@
             <thead>
             <tr>
                 <th>Number</th>
-                <th>Picture</th>
                 <th>Contestant name</th>
                 <th>City</th>
                 <th th:each="category : ${scenarioOrder.edition.performanceCategories}" th:text="${category.name}"></th>
@@ -32,21 +31,15 @@
             <tbody>
             <tr th:each="contestant : *{value}">
                 <td th:text="${contestant.scenarioNumber} + '. '">1.</td>
-                <td><img th:src="${contestant.imageUrl}" class="img-thumbnail" width="80"></td>
                 <td th:text="${contestant.fullName}">FullName</td>
                 <td th:text="${contestant.city}">City</td>
                 <td th:each="song: ${contestant.songs}">
-                    <span class="text-decoration-underline" th:text="${song.name}"></span>
-                    <dl class="song-details mt-2">
-                        <dt>composer</dt>
-                        <dd th:text="${song.composerFullName}">Composer Name</dd>
-                        <dt th:if="${song.arrangerFullName} != null">arranger</dt>
-                        <dd th:if="${song.arrangerFullName} != null"
-                            th:text="${song.arrangerFullName}">Arranger Full Name
-                        </dd>
-                        <dt>lyricist</dt>
-                        <dd th:text="${song.lyricistFullName}">Composer Name</dd>
-                    </dl>
+                    <span class="fw-bold" th:text="${song.name}"></span>
+                    <div class="mt-3">
+                    <a class="btn btn-sm btn-primary"
+                       sec:authorize="hasRole('JURY_MEMBER')"
+                       th:href="@{/jury/scorecard/{songId}(songId = ${song.id})}"><i class="bi bi-trophy"></i> Evaluate</a>
+                    </div>
                 </td>
             </tr>
             </tbody>

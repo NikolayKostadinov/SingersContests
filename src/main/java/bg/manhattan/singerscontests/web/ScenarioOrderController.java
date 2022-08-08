@@ -47,7 +47,7 @@ public class ScenarioOrderController extends BaseController {
 
     @GetMapping("/{id}")
     @Transactional
-    public String getEditions(@PathVariable("id") Long id, Model model) {
+    public String getScenarioOrder(@PathVariable("id") Long id, Model model) {
         setFormTitle("Singers Contests - Scenario order", model);
 
         ScenarioViewModel scenarioOrder =

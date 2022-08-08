@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{/fragments/header :: head}"></head>
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container">
+    <div class="row">
+        <div class="offset-md-3 col-md-6 col-8">
+            <h1 class="display-6 text-center ">Editions list</h1>
+        </div>
+    </div>
+
+    <table id="posts" class="table table-hover table-responsive-sm">
+        <thead>
+        <tr>
+            <th>Begin Date</th>
+            <th>Contest</th>
+            <th>Edition</th>
+            <th>Type</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="edition : ${editions.page}" th:object="${edition}">
+            <td th:text="${#temporals.format(edition.beginDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="*{contestName}"></td>
+            <td th:text="|*{number} edition|">1</td>
+            <td>
+                    <span th:text="*{editionType}"
+                          class="badge rounded-pill"
+                          th:classappend="${edition.editionType.name() == 'ONLINE' ? 'bg-danger' : 'bg-success'}">ONLINE</span>
+            </td>
+            <td class="align-middle text-end pe-md-3">
+                <a th:href="@{/jury/scenario/{id}(id=*{id})}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-list-ol"></i> <span class="d-none d-sm-inline">See order</span></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <th:block th:insert="~{/fragments/navs :: pager(paged=${editions})}"></th:block>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

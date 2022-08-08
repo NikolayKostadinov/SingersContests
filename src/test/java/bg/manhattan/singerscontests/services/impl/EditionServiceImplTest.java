@@ -16,6 +16,7 @@ import bg.manhattan.singerscontests.repositories.EditionRepository;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.JuryMemberService;
+import bg.manhattan.singerscontests.services.UserService;
 import bg.manhattan.singerscontests.test_utility.FakeDateTimeProvider;
 import bg.manhattan.singerscontests.util.DateTimeProvider;
 import org.junit.jupiter.api.AfterEach;
@@ -66,6 +67,9 @@ class EditionServiceImplTest {
     private JuryMemberService juryMemberService;
 
     @Mock
+    private UserService userService;
+
+    @Mock
     private ModelMapper mapper;
 
     private EditionService editionService;
@@ -76,6 +80,7 @@ class EditionServiceImplTest {
                 contestantRepository,
                 contestService,
                 juryMemberService,
+                userService,
                 mapper);
         DateTimeProvider.setCurrent(new FakeDateTimeProvider(1977, 11, 24, 0, 0));
     }

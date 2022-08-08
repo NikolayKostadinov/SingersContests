@@ -1,11 +1,9 @@
 package bg.manhattan.singerscontests.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.Set;
 
 @Entity
 @Table(name="songs")
@@ -34,6 +32,9 @@ public class Song extends BaseEntity {
 
     @Column(length = 4097, nullable = false)
     private String instrumentalUrl;
+
+    @OneToMany(mappedBy = "song")
+    private Set<Rating> ratings;
 
     public PerformanceCategory getCategory() {
         return category;
@@ -104,6 +105,15 @@ public class Song extends BaseEntity {
 
     public Song setInstrumentalUrl(String instrumentalUrl) {
         this.instrumentalUrl = instrumentalUrl;
+        return this;
+    }
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public Song setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
         return this;
     }
 }

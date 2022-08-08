@@ -10,6 +10,7 @@ import bg.manhattan.singerscontests.repositories.EditionRepository;
 import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.JuryMemberService;
+import bg.manhattan.singerscontests.services.UserService;
 import bg.manhattan.singerscontests.util.DateTimeProvider;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -35,16 +37,20 @@ public class EditionServiceImpl implements EditionService {
     private final ContestantRepository contestantRepository;
     private final ContestService contestService;
     private final JuryMemberService juryMemberService;
+    private final UserService userService;
     private final ModelMapper mapper;
 
     public EditionServiceImpl(EditionRepository editionRepository,
-                              ContestantRepository contestantRepository, ContestService contestService,
+                              ContestantRepository contestantRepository,
+                              ContestService contestService,
                               JuryMemberService juryMemberService,
+                              UserService userService,
                               ModelMapper mapper) {
         this.editionRepository = editionRepository;
         this.contestantRepository = contestantRepository;
         this.contestService = contestService;
         this.juryMemberService = juryMemberService;
+        this.userService = userService;
         this.mapper = mapper;
     }
 
@@ -121,7 +127,7 @@ public class EditionServiceImpl implements EditionService {
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
 
         return this.editionRepository
-                .findAllByContestIdInFuture(contest.getId(), today,request)
+                .findAllByContestIdInFuture(contest.getId(), today, request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
     }
 
@@ -183,6 +189,17 @@ public class EditionServiceImpl implements EditionService {
 
         return this.editionRepository
                 .findAllByEndOfSubscriptionDate(today, request)
+                .map(e -> this.mapper.map(e, EditionServiceModel.class));
+    }
+
+    @Override
+    public Page<EditionServiceModel> getEditionsActiveForJuryMember(Principal principal, int pageNumber, int size) {
+        User currentUser = this.userService.getCurrentUser(principal);
+        Sort sort = Sort.by(Sort.Direction.ASC, "beginDate");
+        PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
+        LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
+
+        return this.editionRepository.findAllActiveForJuryMember(today, currentUser.getId(),request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
     }
 
