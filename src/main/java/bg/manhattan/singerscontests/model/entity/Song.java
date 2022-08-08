@@ -3,6 +3,7 @@ package bg.manhattan.singerscontests.model.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -33,8 +34,12 @@ public class Song extends BaseEntity {
     @Column(length = 4097, nullable = false)
     private String instrumentalUrl;
 
-    @OneToMany(mappedBy = "song")
+    @OneToMany(mappedBy = "song", cascade = CascadeType.ALL)
     private Set<Rating> ratings;
+
+    public Song() {
+        this.ratings = new HashSet<>();
+    }
 
     public PerformanceCategory getCategory() {
         return category;

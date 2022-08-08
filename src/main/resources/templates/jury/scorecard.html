@@ -9,13 +9,16 @@
 <header th:replace="~{/fragments/header :: header}">Main Navigation</header>
 
 <main id="main" class="container">
-    <form
-            th:method="post"
-            th:action="@{/jury/scorecard/{songId}(songId=${scoreCard.songId})}"
-            th:object="${scoreCard}">
+    <form class="main-form"
+          th:method="post"
+          th:action="@{/jury/scorecard/{songId}(songId=${scoreModel.songId})}"
+          th:object="${scoreCardHeader}">
+        <input type="hidden" th:field="${scoreModel.id}">
+        <input type="hidden" th:field="${scoreModel.songId}">
+        <input type="hidden" th:field="${scoreModel.editionId}">
         <div class="row">
             <div class="col-md-2">
-                <img class = "img-thumbnail" th:src="*{contestantImageUrl}" width="100%">
+                <img class="img-thumbnail" th:src="*{contestantImageUrl}" width="100%">
             </div>
             <div class="col-md-10 ps-4 pe-4">
                 <h1 class="display-5 text-center" th:text="*{contestantFullName}"></h1>
@@ -35,36 +38,37 @@
                     </div>
                 </div>
 
-                <div class="row mt-4">
+                <div class="row my-4">
                     <div class="col-4">
-                        <label class="form-label" th:for="*{artistry}">Artistry score</label>
+                        <label class="form-label" th:for="${scoreModel.artistry}">Artistry score</label>
                         <input class="form-control valid"
-                               th:field="*{artistry}"
+                               th:field="${scoreModel.artistry}"
                                th:errorclass="is-invalid">
-                        <p class="invalid-feedback" th:errors="*{artistry}">
+                        <p class="invalid-feedback" th:errors="${scoreModel.artistry}">
                             Error message.
                         </p>
                     </div>
                     <div class="col-4">
-                        <label class="form-label" th:for="*{intonation}">Intonation score</label>
+                        <label class="form-label" th:for="${scoreModel.intonation}">Intonation score</label>
                         <input class="form-control valid"
-                               th:field="*{intonation}"
+                               th:field="${scoreModel.intonation}"
                                th:errorclass="is-invalid">
-                        <p class="invalid-feedback" th:errors="*{intonation}">
+                        <p class="invalid-feedback" th:errors="${scoreModel.intonation}">
                             Error message.
                         </p>
                     </div>
                     <div class="col-4">
-                        <label class="form-label" th:for="*{repertoire}">Repertoire score
-                        </label>
+                        <label class="form-label" th:for="${scoreModel.repertoire}">Repertoire score</label>
                         <input class="form-control valid"
-                               th:field="*{repertoire}"
+                               th:field="${scoreModel.repertoire}"
                                th:errorclass="is-invalid">
-                        <p class="invalid-feedback" th:errors="*{repertoire}">
+                        <p class="invalid-feedback" th:errors="${scoreModel.repertoire}">
                             Error message.
                         </p>
                     </div>
                 </div>
+
+                <button type="submit" class="btn btn-primary float-end"><i class="bi bi-check-circle"></i> Vote</button>
             </div>
         </div>
     </form>

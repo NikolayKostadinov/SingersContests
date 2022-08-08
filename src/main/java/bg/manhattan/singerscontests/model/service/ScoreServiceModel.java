@@ -1,6 +1,7 @@
 package bg.manhattan.singerscontests.model.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class ScoreServiceModel {
     private Long id;
@@ -15,6 +16,8 @@ public class ScoreServiceModel {
     private BigDecimal artistry;
     private BigDecimal intonation;
     private BigDecimal repertoire;
+
+    private BigDecimal averageScore;
 
     public Long getId() {
         return id;
@@ -121,6 +124,24 @@ public class ScoreServiceModel {
 
     public ScoreServiceModel setRepertoire(BigDecimal repertoire) {
         this.repertoire = repertoire;
+        return this;
+    }
+
+    public BigDecimal getAverageScore() {
+        if (averageScore == null
+                && this.artistry != null
+                && this.intonation != null
+                && this.repertoire != null) {
+            this.averageScore = this.artistry
+                    .add(this.intonation)
+                    .add(this.repertoire)
+                    .divide(BigDecimal.valueOf(3), RoundingMode.HALF_UP);
+        }
+        return averageScore;
+    }
+
+    public ScoreServiceModel setAverageScore(BigDecimal averageScore) {
+        this.averageScore = averageScore;
         return this;
     }
 }

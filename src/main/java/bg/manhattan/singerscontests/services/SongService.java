@@ -5,6 +5,6 @@ import bg.manhattan.singerscontests.model.service.ScoreServiceModel;
 import java.security.Principal;
 
 public interface SongService {
-    void saveScore(String name, ScoreServiceModel map);
+    void saveScore(ScoreServiceModel scoreModel, Principal principal);
     ScoreServiceModel getSongScore(Long songId, Principal principal);
 }

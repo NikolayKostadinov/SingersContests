@@ -25,13 +25,13 @@ public class ScoreBindingModel {
     @Positive(message="Must be positive!")
     @DecimalMin("1")
     @DecimalMax("10")
-    private BigDecimal Intonation;
+    private BigDecimal intonation;
 
     @NotNull(message = "Field is required!")
     @Positive(message="Must be positive!")
     @DecimalMin("1")
     @DecimalMax("10")
-    private BigDecimal Repertoire;
+    private BigDecimal repertoire;
 
     public Long getId() {
         return id;
@@ -70,20 +70,20 @@ public class ScoreBindingModel {
     }
 
     public BigDecimal getIntonation() {
-        return Intonation;
+        return intonation;
     }
 
     public ScoreBindingModel setIntonation(BigDecimal intonation) {
-        Intonation = intonation;
+        this.intonation = intonation;
         return this;
     }
 
     public BigDecimal getRepertoire() {
-        return Repertoire;
+        return repertoire;
     }
 
     public ScoreBindingModel setRepertoire(BigDecimal repertoire) {
-        Repertoire = repertoire;
+        this.repertoire = repertoire;
         return this;
     }
 }

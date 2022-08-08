@@ -16,18 +16,20 @@ public class PrepareActualScenarioOrders implements CommandLineRunner {
     private final boolean isRequiredScenarioInitialization;
     private final EditionService editionService;
 
-    public PrepareActualScenarioOrders(@Value("${seed.initScenario : false}") boolean isRequiredScenarioInitialization, EditionService editionService) {
+    public PrepareActualScenarioOrders(@Value("${seed.init_scenario : false}") boolean isRequiredScenarioInitialization, EditionService editionService) {
         this.isRequiredScenarioInitialization = isRequiredScenarioInitialization;
         this.editionService = editionService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        LOGGER.info("----------------- Generate Scenario orders -----------------");
-        LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
-        LocalDate beginOfMonth = LocalDate.of(today.getYear(), today.getMonthValue(), 1);
-        for (int i = 0; i < today.getDayOfMonth(); i++) {
-            this.editionService.generateScenarioOrder(beginOfMonth.plusDays(i));
+        if (isRequiredScenarioInitialization) {
+            LOGGER.info("----------------- Generate Scenario orders -----------------");
+            LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
+            LocalDate beginOfMonth = LocalDate.of(today.getYear(), today.getMonthValue(), 1);
+            for (int i = 0; i < today.getDayOfMonth(); i++) {
+                this.editionService.generateScenarioOrder(beginOfMonth.plusDays(i));
+            }
         }
     }
 }

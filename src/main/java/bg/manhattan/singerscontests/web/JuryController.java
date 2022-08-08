@@ -24,7 +24,7 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("/jury")
-public class JuryController extends BaseController{
+public class JuryController extends BaseController {
     private final EditionService editionService;
     private final ContestantService contestantService;
     private final SongService songService;
@@ -70,26 +70,29 @@ public class JuryController extends BaseController{
         setFormTitle("Singers Contests - Score Card", model);
 
         ScoreCardViewModel scoreCardViewModel = getScoreCardModel(songId, principal);
-        model.addAttribute("scoreCard", scoreCardViewModel);
+        model.addAttribute("scoreCardHeader", scoreCardViewModel);
+        if (!model.containsAttribute("scoreModel")) {
+            ScoreBindingModel scoreModel = this.mapper.map(scoreCardViewModel, ScoreBindingModel.class);
+            model.addAttribute("scoreModel", scoreModel);
+        }
         return "jury/scorecard";
     }
 
     @PostMapping("/scorecard/{songId}")
-    public String insertScore(@Valid ScoreBindingModel model,
-                         BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes,
-                         Principal principal) {
+    @Transactional
+    public String insertScore(@Valid ScoreBindingModel scoreModel,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes,
+                              Principal principal) {
         if (bindingResult.hasErrors()) {
-            ScoreCardViewModel scoreCardViewModel = getScoreCardModel(model.getSongId(), principal);
-            this.mapper.map(model, scoreCardViewModel);
-            redirectAttributes.addFlashAttribute("scoreCard", scoreCardViewModel);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.scoreCard", bindingResult);
+            redirectAttributes.addFlashAttribute("scoreModel", scoreModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.scoreModel", bindingResult);
 
-            return "redirect:scorecard/"+model.getSongId();
+            return "redirect:/jury/scorecard/" + scoreModel.getSongId();
         }
 
-        this.songService.saveScore(principal.getName(), this.mapper.map(model, ScoreServiceModel.class));
-        return "redirect:/jury/scenario/" + model.getEditionId();
+        this.songService.saveScore(this.mapper.map(scoreModel, ScoreServiceModel.class), principal);
+        return "redirect:/jury/scenario/" + scoreModel.getEditionId();
     }
 
     private ScoreCardViewModel getScoreCardModel(Long songId, Principal principal) {

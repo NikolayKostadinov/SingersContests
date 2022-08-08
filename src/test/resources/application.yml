@@ -59,4 +59,7 @@ logging:
   level:
     root: info
 
+seed:
+  initScenario: false
+
 max_execution_time: 500
