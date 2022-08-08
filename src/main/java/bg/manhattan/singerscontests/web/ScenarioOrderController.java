@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.transaction.Transactional;
 
 @Controller
-@EnableCaching
 @RequestMapping("/scenario")
 public class ScenarioOrderController extends BaseController {
     private final EditionService editionService;

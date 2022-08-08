@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
-@EnableScheduling
 public class FinalizeEditionRegistrationScheduler {
 
     private final EditionService editionService;

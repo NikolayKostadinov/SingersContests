@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@EnableCaching
 public class ContestServiceImpl implements ContestService {
     private final ContestRepository repository;
     private final UserService userService;
