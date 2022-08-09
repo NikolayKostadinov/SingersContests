@@ -28,7 +28,7 @@
                 <th rowspan="2" class="align-middle">City</th>
                 <th th:colspan="${rankingOrder.edition().juryMembers.size() + 1}"
                     th:each="category, categoryIter : ${rankingOrder.edition.performanceCategories}" th:text="${category.name}"></th>
-                <th rowspan="2" class="align-middle">Score</th>
+                <th rowspan="2" class="align-middle">Rating</th>
             </tr>
             <tr class="table-header-bordered">
                 <th:block th:each="category, categoryIter : ${rankingOrder.edition.performanceCategories}">
@@ -51,7 +51,7 @@
                     </th:block>
                     <td class="fw-bold" th:text="${#numbers.formatDecimal(song.getAvgRating(), 1, 2)}"></td>
                 </th:block>
-                <td class="fw-bold" th:text="${#numbers.formatDecimal(contestant.score, 1, 2, 'COMMA')}"></td>
+                <td class="fw-bold" th:text="${#numbers.formatDecimal(contestant.score, 1, 2)}"></td>
             </tr>
             </tbody>
         </table>
