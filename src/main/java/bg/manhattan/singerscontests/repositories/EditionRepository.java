@@ -49,4 +49,9 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
             "FROM Edition e " +
             "WHERE e.contest.id = :contestId AND e.beginOfSubscriptionDate > :date")
     Page<Edition> findAllByContestIdInFuture(@Param("contestId") Long contestId, @Param("date") LocalDate targetDate, PageRequest request);
+
+    @Query("SELECT e " +
+            "FROM Edition e " +
+            "WHERE e.endDate <= :date")
+    Page<Edition> findAllFinishedEditions(@Param("date")LocalDate date, PageRequest request);
 }

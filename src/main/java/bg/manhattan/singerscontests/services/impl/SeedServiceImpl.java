@@ -18,8 +18,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BinaryOperator;
 
 @Service
 @Transactional
@@ -68,6 +73,25 @@ public class SeedServiceImpl implements SeedService {
         }
     }
 
+    private static BinaryOperator<BigDecimal> getBigDecimalBinaryIncrementOperator() {
+        BinaryOperator<BigDecimal> increment = (s, step) -> {
+            BigDecimal result = s.add(step);
+            if (result.compareTo(BigDecimal.valueOf(10)) > 0) {
+                result = BigDecimal.ONE;
+            }
+            return result;
+        };
+        return increment;
+    }
+
+    private static void changeEditionDate(Edition edition) {
+        LocalDateTime today = DateTimeProvider.getCurrent().utcNow();
+        edition.setBeginOfSubscriptionDate(today.minusDays(3).toLocalDate());
+        edition.setEndOfSubscriptionDate(today.minusDays(2).toLocalDate());
+        edition.setBeginDate(today.minusDays(1).toLocalDate());
+        edition.setEndDate(today.toLocalDate());
+    }
+
     @Override
     @Transactional
     public void seed() {
@@ -94,6 +118,42 @@ public class SeedServiceImpl implements SeedService {
             seedContestants(editions);
         }
         LOGGER.info("----------------- DB Initialized and ready -----------------");
+    }
+
+    @Override
+    @Transactional
+    public void seedRatingsForFirstEdition() {
+        Edition edition = this.editionRepository.findById(1L).orElse(new Edition());
+        changeEditionDate(edition);
+        Set<JuryMember> juryMembers = edition.getJuryMembers();
+        BinaryOperator<BigDecimal> increment = getBigDecimalBinaryIncrementOperator();
+
+        for (JuryMember juryMember : juryMembers) {
+            AtomicReference<BigDecimal> rating = new AtomicReference<>(BigDecimal.ONE);
+            edition.getContestants().forEach(
+                    contestant -> contestant.getSongs()
+                            .forEach(song -> {
+                                BigDecimal artistry = rating.getAndAccumulate(BigDecimal.valueOf(0.5), increment);
+                                BigDecimal intonation = rating.getAndAccumulate(BigDecimal.valueOf(0.5), increment);
+                                BigDecimal repertoire = rating.getAndAccumulate(BigDecimal.valueOf(0.5), increment);
+                                BigDecimal avgScore = artistry
+                                        .add(intonation)
+                                        .add(repertoire)
+                                        .divide(BigDecimal.valueOf(3), MathContext.DECIMAL128);
+
+                                song.getRatings().add(new Rating()
+                                        .setSong(song)
+                                        .setArtistry(artistry)
+                                        .setIntonation(intonation)
+                                        .setRepertoire(repertoire)
+                                        .setAverageScore(avgScore)
+                                        .setJuryMember(juryMember.getUser())
+                                );
+                            })
+            );
+        }
+
+        this.editionRepository.save(edition);
     }
 
     private void seedContestants(List<Edition> editions) {

@@ -1,11 +1,10 @@
 package bg.manhattan.singerscontests.model.entity;
 
-import bg.manhattan.singerscontests.model.validators.UniqueUserName;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,7 +38,6 @@ public class Contestant extends PersonBaseEntity {
     @OneToMany(mappedBy = "contestant", cascade = CascadeType.ALL)
     private List<Song> songs;
 
-
     /**
      * The person who registered this contestant
      */
@@ -47,7 +45,11 @@ public class Contestant extends PersonBaseEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User registrar;
 
+    @Column(name = "scenario_number")
     private Integer scenarioNumber;
+
+    @Transient
+    private BigDecimal score;
 
     public String getImageUrl() {
         return imageUrl;
@@ -98,6 +100,11 @@ public class Contestant extends PersonBaseEntity {
         return registrar;
     }
 
+    public Contestant setRegistrar(User registrar) {
+        this.registrar = registrar;
+        return this;
+    }
+
     public String getCountry() {
         return country;
     }
@@ -125,11 +132,6 @@ public class Contestant extends PersonBaseEntity {
         return this;
     }
 
-    public Contestant setRegistrar(User registrar) {
-        this.registrar = registrar;
-        return this;
-    }
-
     public Integer getScenarioNumber() {
         return scenarioNumber;
     }
@@ -137,5 +139,30 @@ public class Contestant extends PersonBaseEntity {
     public Contestant setScenarioNumber(Integer scenarioNumber) {
         this.scenarioNumber = scenarioNumber;
         return this;
+    }
+
+    public BigDecimal getScore() {
+        if (score == null && this.getSongs().size() > 0) {
+            score = this.getSongs()
+                    .stream()
+                    .map(s -> {
+                                if (s.getRatings().isEmpty()) {
+                                    return BigDecimal.ZERO;
+                                }
+
+                                return s.getRatings()
+                                        .stream()
+                                        .map(Rating::getAverageScore)
+                                        .reduce(BigDecimal::add)
+                                        .orElse(BigDecimal.ZERO)
+                                        .divide(BigDecimal.valueOf(s.getRatings().size()), MathContext.DECIMAL128);
+                            }
+                    )
+                    .reduce(BigDecimal::add)
+                    .orElse(BigDecimal.ZERO)
+                    .divide(BigDecimal.valueOf(this.getSongs().size()), MathContext.DECIMAL128);
+        }
+
+        return score;
     }
 }

@@ -1922,3 +1922,8 @@ dl.song-details {
 .right {
     margin-left: auto;
 }
+
+.table-header-bordered th{
+    text-align: center;
+    border: 1px solid #dee2e6;
+}

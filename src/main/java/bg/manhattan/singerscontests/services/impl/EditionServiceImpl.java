@@ -21,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -161,7 +158,7 @@ public class EditionServiceImpl implements EditionService {
 
                     this.contestantRepository.saveAll(ageGroups.values()
                             .stream()
-                            .flatMap(lc -> lc.stream())
+                            .flatMap(Collection::stream)
                             .toList());
                 });
 
@@ -200,6 +197,17 @@ public class EditionServiceImpl implements EditionService {
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
 
         return this.editionRepository.findAllActiveForJuryMember(today, currentUser.getId(),request)
+                .map(e -> this.mapper.map(e, EditionServiceModel.class));
+    }
+
+    @Override
+    public Page<EditionServiceModel> getFinishedEditions(int pageNumber, int size) {
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "endDate");
+        PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
+        LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
+
+        return this.editionRepository.findAllFinishedEditions(today, request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
     }
 

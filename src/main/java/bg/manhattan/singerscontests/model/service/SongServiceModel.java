@@ -1,6 +1,8 @@
 package bg.manhattan.singerscontests.model.service;
 
-import java.time.Duration;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.util.Set;
 
 public class SongServiceModel {
 
@@ -23,6 +25,8 @@ public class SongServiceModel {
     public Long getId() {
         return id;
     }
+
+    public Set<RaringServiceModel> ratings;
 
     public SongServiceModel setId(Long id) {
         this.id = id;
@@ -90,5 +94,35 @@ public class SongServiceModel {
     public SongServiceModel setInstrumentalUrl(String instrumentalUrl) {
         this.instrumentalUrl = instrumentalUrl;
         return this;
+    }
+
+    public Set<RaringServiceModel> getRatings() {
+        return ratings;
+    }
+
+    public SongServiceModel setRatings(Set<RaringServiceModel> ratings) {
+        this.ratings = ratings;
+        return this;
+    }
+
+    public BigDecimal getRatingByJuryId(Long juryId){
+        return this.getRatings()
+                .stream()
+                .filter(r->r.getJuryMember().getId().equals(juryId))
+                .findFirst()
+                .orElse(new RaringServiceModel())
+                .getAverageScore();
+    }
+
+    public BigDecimal getAvgRating(){
+        if (ratings.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+        return this.getRatings()
+                .stream()
+                .map(RaringServiceModel::getAverageScore)
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO)
+                .divide(BigDecimal.valueOf(this.getRatings().size()), MathContext.DECIMAL128);
     }
 }

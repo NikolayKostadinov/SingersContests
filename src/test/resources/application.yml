@@ -60,6 +60,6 @@ logging:
     root: info
 
 seed:
-  initScenario: false
+  init_scenario: true
 
 max_execution_time: 500

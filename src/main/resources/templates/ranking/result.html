@@ -1,0 +1,65 @@
+<!doctype html>
+<!--suppress HtmlRequiredTitleElement -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/header :: head}"></head>
+<body>
+
+<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+
+<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+
+<main id="main" class="container">
+    <div class="row">
+        <div class="offset-md-3 col-md-6 col-8">
+            <h1 class="display-5 fw-bold text-center"
+                th:text="| ${rankingOrder.edition.contestName} - ${rankingOrder.edition.number} edition |">Editions
+                list</h1>
+        </div>
+    </div>
+
+    <th:block th:each="ageGroup : ${rankingOrder.ageGroups.entrySet()}" th:object="${ageGroup}">
+        <h2 class="display-6 text-center mt-5 fw-bold" th:text="|*{key.name} age group|"></h2>
+        <table class="table table-hover table-striped table-responsive-sm">
+            <thead>
+            <tr class="table-header-bordered">
+                <th rowspan="2" class="align-middle">Number</th>
+                <th rowspan="2" class="align-middle">Contestant name</th>
+                <th rowspan="2" class="align-middle">Country</th>
+                <th rowspan="2" class="align-middle">City</th>
+                <th th:colspan="${rankingOrder.edition().juryMembers.size() + 1}"
+                    th:each="category, categoryIter : ${rankingOrder.edition.performanceCategories}" th:text="${category.name}"></th>
+                <th rowspan="2" class="align-middle">Score</th>
+            </tr>
+            <tr class="table-header-bordered">
+                <th:block th:each="category, categoryIter : ${rankingOrder.edition.performanceCategories}">
+                    <th th:each="jury : ${rankingOrder.edition().juryMembers}"
+                        th:text="${rankingOrder.juryMembers.get(jury)}"></th>
+                    <th th:text="|Song ${categoryIter.index + 1}|"></th>
+                </th:block>
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr th:each="contestant, iterStat : *{value}">
+                <td th:text="${iterStat.index + 1} + '. '">1.</td>
+                <td th:text="${contestant.fullName}">FullName</td>
+                <td th:text="${contestant.country}">City</td>
+                <td th:text="${contestant.city}">City</td>
+                <th:block th:each="song: ${contestant.songs}">
+                    <th:block th:each="jury : ${rankingOrder.edition().juryMembers}">
+                        <td th:text="${#numbers.formatDecimal(song.getRatingByJuryId(jury), 1, 2)}"></td>
+                    </th:block>
+                    <td class="fw-bold" th:text="${#numbers.formatDecimal(song.getAvgRating(), 1, 2)}"></td>
+                </th:block>
+                <td class="fw-bold" th:text="${#numbers.formatDecimal(contestant.score, 1, 2, 'COMMA')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+</main>
+
+<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+</th:block>
+
+</body>
+</html>

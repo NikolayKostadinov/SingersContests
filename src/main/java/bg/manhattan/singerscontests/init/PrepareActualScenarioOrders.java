@@ -1,6 +1,7 @@
 package bg.manhattan.singerscontests.init;
 
 import bg.manhattan.singerscontests.services.EditionService;
+import bg.manhattan.singerscontests.services.SeedService;
 import bg.manhattan.singerscontests.util.DateTimeProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +16,14 @@ public class PrepareActualScenarioOrders implements CommandLineRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(PrepareActualScenarioOrders.class);
     private final boolean isRequiredScenarioInitialization;
     private final EditionService editionService;
+    private final SeedService seedService;
 
-    public PrepareActualScenarioOrders(@Value("${seed.init_scenario : false}") boolean isRequiredScenarioInitialization, EditionService editionService) {
+    public PrepareActualScenarioOrders(@Value("${seed.init_scenario:false}") boolean isRequiredScenarioInitialization,
+                                       EditionService editionService,
+                                       SeedService seedService) {
         this.isRequiredScenarioInitialization = isRequiredScenarioInitialization;
         this.editionService = editionService;
+        this.seedService = seedService;
     }
 
     @Override
@@ -30,6 +35,8 @@ public class PrepareActualScenarioOrders implements CommandLineRunner {
             for (int i = 0; i < today.getDayOfMonth(); i++) {
                 this.editionService.generateScenarioOrder(beginOfMonth.plusDays(i));
             }
+
+            this.seedService.seedRatingsForFirstEdition();
         }
     }
 }

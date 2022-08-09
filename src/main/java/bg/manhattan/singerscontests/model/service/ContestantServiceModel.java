@@ -1,18 +1,13 @@
 package bg.manhattan.singerscontests.model.service;
 
-import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.model.enums.EditionType;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static bg.manhattan.singerscontests.model.ModelConstants.*;
 
 public class ContestantServiceModel  {
     private Long id;
@@ -52,6 +47,8 @@ public class ContestantServiceModel  {
     private List<SongServiceModel> songs;
 
     private LocalDate birthDay;
+
+    private BigDecimal score;
 
     public ContestantServiceModel() {
         this.songs = new ArrayList<>();
@@ -212,6 +209,15 @@ public class ContestantServiceModel  {
 
     public ContestantServiceModel setScenarioNumber(Integer scenarioNumber) {
         this.scenarioNumber = scenarioNumber;
+        return this;
+    }
+
+    public BigDecimal getScore() {
+        return score;
+    }
+
+    public ContestantServiceModel setScore(BigDecimal score) {
+        this.score = score;
         return this;
     }
 }

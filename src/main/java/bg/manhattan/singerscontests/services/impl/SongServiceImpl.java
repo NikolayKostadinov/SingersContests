@@ -34,7 +34,7 @@ public class SongServiceImpl implements SongService {
                 .stream()
                 .filter(r -> r.getJuryMember().getUsername().equals(currentUser.getUsername()))
                 .findFirst()
-                .orElse(new Rating());
+                .orElse(new Rating().setSong(song));
 
         rating.setArtistry(scoreModel.getArtistry())
                 .setIntonation(scoreModel.getIntonation())

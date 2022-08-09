@@ -4,14 +4,13 @@ import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.*;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.*;
-import bg.manhattan.singerscontests.model.view.EditionListViewModel;
+import bg.manhattan.singerscontests.model.view.RankingViewModel;
 import bg.manhattan.singerscontests.model.view.ScenarioViewModel;
 import bg.manhattan.singerscontests.repositories.ContestantRepository;
 import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.ContestantService;
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.UserService;
-import org.apache.commons.lang3.NotImplementedException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,8 @@ import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ContestantServiceImpl implements ContestantService {
@@ -113,9 +112,30 @@ public class ContestantServiceImpl implements ContestantService {
                 .sorted(Comparator.comparingInt((Contestant c) -> c.getAgeGroup().getDisplayNumber())
                         .thenComparingInt(Contestant::getScenarioNumber))
                 .map(contestant -> this.mapper.map(contestant, ContestantServiceModel.class))
-                .collect(groupingBy(ContestantServiceModel::getAgeGroup , TreeMap::new, toList()));
+                .collect(groupingBy(ContestantServiceModel::getAgeGroup, TreeMap::new, toList()));
 
         return new ScenarioViewModel(this.mapper.map(edition, EditionServiceModel.class), ageGroups);
+    }
+
+    @Override
+    public RankingViewModel getContestantsForEditionOrderedByAgeGroupAndScore(Long id) {
+        Edition edition = this.editionService.getEntityById(id);
+        Map<Long, String> juryMembers = edition.getJuryMembers()
+                .stream()
+                .collect(Collectors.toMap(JuryMember::getId, jm -> jm.getUser().getLastName()));
+        Map<AgeGroupServiceModel, List<ContestantServiceModel>> ageGroups = this.repository.findAllByEdition(edition)
+                .stream()
+                .sorted((c1, c2) -> {
+                    int result = c1.getAgeGroup().getDisplayNumber() - c2.getAgeGroup().getDisplayNumber();
+                    if (result == 0){
+                        result = c2.getScore().compareTo(c1.getScore());
+                    }
+                    return result;
+                })
+                .map(contestant -> this.mapper.map(contestant, ContestantServiceModel.class))
+                .collect(groupingBy(ContestantServiceModel::getAgeGroup, TreeMap::new, toList()));
+
+        return new RankingViewModel(this.mapper.map(edition, EditionServiceModel.class), juryMembers, ageGroups);
     }
 
     private boolean IsManager(Contestant contestant, User currentUser) {

@@ -18,7 +18,7 @@ public class Rating extends BaseEntity {
     private BigDecimal repertoire;
 
     @Column(name = "average_score")
-    BigDecimal averageScore;
+    private BigDecimal averageScore;
     @ManyToOne
     private Song song;
 
