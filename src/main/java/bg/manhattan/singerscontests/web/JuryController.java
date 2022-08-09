@@ -12,6 +12,7 @@ import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.services.SongService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,6 +55,7 @@ public class JuryController extends BaseController {
     }
 
     @GetMapping("/scenario/{id}")
+    @PreAuthorize("isJuryMember(#id)")
     @Transactional
     public String getScenarioOrder(@PathVariable("id") Long id, Model model) {
         setFormTitle("Singers Contests - Scenario order", model);
@@ -64,9 +66,10 @@ public class JuryController extends BaseController {
         return "jury/order";
     }
 
-    @GetMapping("/scorecard/{songId}")
+    @GetMapping("/scorecard/{editionId}/{songId}")
+    @PreAuthorize("isJuryMember(#editionId)")
     @Transactional
-    public String getScoreCard(@PathVariable("songId") Long songId, Model model, Principal principal) {
+    public String getScoreCard(@PathVariable("editionId") Long editionId,@PathVariable("songId") Long songId, Model model, Principal principal) {
         setFormTitle("Singers Contests - Score Card", model);
 
         ScoreCardViewModel scoreCardViewModel = getScoreCardModel(songId, principal);

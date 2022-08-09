@@ -40,4 +40,6 @@ public interface EditionService {
     Page<EditionServiceModel> getEditionsActiveForJuryMember(Principal principal, int pageNumber, int size);
 
     Page<EditionServiceModel> getFinishedEditions(int pageNumber, int size);
+
+    boolean isJuryMember(String userName, Long id);
 }

@@ -5,6 +5,7 @@ import bg.manhattan.singerscontests.model.entity.*;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
+import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.repositories.ContestantRepository;
 import bg.manhattan.singerscontests.repositories.EditionRepository;
 import bg.manhattan.singerscontests.services.ContestService;
@@ -179,6 +180,15 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
+    public boolean isJuryMember(String userName, Long id) {
+        UserServiceModel user = this.userService.getUserByUsername(userName);
+        Edition edition = getEntityById(id);
+        return edition.getJuryMembers()
+                .stream()
+                .anyMatch(jm->jm.getId().equals(user.getId()));
+    }
+
+    @Override
     public Page<EditionServiceModel> getEditionsClosedForSubscription(int pageNumber, int size) {
         Sort sort = Sort.by(Sort.Direction.ASC, "beginDate");
         PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
@@ -210,6 +220,8 @@ public class EditionServiceImpl implements EditionService {
         return this.editionRepository.findAllFinishedEditions(today, request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
     }
+
+
 
     private Set<JuryMember> getJuryMembers(EditionServiceModel editionModel, Edition edition) {
         return this.juryMemberService

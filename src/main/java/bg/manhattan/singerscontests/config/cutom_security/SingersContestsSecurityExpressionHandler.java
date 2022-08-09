@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 public class SingersContestsSecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler {
 
   private final ContestService contestService;
-
   private final EditionService editionService;
   private final ContestantService contestantService;
 
