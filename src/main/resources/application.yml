@@ -60,6 +60,6 @@ logging:
 
 #  make it false to stop overload of scenario order every time when you restart
 seed:
-  init_scenario: true
+  init_scenario: false
 
 max_execution_time: 500

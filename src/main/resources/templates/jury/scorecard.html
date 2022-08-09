@@ -11,7 +11,7 @@
 <main id="main" class="container">
     <form class="main-form"
           th:method="post"
-          th:action="@{/jury/scorecard/{songId}(songId=${scoreModel.songId})}"
+          th:action="@{/jury/scorecard/{editionId}/{songId}(editionId=${scoreModel.editionId}, songId=${scoreModel.songId})}"
           th:object="${scoreCardHeader}">
         <input type="hidden" th:field="${scoreModel.id}">
         <input type="hidden" th:field="${scoreModel.songId}">

@@ -49,14 +49,14 @@ public class SingersContestsSecurityExpressionRoot extends SecurityExpressionRoo
         return editionService.isEditionOwner(userName, id);
     }
 
-    public boolean isJuryMember(Long id) {
+    public boolean isJuryDutyAvailable(Long id) {
         if ( super.authentication.getPrincipal() == null) {
             return false;
         }
 
         String userName = super.authentication.getName();
 
-        return editionService.isJuryMember(userName, id);
+        return editionService.isJuryDutyAvailable(userName, id);
     }
 
 

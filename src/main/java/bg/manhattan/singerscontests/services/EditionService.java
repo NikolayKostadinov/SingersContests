@@ -41,5 +41,5 @@ public interface EditionService {
 
     Page<EditionServiceModel> getFinishedEditions(int pageNumber, int size);
 
-    boolean isJuryMember(String userName, Long id);
+    boolean isJuryDutyAvailable(String userName, Long id);
 }

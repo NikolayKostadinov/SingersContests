@@ -2,6 +2,7 @@ package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.entity.*;
+import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.ContestServiceModelWithEditions;
 import bg.manhattan.singerscontests.model.service.EditionDetailsServiceModel;
 import bg.manhattan.singerscontests.model.service.EditionServiceModel;
@@ -180,12 +181,16 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public boolean isJuryMember(String userName, Long id) {
+    public boolean isJuryDutyAvailable(String userName, Long id) {
         UserServiceModel user = this.userService.getUserByUsername(userName);
         Edition edition = getEntityById(id);
-        return edition.getJuryMembers()
+        LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
+        return user.isInRole(UserRoleEnum.JURY_MEMBER)
+                && edition.getBeginDate().compareTo(today) <= 0
+                && edition.getEndDate().compareTo(today) >= 0
+                && edition.getJuryMembers()
                 .stream()
-                .anyMatch(jm->jm.getId().equals(user.getId()));
+                .anyMatch(jm -> jm.getId().equals(user.getId()));
     }
 
     @Override
@@ -206,7 +211,7 @@ public class EditionServiceImpl implements EditionService {
         PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
 
-        return this.editionRepository.findAllActiveForJuryMember(today, currentUser.getId(),request)
+        return this.editionRepository.findAllActiveForJuryMember(today, currentUser.getId(), request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
     }
 
@@ -220,7 +225,6 @@ public class EditionServiceImpl implements EditionService {
         return this.editionRepository.findAllFinishedEditions(today, request)
                 .map(e -> this.mapper.map(e, EditionServiceModel.class));
     }
-
 
 
     private Set<JuryMember> getJuryMembers(EditionServiceModel editionModel, Edition edition) {

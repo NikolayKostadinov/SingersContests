@@ -123,9 +123,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     private boolean isAdmin(UserServiceModel currentUser) {
-        return currentUser.getRoles()
-                .stream()
-                .anyMatch(role -> role == UserRoleEnum.ADMIN.name());
+        return currentUser.isInRole(UserRoleEnum.ADMIN);
     }
 
     @Override

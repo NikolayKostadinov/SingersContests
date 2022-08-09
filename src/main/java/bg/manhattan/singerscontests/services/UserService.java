@@ -50,4 +50,6 @@ public interface UserService {
     boolean existsUser(String userName);
 
     boolean existsByEmail(String email);
+
+    boolean isInRole(String userName, UserRoleEnum role);
 }

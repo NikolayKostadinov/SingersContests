@@ -166,6 +166,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isInRole(String userName, UserRoleEnum role) {
+        UserServiceModel userByUsername = this.getUserByUsername(userName);
+        return userByUsername.isInRole(role);
+    }
+
+    @Override
     public void deleteUser(String username, String password) {
         User user = getUserEntityByUserName(username);
         if (passwordNotMatches(password, user.getPassword())) {

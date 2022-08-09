@@ -55,7 +55,7 @@ public class JuryController extends BaseController {
     }
 
     @GetMapping("/scenario/{id}")
-    @PreAuthorize("isJuryMember(#id)")
+    @PreAuthorize("isJuryDutyAvailable(#id)")
     @Transactional
     public String getScenarioOrder(@PathVariable("id") Long id, Model model) {
         setFormTitle("Singers Contests - Scenario order", model);
@@ -67,7 +67,7 @@ public class JuryController extends BaseController {
     }
 
     @GetMapping("/scorecard/{editionId}/{songId}")
-    @PreAuthorize("isJuryMember(#editionId)")
+    @PreAuthorize("isJuryDutyAvailable(#editionId)")
     @Transactional
     public String getScoreCard(@PathVariable("editionId") Long editionId,@PathVariable("songId") Long songId, Model model, Principal principal) {
         setFormTitle("Singers Contests - Score Card", model);
@@ -81,7 +81,8 @@ public class JuryController extends BaseController {
         return "jury/scorecard";
     }
 
-    @PostMapping("/scorecard/{songId}")
+    @PostMapping("/scorecard/{editionId}/{songId}")
+    @PreAuthorize("isJuryDutyAvailable(#editionId)")
     @Transactional
     public String insertScore(@Valid ScoreBindingModel scoreModel,
                               BindingResult bindingResult,
@@ -91,7 +92,7 @@ public class JuryController extends BaseController {
             redirectAttributes.addFlashAttribute("scoreModel", scoreModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.scoreModel", bindingResult);
 
-            return "redirect:/jury/scorecard/" + scoreModel.getSongId();
+            return String.format("redirect:/jury/scorecard/%d/%d", scoreModel.getEditionId(), scoreModel.getSongId());
         }
 
         this.songService.saveScore(this.mapper.map(scoreModel, ScoreServiceModel.class), principal);

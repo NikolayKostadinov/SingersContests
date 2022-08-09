@@ -1,5 +1,7 @@
 package bg.manhattan.singerscontests.model.service;
 
+import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -119,9 +121,13 @@ public class UserServiceModel {
         return roles;
     }
 
-    public void addRole(String role){
+    public void addRole(String role) {
         this.roles.add(role);
     }
 
-
+    public boolean isInRole(UserRoleEnum role) {
+        return this.getRoles()
+                .stream()
+                .anyMatch(r->r.equals(role.name()));
+    }
 }
