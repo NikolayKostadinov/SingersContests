@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'bg.manhattan'
-version = '0.0.1-SNAPSHOT'
+//version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
@@ -37,4 +37,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+test {
+    systemProperty "file.encoding", "utf-8"
 }

@@ -1,7 +1,7 @@
 (function () {
     const birthElement = document.getElementById("birthDay");
 
-    birthElement.addEventListener('change', getAgeGroup);
+    birthElement.addEventListener('focusout', getAgeGroup);
 
     async function getAgeGroup(event) {
         try {
