@@ -64,19 +64,6 @@ public class AgeGroupServiceModel implements Comparable<AgeGroupServiceModel> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AgeGroupServiceModel that)) return false;
-
-        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
-
-    @Override
     public int compareTo(AgeGroupServiceModel o) {
         if (this.displayNumber == null || o.displayNumber == null) return 0;
         return this.displayNumber.compareTo(o.displayNumber);

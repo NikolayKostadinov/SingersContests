@@ -2,6 +2,7 @@ package bg.manhattan.singerscontests.test_utility;
 
 import bg.manhattan.singerscontests.util.DateTimeProvider;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class FakeDateTimeProvider extends DateTimeProvider {
@@ -17,6 +18,14 @@ public class FakeDateTimeProvider extends DateTimeProvider {
         this.dayOfMonth = dayOfMonth;
         this.hour = hour;
         this.minute = minute;
+    }
+
+    public FakeDateTimeProvider(LocalDate date) {
+        this(date.getYear(), date.getMonthValue(), date.getDayOfMonth(),0,0);
+    }
+
+    public FakeDateTimeProvider(LocalDateTime date) {
+        this(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), date.getHour(), date.getMinute());
     }
 
     @Override

@@ -29,7 +29,6 @@
         }
     }
 
-
     function removeCategoryButtonClick(event) {
         event.preventDefault();
         let index = Number(event.currentTarget.dataset.id);
@@ -49,7 +48,7 @@
             "                </div>\n" +
             "                <div class=\"col-2\">\n" +
             "                    <div class=\"form-check\">\n" +
-            "                        <input class=\"form-check-input\" type=\"checkbox\" id=\"performanceCategories" + index + ".required\" name=\"performanceCategories[" + index + "].required\" value=\"true\"><input type=\"hidden\" name=\"_performanceCategories[0].required\" value=\"on\">\n" +
+            "                        <input class=\"form-check-input\" type=\"checkbox\" id=\"performanceCategories" + index + ".required\" name=\"performanceCategories[" + index + "].required\" value=\"true\"><input type=\"hidden\" name=\"_performanceCategories[" + index + "].required\" value=\"on\">\n" +
             "                        <label class=\"form-check-label\">\n" +
             "                            Required\n" +
             "                        </label>\n" +

@@ -8,34 +8,32 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithUserDetails(value="admin", userDetailsServiceBeanName="userDetailsService")
-class AdminManagerControllerIntegrationTest extends IntegrationTestWithInjectedUserDetails {
+class AdminAdministratorsControllerIntegrationTest extends IntegrationTestWithInjectedUserDetails {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private AdminManagerController controller;
+    private AdminAdministratorsController controller;
 
     @Test
-    void managers() throws Exception {
-        mockMvc.perform(get("/administration/managers"))
+    void admins() throws Exception {
+        mockMvc.perform(get("/administration/administrators"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("administration/roles"))
-                .andExpect(model().attribute("roleDisplayName","Contest Managers"));
-
+                .andExpect(model().attribute("roleDisplayName","Administrators"));
     }
 
     @Test
     @WithUserDetails(value="user0", userDetailsServiceBeanName="userDetailsService")
     void managers_fails_non_admin() throws Exception {
-        mockMvc.perform(get("/administration/managers"))
+        mockMvc.perform(get("/administration/administrators"))
                 .andExpect(status().isForbidden());
     }
 
@@ -44,6 +42,8 @@ class AdminManagerControllerIntegrationTest extends IntegrationTestWithInjectedU
         // act
         String roleDisplayName = this.controller.getRoleDisplayName();
         // assert
-        assertEquals("Contest Managers", roleDisplayName);
+        assertEquals("Administrators", roleDisplayName);
     }
+
+
 }

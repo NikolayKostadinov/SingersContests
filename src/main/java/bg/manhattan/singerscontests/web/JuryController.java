@@ -82,7 +82,7 @@ public class JuryController extends BaseController {
     }
 
     @PostMapping("/scorecard/{editionId}/{songId}")
-    @PreAuthorize("isJuryDutyAvailable(#editionId)")
+    @PreAuthorize("isJuryDutyAvailable(#scoreModel.editionId)")
     @Transactional
     public String insertScore(@Valid ScoreBindingModel scoreModel,
                               BindingResult bindingResult,
