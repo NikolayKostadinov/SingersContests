@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{/fragments/header :: head}"></head>
+<head th:replace="~{fragments/header :: head}"></head>
 
 <body>
 
-<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+<div th:replace="~{fragments/header :: topbar}">Contacts</div>
 
-<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+<header th:replace="~{fragments/header :: header}">Main Navigation</header>
 
 <main id="main" class="container" data-aos="zoom-in">
     <h1 class="display-6 text-center">Edit Contests #<th:block th:text="*{id}"></th:block></h1>
@@ -54,7 +54,7 @@
     </form>
 </main>
 
-<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+<th:block th:insert="~{fragments/scripts :: baseScripts}">
 </th:block>
 
 <script src="/js/edition-modify.js"></script>

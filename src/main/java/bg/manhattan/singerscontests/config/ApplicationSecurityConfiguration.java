@@ -45,6 +45,7 @@ public class ApplicationSecurityConfiguration {
                 .antMatchers("/contests/**", "/editions/**").hasAnyRole(UserRoleEnum.CONTEST_MANAGER.name(),
                         UserRoleEnum.ADMIN.name())
                 .antMatchers("/jury/**").hasAnyRole(UserRoleEnum.JURY_MEMBER.name())
+                .antMatchers("/actuator/**").hasAnyRole(UserRoleEnum.ADMIN.name())
                 // forbid all other for anonymous users;
                 .anyRequest().authenticated()
             .and()
