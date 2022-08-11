@@ -1,7 +1,6 @@
 package bg.manhattan.singerscontests.web;
 
 import bg.manhattan.singerscontests.exceptions.PasswordNotMatchesException;
-import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.binding.EmailChangeBindingModel;
 import bg.manhattan.singerscontests.model.binding.PasswordChangeBindingModel;
 import bg.manhattan.singerscontests.model.binding.ProfileDetailsBindingModel;
@@ -11,7 +10,6 @@ import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -151,11 +149,11 @@ public class AccountManageController extends BaseController {
                                      Principal principal,
                                      HttpServletRequest request) throws ServletException {
         if (bindingResult.hasErrors()) {
-            return getPasswordErrorResponse(deleteUserModel,"deleteUserModel", bindingResult, redirectAttributes, "redirect:delete_personal_data");
-
-//            redirectAttributes.addFlashAttribute("deleteUserModel", deleteUserModel);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.deleteUserModel", bindingResult);
-//            return "redirect:delete_personal_data";
+            return getPasswordErrorResponse(deleteUserModel,
+                    "deleteUserModel",
+                    bindingResult,
+                    redirectAttributes,
+                    "redirect:delete_personal_data");
         }
         try {
             this.userService.deleteUser(principal.getName(), deleteUserModel.getPassword());
@@ -163,12 +161,11 @@ public class AccountManageController extends BaseController {
             bindingResult.addError(
                     new ObjectError("password",
                             "Incorrect password"));
-            return getPasswordErrorResponse(deleteUserModel,"deleteUserModel", bindingResult, redirectAttributes, "redirect:delete_personal_data");
-
-
-//            redirectAttributes.addFlashAttribute("deleteUserModel", deleteUserModel);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.deleteUserModel", bindingResult);
-//            return "redirect:delete_personal_data";
+            return getPasswordErrorResponse(deleteUserModel,
+                    "deleteUserModel",
+                    bindingResult,
+                    redirectAttributes,
+                    "redirect:delete_personal_data");
         }
 
         request.logout();

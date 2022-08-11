@@ -40,6 +40,7 @@ public class ProfileDetailsBindingModel {
         return phoneNumber;
     }
 
+
     public String getFirstName() {
         return firstName;
     }

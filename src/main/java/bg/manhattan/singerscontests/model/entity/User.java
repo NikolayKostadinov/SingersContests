@@ -1,13 +1,8 @@
 package bg.manhattan.singerscontests.model.entity;
 
-import bg.manhattan.singerscontests.model.ModelConstants;
-
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.USER_NAME_MAX_LENGTH;
 
@@ -18,7 +13,7 @@ public class User extends PersonBaseEntity{
     @Column(nullable = false, unique = true, length = USER_NAME_MAX_LENGTH)
     private String username;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false)
     private String email; // username of the user.
 
     @Column(nullable = false)
@@ -79,7 +74,9 @@ public class User extends PersonBaseEntity{
         return this;
     }
 
-
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
     public User setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
