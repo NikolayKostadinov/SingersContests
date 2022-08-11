@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +47,6 @@ public class SeedServiceImpl implements SeedService {
 
     private final Properties seedProps;
 
-    private final ResourceLoader resourceLoader;
-
     public SeedServiceImpl(UserRepository userRepository,
                            UserRoleRepository userRoleRepository,
                            ContestRepository contestRepository,
@@ -58,8 +55,7 @@ public class SeedServiceImpl implements SeedService {
                            PasswordEncoder passwordEncoder,
                            AgeGroupService ageGroupService,
                            @Value("${app.default.admin.password}") String adminPass,
-                           ContestantRepository contestantRepository,
-                           ResourceLoader resourceLoader) {
+                           ContestantRepository contestantRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.contestRepository = contestRepository;
@@ -69,7 +65,6 @@ public class SeedServiceImpl implements SeedService {
         this.ageGroupService = ageGroupService;
         this.adminPass = adminPass;
         this.contestantRepository = contestantRepository;
-        this.resourceLoader = resourceLoader;
 
 
         this.seedProps = new Properties();
@@ -79,25 +74,6 @@ public class SeedServiceImpl implements SeedService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static BinaryOperator<BigDecimal> getBigDecimalBinaryIncrementOperator() {
-        BinaryOperator<BigDecimal> increment = (s, step) -> {
-            BigDecimal result = s.add(step);
-            if (result.compareTo(BigDecimal.valueOf(10)) > 0) {
-                result = BigDecimal.ONE;
-            }
-            return result;
-        };
-        return increment;
-    }
-
-    private static void changeEditionDate(Edition edition) {
-        LocalDateTime today = DateTimeProvider.getCurrent().utcNow();
-        edition.setBeginOfSubscriptionDate(today.minusDays(3).toLocalDate());
-        edition.setEndOfSubscriptionDate(today.minusDays(2).toLocalDate());
-        edition.setBeginDate(today.minusDays(1).toLocalDate());
-        edition.setEndDate(today.toLocalDate());
     }
 
     @Override
@@ -461,5 +437,24 @@ public class SeedServiceImpl implements SeedService {
         }
 
         userRepository.saveAll(users);
+    }
+
+    private BinaryOperator<BigDecimal> getBigDecimalBinaryIncrementOperator() {
+        BinaryOperator<BigDecimal> increment = (s, step) -> {
+            BigDecimal result = s.add(step);
+            if (result.compareTo(BigDecimal.valueOf(10)) > 0) {
+                result = BigDecimal.ONE;
+            }
+            return result;
+        };
+        return increment;
+    }
+
+    private void changeEditionDate(Edition edition) {
+        LocalDateTime today = DateTimeProvider.getCurrent().utcNow();
+        edition.setBeginOfSubscriptionDate(today.minusDays(3).toLocalDate());
+        edition.setEndOfSubscriptionDate(today.minusDays(2).toLocalDate());
+        edition.setBeginDate(today.minusDays(1).toLocalDate());
+        edition.setEndDate(today.toLocalDate());
     }
 }
