@@ -107,6 +107,12 @@ public class ContestantServiceImpl implements ContestantService {
     @Override
     public ScenarioViewModel getContestantsForEditionOrderedByAgeGroupAndScenarioNumber(Long id) {
         Edition edition = this.editionService.getEntityById(id);
+
+        if (edition.getContestants().stream().noneMatch(c->c.getScenarioNumber() != null))
+        {
+            return new ScenarioViewModel(this.mapper.map(edition, EditionServiceModel.class), new HashMap<>());
+        }
+
         Map<AgeGroupServiceModel, List<ContestantServiceModel>> ageGroups = this.repository.findAllByEdition(edition)
                 .stream()
                 .sorted(Comparator.comparingInt((Contestant c) -> c.getAgeGroup().getDisplayNumber())

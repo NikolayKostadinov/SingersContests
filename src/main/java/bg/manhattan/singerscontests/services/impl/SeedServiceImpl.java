@@ -17,7 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.LocalDate;
@@ -64,32 +66,14 @@ public class SeedServiceImpl implements SeedService {
         this.adminPass = adminPass;
         this.contestantRepository = contestantRepository;
 
+
         this.seedProps = new Properties();
         try {
-            String regulationPath = new ClassPathResource("seed.properties").getFile().getPath();
-            seedProps.load(new FileInputStream(regulationPath));
+            ClassPathResource classPathResource = new ClassPathResource("seed.properties");
+            seedProps.load(classPathResource.getInputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static BinaryOperator<BigDecimal> getBigDecimalBinaryIncrementOperator() {
-        BinaryOperator<BigDecimal> increment = (s, step) -> {
-            BigDecimal result = s.add(step);
-            if (result.compareTo(BigDecimal.valueOf(10)) > 0) {
-                result = BigDecimal.ONE;
-            }
-            return result;
-        };
-        return increment;
-    }
-
-    private static void changeEditionDate(Edition edition) {
-        LocalDateTime today = DateTimeProvider.getCurrent().utcNow();
-        edition.setBeginOfSubscriptionDate(today.minusDays(3).toLocalDate());
-        edition.setEndOfSubscriptionDate(today.minusDays(2).toLocalDate());
-        edition.setBeginDate(today.minusDays(1).toLocalDate());
-        edition.setEndDate(today.toLocalDate());
     }
 
     @Override
@@ -160,20 +144,18 @@ public class SeedServiceImpl implements SeedService {
         LOGGER.info("-----------------      Seed Contestants   ------------------");
         User user = this.userRepository.findByUsername("user1").orElse(null);
         ClassPathResource classPathResource = new ClassPathResource("seed_contestants.txt");
-
         editions.forEach(edition -> {
                     List<Contestant> contestants = new ArrayList<>();
                     try {
-                        File file = classPathResource.getFile();
-                        FileReader fr = new FileReader(file);   //reads the file
-                        BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream
+                        InputStreamReader in = new InputStreamReader(classPathResource.getInputStream());//reads the file
+                        BufferedReader br = new BufferedReader(in);  //creates a buffering character input stream
                         char[] bom = new char[1];
                         int bomBytes = br.read(bom);
                         String line;
                         while ((line = br.readLine()) != null) {
                             contestants.add(parseContestant(line).setRegistrar(user));
                         }
-                        fr.close();    //closes the stream and release the resources
+                        in.close();    //closes the stream and release the resources
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -455,5 +437,24 @@ public class SeedServiceImpl implements SeedService {
         }
 
         userRepository.saveAll(users);
+    }
+
+    private BinaryOperator<BigDecimal> getBigDecimalBinaryIncrementOperator() {
+        BinaryOperator<BigDecimal> increment = (s, step) -> {
+            BigDecimal result = s.add(step);
+            if (result.compareTo(BigDecimal.valueOf(10)) > 0) {
+                result = BigDecimal.ONE;
+            }
+            return result;
+        };
+        return increment;
+    }
+
+    private void changeEditionDate(Edition edition) {
+        LocalDateTime today = DateTimeProvider.getCurrent().utcNow();
+        edition.setBeginOfSubscriptionDate(today.minusDays(3).toLocalDate());
+        edition.setEndOfSubscriptionDate(today.minusDays(2).toLocalDate());
+        edition.setBeginDate(today.minusDays(1).toLocalDate());
+        edition.setEndDate(today.toLocalDate());
     }
 }

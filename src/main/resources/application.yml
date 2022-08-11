@@ -58,8 +58,13 @@ logging:
   level:
     root: info
 
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+
 #  make it false to stop overload of scenario order every time when you restart
 seed:
-  init_scenario: false
+  init_scenario: true
 
 max_execution_time: 500

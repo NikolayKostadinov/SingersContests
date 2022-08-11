@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{/fragments/header :: head}"></head>
+<head th:replace="~{fragments/header :: head}"></head>
 
 <body>
 
-<div th:replace="~{/fragments/header :: topbar}">Contacts</div>
+<div th:replace="~{fragments/header :: topbar}">Contacts</div>
 
-<header th:replace="~{/fragments/header :: header}">Main Navigation</header>
+<header th:replace="~{fragments/header :: header}">Main Navigation</header>
 
 <main id="main" class="container">
 
@@ -18,7 +18,7 @@
         <hr>
         <div class="row">
             <div class="col-md-3">
-                <th:block th:insert="~{/fragments/account-management :: site-bar}"></th:block>
+                <th:block th:insert="~{fragments/account-management :: site-bar}"></th:block>
             </div>
 
             <div class="col-md-9">
@@ -54,7 +54,7 @@
     </div>
 </main>
 
-<th:block th:insert="~{/fragments/scripts :: baseScripts}">
+<th:block th:insert="~{fragments/scripts :: baseScripts}">
 </th:block>
 
 </body>
