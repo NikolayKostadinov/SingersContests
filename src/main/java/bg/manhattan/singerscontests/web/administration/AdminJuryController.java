@@ -90,7 +90,7 @@ public class AdminJuryController extends BaseController {
         setFormTitle("Singers Contests - Edit Jury details", model);
         model.addAttribute("edit", "active");
         addJuryToEdit(model);
-        return "/administration/edit-jury-details";
+        return "administration/edit-jury-details";
     }
 
     @PostMapping("/edit")
