@@ -1,7 +1,6 @@
 package bg.manhattan.singerscontests.model.binding;
 
 
-import bg.manhattan.singerscontests.model.IHaveNames;
 import bg.manhattan.singerscontests.model.validators.GreaterThanOrEqual;
 import bg.manhattan.singerscontests.model.validators.PasswordComplexity;
 import bg.manhattan.singerscontests.model.validators.UniqueUserName;

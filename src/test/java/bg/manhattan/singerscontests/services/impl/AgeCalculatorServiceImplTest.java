@@ -4,7 +4,6 @@ import bg.manhattan.singerscontests.exceptions.UnsupportedAgeCalculationType;
 import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.enums.AgeCalculationType;
 import bg.manhattan.singerscontests.services.AgeCalculator;
-import bg.manhattan.singerscontests.services.impl.AgeCalculatorServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

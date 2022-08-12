@@ -1,12 +1,6 @@
 package bg.manhattan.singerscontests.model.service;
 
-import bg.manhattan.singerscontests.model.entity.Edition;
-import bg.manhattan.singerscontests.model.view.ContestViewModel;
-import bg.manhattan.singerscontests.model.view.EditionListViewModel;
 import org.springframework.data.domain.Page;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ContestServiceModelWithEditions {
     private Long id;

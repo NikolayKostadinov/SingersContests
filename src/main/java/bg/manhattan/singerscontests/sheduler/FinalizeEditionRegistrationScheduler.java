@@ -2,8 +2,6 @@ package bg.manhattan.singerscontests.sheduler;
 
 import bg.manhattan.singerscontests.services.EditionService;
 import bg.manhattan.singerscontests.util.DateTimeProvider;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

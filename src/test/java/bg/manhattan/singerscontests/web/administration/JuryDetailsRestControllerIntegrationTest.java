@@ -5,8 +5,6 @@ import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.repositories.JuryMemberRepository;
 import bg.manhattan.singerscontests.repositories.UserRepository;
 import bg.manhattan.singerscontests.web.IntegrationTestWithInjectedUserDetails;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

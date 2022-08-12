@@ -1,7 +1,10 @@
 package bg.manhattan.singerscontests.config;
 
 import bg.manhattan.singerscontests.model.binding.*;
-import bg.manhattan.singerscontests.model.entity.*;
+import bg.manhattan.singerscontests.model.entity.Contest;
+import bg.manhattan.singerscontests.model.entity.Edition;
+import bg.manhattan.singerscontests.model.entity.JuryMember;
+import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.service.*;
 import bg.manhattan.singerscontests.model.view.ContestEditionsViewModel;
 import bg.manhattan.singerscontests.model.view.EditionListViewModel;

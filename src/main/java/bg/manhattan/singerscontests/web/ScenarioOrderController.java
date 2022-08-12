@@ -8,7 +8,6 @@ import bg.manhattan.singerscontests.model.view.ScenarioViewModel;
 import bg.manhattan.singerscontests.services.ContestantService;
 import bg.manhattan.singerscontests.services.EditionService;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

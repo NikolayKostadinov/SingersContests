@@ -1,15 +1,12 @@
 package bg.manhattan.singerscontests.services;
 
 
-import bg.manhattan.singerscontests.exceptions.PasswordNotMatchesException;
-import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
 import bg.manhattan.singerscontests.model.entity.User;
 import bg.manhattan.singerscontests.model.enums.UserRoleEnum;
 import bg.manhattan.singerscontests.model.service.JuryMemberServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceModel;
 import bg.manhattan.singerscontests.model.service.UserServiceProfileDetailsModel;
 
-import javax.mail.MessagingException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;

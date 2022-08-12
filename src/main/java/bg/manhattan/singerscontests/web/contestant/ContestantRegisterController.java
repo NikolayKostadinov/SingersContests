@@ -1,8 +1,6 @@
 package bg.manhattan.singerscontests.web.contestant;
 
-import bg.manhattan.singerscontests.model.binding.ContestCreateBindingModel;
 import bg.manhattan.singerscontests.model.binding.ContestantCreateBindingModel;
-import bg.manhattan.singerscontests.model.service.ContestCreateServiceModel;
 import bg.manhattan.singerscontests.model.service.ContestantServiceModel;
 import bg.manhattan.singerscontests.model.view.EditionContestantViewModel;
 import bg.manhattan.singerscontests.services.ContestantService;

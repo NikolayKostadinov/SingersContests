@@ -1,7 +1,5 @@
 package bg.manhattan.singerscontests.model.binding;
 
-import bg.manhattan.singerscontests.model.entity.Edition;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
