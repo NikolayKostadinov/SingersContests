@@ -10,7 +10,7 @@
 <header th:replace="~{fragments/header :: header}">Main Navigation</header>
 
 <main id="main" class="container" data-aos="zoom-in">
-    <h1 class="display-6 text-center" th:text="|Create ${editionModel.contestName}'`'s Edition |"></h1>
+    <h1 class="display-6 text-center" th:text="|Create ${editionModel.contestName}`s Edition |"></h1>
     <form th:action="@{/editions/edit}"
           th:method="post"
           th:object="${editionModel}"

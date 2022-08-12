@@ -67,4 +67,4 @@ management:
 seed:
   init_scenario: true
 
-max_execution_time: 500
+max_execution_time: 3000
