@@ -38,6 +38,6 @@ class AdminJuryControllerIntegrationTest extends IntegrationTestWithInjectedUser
     void edit() throws Exception {
         mockMvc.perform(get("/administration/jury/edit"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/administration/edit-jury-details"));
+                .andExpect(view().name("administration/edit-jury-details"));
     }
 }

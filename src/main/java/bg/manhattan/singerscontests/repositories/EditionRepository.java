@@ -23,7 +23,7 @@ public interface EditionRepository extends JpaRepository<Edition, Long> {
 
     @Query("SELECT e " +
             "FROM Edition e " +
-            "WHERE e.endOfSubscriptionDate > :date")
+            "WHERE e.beginOfSubscriptionDate <= :date AND e.endOfSubscriptionDate >= :date")
     Page<Edition> findAllAvailableForSubscription(@Param("date") LocalDate targetDate, PageRequest request);
 
     @Query("SELECT e " +

@@ -50,7 +50,7 @@ public class ContestantEditionController extends BaseController {
     private Paged<EditionListViewModel> getEditionListViewModelPaged(int pageNumber, int size) {
         Page<EditionListViewModel> futureEditions =
                 this.editionService
-                        .getFutureEditions(pageNumber, size)
+                        .getEditionsAvailableForRegister(pageNumber, size)
                         .map(esm -> this.mapper.map(esm, EditionListViewModel.class));
 
         return new Paged<>(futureEditions, Paging.of(futureEditions.getTotalPages(), pageNumber, size));

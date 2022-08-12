@@ -221,7 +221,7 @@ class EditionServiceImplTest {
                 .thenReturn(new PageImpl<>(List.of(new Edition())));
         when(this.mapper.map(any(Edition.class), eq(EditionServiceModel.class))).thenReturn(new EditionServiceModel());
         // act
-        this.editionService.getFutureEditions(1, 10);
+        this.editionService.getEditionsAvailableForRegister(1, 10);
 
         //assert
         verify(this.editionRepository, times(1))

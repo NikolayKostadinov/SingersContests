@@ -23,7 +23,7 @@ public interface EditionService {
 
     List<LocalDate> getDatesForMonth(int month, int year);
 
-    Page<EditionServiceModel> getFutureEditions(int pageNumber, int size);
+    Page<EditionServiceModel> getEditionsAvailableForRegister(int pageNumber, int size);
 
     Page<EditionServiceModel> getEditionsByContestInFuture(Contest contest, int pageNumber, int size);
 

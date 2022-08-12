@@ -109,7 +109,7 @@ public class EditionServiceImpl implements EditionService {
     }
 
     @Override
-    public Page<EditionServiceModel> getFutureEditions(int pageNumber, int size) {
+    public Page<EditionServiceModel> getEditionsAvailableForRegister(int pageNumber, int size) {
         Sort sort = Sort.by(Sort.Direction.ASC, "beginDate");
         PageRequest request = PageRequest.of(pageNumber - 1, size, sort);
         LocalDate today = DateTimeProvider.getCurrent().utcNow().toLocalDate();
