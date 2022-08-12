@@ -5,7 +5,6 @@ import bg.manhattan.singerscontests.model.IHaveNames;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import java.time.LocalDate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

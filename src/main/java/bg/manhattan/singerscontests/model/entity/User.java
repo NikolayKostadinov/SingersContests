@@ -33,8 +33,13 @@ public class User extends PersonBaseEntity{
     @PrimaryKeyJoinColumn
     private JuryMember juryMember;
 
+    @OneToMany(mappedBy = "registrar", cascade = CascadeType.ALL)
+    private Set<Contestant> contestants;
+
     public User() {
+
         this.roles = new HashSet<>();
+        this.contestants = new HashSet<>();
     }
 
     public User(Long id, String firstName, String middleName, String lastName) {
@@ -107,6 +112,15 @@ public class User extends PersonBaseEntity{
 
     public User setJuryMember(JuryMember juryMember) {
         this.juryMember = juryMember;
+        return this;
+    }
+
+    public Set<Contestant> getContestants() {
+        return contestants;
+    }
+
+    public User setContestants(Set<Contestant> contestants) {
+        this.contestants = contestants;
         return this;
     }
 }

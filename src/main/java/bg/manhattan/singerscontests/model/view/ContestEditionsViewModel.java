@@ -2,9 +2,6 @@ package bg.manhattan.singerscontests.model.view;
 
 import bg.manhattan.singerscontests.model.pageing.Paged;
 
-import java.time.LocalDate;
-import java.util.Collection;
-
 public class ContestEditionsViewModel {
     private Long id;
     private String name;

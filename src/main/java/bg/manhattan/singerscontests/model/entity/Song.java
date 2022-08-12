@@ -1,8 +1,6 @@
 package bg.manhattan.singerscontests.model.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import static bg.manhattan.singerscontests.model.ModelConstants.*;
-import static bg.manhattan.singerscontests.model.ModelConstants.NAME_MAX_LENGTH;
 
 public class ProfileDetailsBindingModel {
     @NotNull(message = "Username is required")

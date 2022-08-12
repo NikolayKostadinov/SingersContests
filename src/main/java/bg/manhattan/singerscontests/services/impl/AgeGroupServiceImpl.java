@@ -1,12 +1,10 @@
 package bg.manhattan.singerscontests.services.impl;
 
 import bg.manhattan.singerscontests.exceptions.AgeGroupNotFoundException;
-import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.model.binding.AgeCalculationDto;
 import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.model.entity.Edition;
 import bg.manhattan.singerscontests.model.service.AgeGroupServiceModel;
-import bg.manhattan.singerscontests.model.service.EditionServiceModel;
 import bg.manhattan.singerscontests.services.AgeCalculatorService;
 import bg.manhattan.singerscontests.services.AgeGroupService;
 import bg.manhattan.singerscontests.services.EditionService;

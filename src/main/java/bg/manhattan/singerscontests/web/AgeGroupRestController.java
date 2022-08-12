@@ -3,7 +3,6 @@ package bg.manhattan.singerscontests.web;
 import bg.manhattan.singerscontests.exceptions.AgeGroupNotFoundException;
 import bg.manhattan.singerscontests.exceptions.NotFoundException;
 import bg.manhattan.singerscontests.exceptions.UserNotFoundException;
-import bg.manhattan.singerscontests.model.entity.AgeGroup;
 import bg.manhattan.singerscontests.model.service.AgeGroupServiceModel;
 import bg.manhattan.singerscontests.model.view.AgeGroupViewModel;
 import bg.manhattan.singerscontests.model.view.ErrorViewModel;

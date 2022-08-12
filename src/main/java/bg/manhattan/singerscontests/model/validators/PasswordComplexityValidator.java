@@ -1,14 +1,11 @@
 package bg.manhattan.singerscontests.model.validators;
 
 
-import org.apache.tomcat.util.digester.Rule;
 import org.passay.*;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class PasswordComplexityValidator implements ConstraintValidator<PasswordComplexity, String> {
 

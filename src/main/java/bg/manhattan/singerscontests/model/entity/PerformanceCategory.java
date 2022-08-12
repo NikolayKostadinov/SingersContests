@@ -1,7 +1,6 @@
 package bg.manhattan.singerscontests.model.entity;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name="performance_categories")

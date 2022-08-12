@@ -1,11 +1,9 @@
 package bg.manhattan.singerscontests.model.binding;
 
-import bg.manhattan.singerscontests.model.service.PerformanceCategoryServiceModel;
-
-import javax.validation.constraints.*;
-import java.time.Duration;
-
-import static bg.manhattan.singerscontests.model.ModelConstants.NAME_MAX_LENGTH;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class SongCreateBindingModel {
 

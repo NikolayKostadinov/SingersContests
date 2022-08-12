@@ -440,14 +440,13 @@ public class SeedServiceImpl implements SeedService {
     }
 
     private BinaryOperator<BigDecimal> getBigDecimalBinaryIncrementOperator() {
-        BinaryOperator<BigDecimal> increment = (s, step) -> {
+        return (s, step) -> {
             BigDecimal result = s.add(step);
             if (result.compareTo(BigDecimal.valueOf(10)) > 0) {
                 result = BigDecimal.ONE;
             }
             return result;
         };
-        return increment;
     }
 
     private void changeEditionDate(Edition edition) {
@@ -455,6 +454,6 @@ public class SeedServiceImpl implements SeedService {
         edition.setBeginOfSubscriptionDate(today.minusDays(3).toLocalDate());
         edition.setEndOfSubscriptionDate(today.minusDays(2).toLocalDate());
         edition.setBeginDate(today.minusDays(1).toLocalDate());
-        edition.setEndDate(today.toLocalDate());
+        edition.setEndDate(today.plusDays(1).toLocalDate());
     }
 }

@@ -10,8 +10,8 @@ import bg.manhattan.singerscontests.services.ContestService;
 import bg.manhattan.singerscontests.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -62,13 +62,13 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "contests", allEntries = true)
+    @CacheEvict(cacheNames = "contests")
     public void delete(Long id) {
         this.repository.deleteById(id);
     }
 
     @Override
-    @CacheEvict(cacheNames = "contests", allEntries = true)
+    @CachePut(cacheNames = "contests")
     public void create(ContestCreateServiceModel contestModel) {
         Contest contest = this.mapper.map(contestModel, Contest.class);
 
@@ -89,7 +89,6 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    @Cacheable("contests")
     public ContestServiceModel getContestById(Long id) {
         Contest contest = getContestEntityById(id);
 
@@ -103,9 +102,8 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public Contest getContestEntityById(Long id) {
-        Contest contest = this.repository.findById(id)
+        return this.repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Contest", id));
-        return contest;
     }
 
     @Override
@@ -127,7 +125,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    @CacheEvict(cacheNames = "contests", allEntries = true)
+    @CachePut(cacheNames = "contests")
     public void update(ContestEditServiceModel contestModel) {
         Contest contest = getContestEntityById(contestModel.getId());
         this.mapper.map(contestModel, contest);
